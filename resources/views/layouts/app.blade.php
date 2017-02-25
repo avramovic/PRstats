@@ -23,16 +23,15 @@
     <div id="innercont" class="clearfix">
 
         <div id="content" class="bodycontainer clearfix">
-            <div class="right"></div>
-            <div class="left">
-                <h1>@yield('title')</h1>
+            <h1 style="float: left">@yield('title')</h1>
+            <a href="{{ url('/') }}" style="float: right"><img src="/images/logo.png" class="logo" /></a>
 
+            <div class="clear"></div>
+            <div class="left">
                 @yield('content')
             </div>
 
             <div class="right">
-                <a href="{{ url('/') }}"><img src="/images/logo.png" class="logo" /></a>
-                <div class="clear"></div>
                 <div class="darkbg hidden">
                 @yield('right')
                 </div>
@@ -50,6 +49,7 @@
 </div>
 
 <script src="/js/jquery.js"></script>
+<script src="/bower_components/cheet.js/cheet.min.js"></script>
 <script src="/js/scripts.js"></script>
 @yield('scripts')
 

@@ -17,7 +17,7 @@
         </thead>
         <tbody>
     <?php $nr = 1; ?>
-    @foreach($clan->players as $player)
+    @foreach($players as $player)
         <tr>
             <td>{{ $nr++ }}</td>
             <td><a href="{{ $player->getLink() }}">{{ $player->name }}</a></td>
@@ -34,11 +34,10 @@
 @section('right')
     <h2>{{ $clan->name }} clan stats</h2>
     <p>
-        Members: {{ $clan->players->count() }}<br />
-        Total score: {{ $clan->players->sum('total_score') }}<br />
-        Total kills: {{ $clan->players->sum('total_kills') }}<br />
-        Total deaths: {{ $clan->players->sum('total_deaths') }}<br />
-        First seen {{ $clan->created_at->diffForHumans() }} ({{ $clan->created_at->format('Y-m-d') }})<br />
-        Last seen {{ $clan->updated_at->diffForHumans() }} ({{ $clan->updated_at->format('Y-m-d') }})<br />
+        Members: <strong>{{ $clan->players->count() }}</strong><br />
+        Total score: <strong>{{ $clan->players->sum('total_score') }}</strong><br />
+        Total kills: <strong>{{ $clan->players->sum('total_kills') }}</strong><br />
+        Total deaths: <strong>{{ $clan->players->sum('total_deaths') }}</strong><br />
+        First seen <abbr title="{{ $clan->created_at->format('Y-m-d') }}"><strong>{{ $clan->created_at->diffForHumans() }}</strong></abbr><br />
     </p>
 @endsection

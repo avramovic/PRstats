@@ -50,7 +50,12 @@ class Home extends Controller
     public function clan($id, $slug)
     {
         $clan = Clan::with('players')->where('id', $id)->firstOrFail();
-        return view('clan', ['clan'=>$clan]);
+
+        $players = $clan->players()->take(50)->get()->sortByDesc(function($item) {
+            return $item->total_score;
+        });
+
+        return view('clan', ['clan' => $clan, 'players' => $players]);
     }
 
     public function servers()
@@ -68,7 +73,11 @@ class Home extends Controller
     {
         $server = Server::with('players')->where('id', $id)->firstOrFail();
 
-        return view('server', ['server' => $server]);
+        $players = $server->players()->take(50)->get()->sortByDesc(function($item) {
+            return $item->total_score;
+        });
+
+        return view('server', ['server' => $server, 'players' => $players]);
     }
 
     public function players()
@@ -84,12 +93,15 @@ class Home extends Controller
     }
 
 
-
     public function player($pid, $slug)
     {
-        $player = Player::with('clan')->where('pid', $pid)->firstOrFail();
+        $player = Player::with('clan', 'server')->where('pid', $pid)->firstOrFail();
 
-        return view('player', ['player'=>$player]);
+        $players = $player->clan->players->sortByDesc(function($item) {
+            return $item->total_score;
+        });
+
+        return view('player', ['player' => $player, 'clanPlayers' => $players]);
     }
 
 }

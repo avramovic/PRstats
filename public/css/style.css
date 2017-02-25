@@ -351,7 +351,29 @@ tr:nth-child(2n) {
 }
 
 h2 {
-	font-size: 120%;
+	font-size: 150%;
 	font-weight: bold;
 	margin-bottom: 10px;
+}
+
+h3 {
+	font-size: 120%;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+
+.server-logo {
+	width: 100%;
+	height: auto;
+}
+
+abbr {
+	cursor: help;
+}
+
+.avatar {
+	float: right;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	border-radius: 50%;
 }
