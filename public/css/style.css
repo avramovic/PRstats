@@ -159,7 +159,7 @@ img
 			font-weight: 700;
 			letter-spacing: -0.6px;
 			font-family: "Roboto Condensed";
-			text-transform: uppercase;
+			/*text-transform: uppercase;*/
 			margin: 0 0 25px 0;
 			padding: 10px 16px;
 			background: none;

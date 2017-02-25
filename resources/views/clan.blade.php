@@ -33,11 +33,14 @@
 
 @section('right')
     <h2>{{ $clan->name }} clan stats</h2>
-    <p>
+    <div class="clear"></div>
+    <p class="float: left">
         Members: <strong>{{ $clan->players->count() }}</strong><br />
         Total score: <strong>{{ $clan->players->sum('total_score') }}</strong><br />
         Total kills: <strong>{{ $clan->players->sum('total_kills') }}</strong><br />
         Total deaths: <strong>{{ $clan->players->sum('total_deaths') }}</strong><br />
         First seen <abbr title="{{ $clan->created_at->format('Y-m-d') }}"><strong>{{ $clan->created_at->diffForHumans() }}</strong></abbr><br />
     </p>
+    <img data-hash="{{ md5($clan->name) }}" src="https://vanillicon.com/{{ md5($clan->name) }}.png" alt="{{ $clan->name }}'s avatar" class="avatar">
+    <div class="clear"></div>
 @endsection

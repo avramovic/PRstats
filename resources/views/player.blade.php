@@ -44,6 +44,8 @@
         Total score: <strong>{{ $player->total_score }}</strong><br />
         Total kills: <strong>{{ $player->total_kills }}</strong><br />
         Total deaths: <strong>{{ $player->total_deaths }}</strong><br />
+        Total played: <strong>{{ Carbon\Carbon::now()->addMinutes($player->minutes_played)->diffForHumans(null, true) }}</strong><br />
+        Games played: <strong>{{ $player->games_played }}</strong><br />
         First seen <abbr title="{{ $player->created_at->format('Y-m-d') }}"><strong>{{ $player->created_at->diffForHumans() }}</strong></abbr><br />
         Last seen <abbr title="{{ $player->updated_at->format('Y-m-d') }}"><strong>{{ $player->updated_at->diffForHumans() }}</strong></abbr> on
         <a href="{{ $player->server->getLink() }}">{{ $player->server->name }}</a><br />

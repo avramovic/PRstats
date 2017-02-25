@@ -41,6 +41,8 @@
 
 @section('right')
     <h2>Welcome!</h2>
-    <p>PR stats is a website which tracks your Project Reality stats in real-time. The table on the right shows top 50 players
-    which have been playing in the last month and their accumulated score(s) since they have first been seen playing.</p>
+    <p>PR stats is a website which tracks your <a href="http://www.realitymod.com" target="_blank">Project Reality</a> stats in real-time. The table on the left shows top 50 players
+        which have been playing in the last month and their accumulated score(s) since they have first been seen playing.</p>
+    <p>Due to PR being a frankenstein of a game, your stats won't count until you are in the top 64 players on the server.
+        Consider that a feature, a nice way of filtering AFKers and lousy players :-)</p>
 @endsection

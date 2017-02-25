@@ -78,7 +78,7 @@
         Total kills: <strong>{{ $server->players->sum('total_kills') }}</strong><br />
         Total deaths: <strong>{{ $server->players->sum('total_deaths') }}</strong><br />
         @if(filter_var($server->br_download, FILTER_VALIDATE_URL))
-        Battle records: <a href="{{ $server->br_download }}">{{ $server->br_download }}</a><br />
+        Battle records: <a href="{{ $server->br_download }}" target="_blank">{{ $server->br_download }}</a><br />
         @endif
         First seen <abbr title="{{ $server->created_at->format('Y-m-d') }}"><strong>{{ $server->created_at->diffForHumans() }}</strong></abbr><br />
         Last seen <abbr title="{{ $server->updated_at->format('Y-m-d') }}"><strong>{{ $server->updated_at->diffForHumans() }}</strong></abbr> playing map <strong>{{ $server->last_map }}</strong>

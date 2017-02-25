@@ -97,9 +97,13 @@ class Home extends Controller
     {
         $player = Player::with('clan', 'server')->where('pid', $pid)->firstOrFail();
 
-        $players = $player->clan->players->sortByDesc(function($item) {
-            return $item->total_score;
-        });
+        $players = null;
+
+        if ($player->clan) {
+            $players = $player->clan->players->sortByDesc(function($item) {
+                return $item->total_score;
+            });
+        }
 
         return view('player', ['player' => $player, 'clanPlayers' => $players]);
     }
