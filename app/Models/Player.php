@@ -33,4 +33,18 @@ class Player extends Model
     {
         return $this->belongsTo(Server::class);
     }
+
+    public function getClanNameAttribute()
+    {
+        return $this->clan->name;
+    }
+
+    public function getFullNameAttribute()
+    {
+        if (empty($this->clan_id)) {
+            return $this->name;
+        }
+
+        return $this->getClanNameAttribute().' '.$this->name;
+    }
 }

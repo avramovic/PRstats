@@ -120,7 +120,6 @@ class PRSpyParse extends Command
 
                 $hasClan = (strpos($playerData->Name, ' ') !== false);
                 $name    = htmlspecialchars_decode($playerData->Name);
-                $clanTag = false;
 
                 if ($hasClan) {
                     $parts   = explode(' ', $playerData->Name);

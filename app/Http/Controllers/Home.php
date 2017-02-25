@@ -3,7 +3,6 @@
 namespace PRStats\Http\Controllers;
 
 use Carbon\Carbon;
-use PRStats\Http\Requests;
 use PRStats\Models\Clan;
 use PRStats\Models\Player;
 use PRStats\Models\Server;
@@ -32,7 +31,20 @@ class Home extends Controller
             ->take(50)
             ->get();
 
+//        dd($players->toArray(), $clans->toArray(), $servers->toArray());
+
         return view('home', ['players' => $players, 'clans' => $clans, 'servers' => $servers]);
+    }
+
+    public function clans()
+    {
+        //top clans
+        $clans = Clan::where('updated_at', '>', Carbon::now()->subWeek())
+            ->orderBy('total_score', 'desc')
+            ->take(50)
+            ->get();
+
+        return view('clans', ['clans' => $clans]);
     }
 
     public function clan($id, $slug)
@@ -41,12 +53,37 @@ class Home extends Controller
         return view('clan', ['clan'=>$clan]);
     }
 
+    public function servers()
+    {
+        //top servers
+        $servers = Server::where('updated_at', '>', Carbon::now()->subDay())
+            ->orderBy('total_score', 'desc')
+            ->take(50)
+            ->get();
+
+        return view('servers', ['servers' => $servers]);
+    }
+
     public function server($id, $slug)
     {
         $server = Server::with('players')->where('id', $id)->firstOrFail();
 
         return view('server', ['server' => $server]);
     }
+
+    public function players()
+    {
+        //top players
+        $players = Player::with('clan')
+            ->where('updated_at', '>', Carbon::now()->subMonth())
+            ->orderBy('total_score', 'desc')
+            ->take(50)
+            ->get();
+
+        return view('players', ['players' => $players]);
+    }
+
+
 
     public function player($pid, $slug)
     {
