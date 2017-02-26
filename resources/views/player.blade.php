@@ -40,7 +40,8 @@
 @section('right')
     <h2>{{ $player->name }} stats</h2>
     <div class="clear"></div>
-    <p style="float: left">
+    <p>
+        <img data-hash="{{ md5($player->name) }}" src="https://vanillicon.com/{{ md5($player->name) }}.png" alt="{{ $player->name }}'s avatar" class="avatar">
         Total score: <strong>{{ $player->total_score }}</strong><br />
         Total kills: <strong>{{ $player->total_kills }}</strong><br />
         Total deaths: <strong>{{ $player->total_deaths }}</strong><br />
@@ -50,7 +51,6 @@
         Last seen <abbr title="{{ $player->updated_at->format('Y-m-d') }}"><strong>{{ $player->updated_at->diffForHumans() }}</strong></abbr> on
         <a href="{{ $player->server->getLink() }}">{{ $player->server->name }}</a><br />
     </p>
-    <img data-hash="{{ md5($player->name) }}" src="https://vanillicon.com/{{ md5($player->name) }}.png" alt="{{ $player->name }}'s avatar" class="avatar">
     <div class="clear"></div>
 
 @endsection
