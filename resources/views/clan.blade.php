@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    {{ $clan->name }}
+    {{ $clan->name }} clan
 @endsection
 
 @section('content')

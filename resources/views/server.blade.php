@@ -42,14 +42,19 @@
 @endsection
 
 @section('right')
-    @if(filter_var($server->community_website, FILTER_VALIDATE_URL))
-        <h2><a href="{{ $server->community_website }}" target="_blank">{{ $server->name }}</a></h2>
-    @else
-        <h2>{{ $server->name }}</h2>
-    @endif
-
     @if(filter_var($server->server_logo, FILTER_VALIDATE_URL))
-        <p><img src="{{ $server->server_logo }}" alt="{{ $server->name }} logo" class="server-logo"></p>
+        <br />
+        @if(filter_var($server->community_website, FILTER_VALIDATE_URL))
+            <p><a href="{{ $server->community_website }}" target="_blank"><img src="{{ $server->server_logo }}" alt="{{ $server->name }} logo" class="server-logo" /></a></p>
+        @else
+            <p><img src="{{ $server->server_logo }}" alt="{{ $server->name }} logo" class="server-logo" /></p>
+        @endif
+    @else
+        @if(filter_var($server->community_website, FILTER_VALIDATE_URL))
+            <h2><a href="{{ $server->community_website }}" target="_blank">{{ $server->name }}</a></h2>
+        @else
+            <h2>{{ $server->name }}</h2>
+        @endif
     @endif
 
     <p>Slots (reserved): <strong>{{ $server->max_players }}</strong> (<strong>{{ $server->reserved_slots }}</strong>)</p>
