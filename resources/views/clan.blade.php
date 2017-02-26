@@ -34,13 +34,16 @@
 @section('right')
     <h2>{{ $clan->name }} clan stats</h2>
     <div class="clear"></div>
-    <p class="float: left">
+    <p>
+        <img data-hash="{{ md5($clan->name) }}" src="https://vanillicon.com/{{ md5($clan->name) }}.png" alt="{{ $clan->name }}'s avatar" class="avatar">
         Members: <strong>{{ $clan->players->count() }}</strong><br />
         Total score: <strong>{{ $clan->players->sum('total_score') }}</strong><br />
         Total kills: <strong>{{ $clan->players->sum('total_kills') }}</strong><br />
         Total deaths: <strong>{{ $clan->players->sum('total_deaths') }}</strong><br />
         First seen <abbr title="{{ $clan->created_at->format('Y-m-d') }}"><strong>{{ $clan->created_at->diffForHumans() }}</strong></abbr><br />
+        <?php $last = $players->sortByDesc('updated_at')->first(); ?>
+        Last seen <abbr title="{{ $last->updated_at->format('Y-m-d') }}"><strong>{{ $last->updated_at->diffForHumans() }}</strong></abbr> on
+        <a href="{{ $last->server->getLink() }}">{{ $last->server->name }}</a><br />
     </p>
-    <img data-hash="{{ md5($clan->name) }}" src="https://vanillicon.com/{{ md5($clan->name) }}.png" alt="{{ $clan->name }}'s avatar" class="avatar">
     <div class="clear"></div>
 @endsection
