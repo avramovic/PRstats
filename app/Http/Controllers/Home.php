@@ -19,21 +19,20 @@ class Home extends Controller
             ->take(50)
             ->get();
 
-        //top clans
-        $clans = Clan::where('updated_at', '>', Carbon::now()->subWeek())
-            ->orderBy('total_score', 'desc')
-            ->take(50)
-            ->get();
+//        //top clans
+//        $clans = Clan::where('updated_at', '>', Carbon::now()->subWeek())
+//            ->orderBy('total_score', 'desc')
+//            ->take(50)
+//            ->get();
+//
+//        //top servers
+//        $servers = Server::where('updated_at', '>', Carbon::now()->subDay())
+//            ->orderBy('total_score', 'desc')
+//            ->take(50)
+//            ->get();
 
-        //top servers
-        $servers = Server::where('updated_at', '>', Carbon::now()->subDay())
-            ->orderBy('total_score', 'desc')
-            ->take(50)
-            ->get();
-
-//        dd($players->toArray(), $clans->toArray(), $servers->toArray());
-
-        return view('home', ['players' => $players, 'clans' => $clans, 'servers' => $servers]);
+        return view('home', ['players' => $players]);
+//        return view('home', ['players' => $players, 'clans' => $clans, 'servers' => $servers]);
     }
 
     public function clans()
@@ -49,11 +48,9 @@ class Home extends Controller
 
     public function clan($id, $slug)
     {
-        $clan = Clan::with('players')->where('id', $id)->firstOrFail();
+        $clan = Clan::where('id', $id)->firstOrFail();
 
-        $players = $clan->players()->take(50)->get()->sortByDesc(function($item) {
-            return $item->total_score;
-        });
+        $players = $clan->players()->take(50)->orderBy('total_score', 'desc')->get();
 
         return view('clan', ['clan' => $clan, 'players' => $players]);
     }
@@ -71,11 +68,9 @@ class Home extends Controller
 
     public function server($id, $slug)
     {
-        $server = Server::with('players')->where('id', $id)->firstOrFail();
+        $server = Server::where('id', $id)->firstOrFail();
 
-        $players = $server->players()->take(50)->get()->sortByDesc(function($item) {
-            return $item->total_score;
-        });
+        $players = $server->players()->take(50)->orderBy('total_score', 'desc')->get();
 
         return view('server', ['server' => $server, 'players' => $players]);
     }
