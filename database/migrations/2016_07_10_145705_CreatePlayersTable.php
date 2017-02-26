@@ -22,6 +22,9 @@ class CreatePlayersTable extends Migration
             $table->integer('total_score')->unsigned()->default(0);
             $table->integer('total_kills')->unsigned()->default(0);
             $table->integer('total_deaths')->unsigned()->default(0);
+            $table->integer('monthly_score')->unsigned()->default(0);
+            $table->integer('monthly_kills')->unsigned()->default(0);
+            $table->integer('monthly_deaths')->unsigned()->default(0);
             $table->integer('last_score')->unsigned()->default(0);
             $table->integer('last_kills')->unsigned()->default(0);
             $table->integer('last_deaths')->unsigned()->default(0);

@@ -154,6 +154,17 @@ class PRSpyParse extends Command
                     $player->total_deaths + $playerData->Deaths :
                     $player->total_deaths + $playerData->Deaths - $player->last_deaths;
 
+                $player->monthly_score  = ($player->last_score > $playerData->Score) ?
+                    $player->monthly_score + $playerData->Score :
+                    $player->monthly_score + $playerData->Score - $player->last_score;
+                $player->monthly_kills  = ($player->last_kills > $playerData->Kills) ?
+                    $player->monthly_kills + $playerData->Kills :
+                    $player->monthly_kills + $playerData->Kills - $player->last_kills;
+                $player->monthly_deaths = ($player->last_deaths > $playerData->Deaths) ?
+                    $player->monthly_deaths + $playerData->Deaths :
+                    $player->monthly_deaths + $playerData->Deaths - $player->last_deaths;
+
+
                 $player->games_played = ($player->last_score > $playerData->Score) ? $player->games_played + 1 : (int)$player->games_played;
 
                 $server->total_score  = ($player->last_score > $playerData->Score) ?
