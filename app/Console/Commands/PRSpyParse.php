@@ -61,10 +61,11 @@ class PRSpyParse extends Command
                 ->first();
 
             if ($server == null) {
-                $server             = new Server;
-                $server->ip_address = $serverData->IPAddress;
-                $server->game_port  = $serverData->GamePort;
-                $newgame            = true;
+                $server               = new Server;
+                $server->ip_address   = $serverData->IPAddress;
+                $server->game_port    = $serverData->GamePort;
+                $server->games_played = 1;
+                $newgame              = true;
                 $server->save();
             }
 
@@ -114,8 +115,9 @@ class PRSpyParse extends Command
             foreach ($serverData->Players as $playerData) {
                 $player = Player::where('pid', $playerData->Pid)->first();
                 if ($player == null) {
-                    $player      = new Player;
-                    $player->pid = $playerData->Pid;
+                    $player               = new Player;
+                    $player->pid          = $playerData->Pid;
+                    $player->games_played = 1;
                 }
 
                 $hasClan = (strpos($playerData->Name, ' ') !== false);
@@ -168,7 +170,7 @@ class PRSpyParse extends Command
                 $player->last_score  = $playerData->Score;
                 $player->last_kills  = $playerData->Kills;
                 $player->last_deaths = $playerData->Deaths;
-                $minutes = (int)$player->minutes_played;
+                $minutes             = (int)$player->minutes_played;
                 $minutes++;
                 $player->minutes_played = $minutes;
 
