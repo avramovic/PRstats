@@ -15,7 +15,7 @@ class Home extends Controller
         //top players
         $players = Player::with('clan')
             ->where('updated_at', '>', Carbon::now()->subMonth())
-            ->orderBy('total_score', 'desc')
+            ->orderBy('monthly_score', 'desc')
             ->take(50)
             ->get();
 

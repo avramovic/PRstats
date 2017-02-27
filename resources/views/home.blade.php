@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Top players
+    Top players in {{ date('F') }}
 @endsection
 
 @section('content')
@@ -29,9 +29,9 @@
                 @endif
             </td>
             <td><a href="{{ $player->getLink() }}">{{ $player->name }}</a></td>
-            <td>{{ $player->total_score }}</td>
-            <td>{{ $player->total_kills }}</td>
-            <td>{{ $player->total_deaths }}</td>
+            <td>{{ $player->monthly_score }}</td>
+            <td>{{ $player->monthly_kills }}</td>
+            <td>{{ $player->monthly_deaths }}</td>
         </tr>
     @endforeach
 
