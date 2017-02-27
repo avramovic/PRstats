@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
          Commands\PRSpyParse::class,
          Commands\UpdateClans::class,
+         Commands\ClearMonthly::class,
     ];
 
     /**
@@ -29,5 +30,6 @@ class Kernel extends ConsoleKernel
         //          ->hourly();
         $schedule->command('prspy:parse')->everyMinute();
         $schedule->command('prspy:clans')->everyMinute();
+        $schedule->command('prspy:clearmonthly')->monthly();
     }
 }
