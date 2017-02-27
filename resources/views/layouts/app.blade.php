@@ -24,7 +24,9 @@
 
         <div id="content" class="bodycontainer clearfix">
             <h1 style="float: left">@yield('title')</h1>
-            <a href="{{ url('/') }}" style="float: right"><img src="/images/logo.png" class="logo" /></a>
+            <p style="float:right"><a href="/">Home</a> | <a href="/players">Players</a> | <a href="/clans">Clans</a> |
+                <a href="/servers">Servers</a><br /> <?php //@todo: use routes ?>
+            <a href="{{ url('/') }}" style="float: right"><img src="/images/logo.png" class="logo" /></a></p>
 
             <div class="clear"></div>
             <div class="left">
