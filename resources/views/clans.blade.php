@@ -22,7 +22,7 @@
         </thead>
         <tbody>
     <?php $nr = 1; ?>
-    @foreach($clans as $clan)
+    @forelse($clans as $clan)
         <tr>
             <td>{{ $nr++ }}</td>
             <td><a href="{{ $clan->getLink() }}">{{ $clan->name }}</a></td>
@@ -37,7 +37,11 @@
             <td>{{ $clan->total_kills }}</td>
             <td>{{ $clan->total_deaths }}</td>
         </tr>
-    @endforeach
+    @empty
+        <tr>
+            <td colspan="6">Nothing found</td>
+        </tr>
+    @endforelse
 
         </tbody>
     </table>
@@ -47,7 +51,7 @@
     <h2>Clan search</h2>
     {!! \Form::open(['route' => 'clans.search', 'method' => 'post']) !!}
     {!! csrf_field() !!}
-    <input type="text" name="q" minlength="2" required value="{{ isset($query) ? $query : '' }}"/>
+    <input type="text" name="q" minlength="2" maxlength="6" required value="{{ isset($query) ? $query : '' }}"/>
     {!! \Form::submit('Search') !!}
     {!! Form::close() !!}
 @endsection

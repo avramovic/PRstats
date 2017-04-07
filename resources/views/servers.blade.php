@@ -21,7 +21,7 @@
         </thead>
         <tbody>
     <?php $nr = 1; ?>
-    @foreach($servers as $server)
+    @forelse($servers as $server)
         <tr>
             <td>{{ $nr++ }}</td>
             <td><a href="{{ $server->getLink() }}">{{ $server->name }}</a></td>
@@ -29,7 +29,11 @@
             <td>{{ $server->total_kills }}</td>
             <td>{{ $server->total_deaths }}</td>
         </tr>
-    @endforeach
+    @empty
+        <tr>
+            <td colspan="5">Nothing found</td>
+        </tr>
+    @endforelse
 
         </tbody>
     </table>

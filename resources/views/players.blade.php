@@ -22,7 +22,7 @@
         </thead>
         <tbody>
     <?php $nr = 1; ?>
-    @foreach($players as $player)
+    @forelse($players as $player)
         <tr>
             <td>{{ $nr++ }}</td>
             <td>
@@ -37,7 +37,11 @@
             <td>{{ $player->total_kills }}</td>
             <td>{{ $player->total_deaths }}</td>
         </tr>
-    @endforeach
+    @empty
+        <tr>
+            <td colspan="6">Nothing found</td>
+        </tr>
+    @endforelse
 
         </tbody>
     </table>
