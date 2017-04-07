@@ -11,9 +11,9 @@
                 <th>#</th>
                 <th>Clan</th>
                 <th>Name</th>
-                <th>Total score</th>
-                <th>Total kills</th>
-                <th>Total deaths</th>
+                <th>Monthly score</th>
+                <th>Monthly kills</th>
+                <th>Monthly deaths</th>
             </tr>
         </thead>
         <tbody>

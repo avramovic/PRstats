@@ -21,7 +21,7 @@
         <tbody>
     <?php $nr = 1; ?>
     @foreach($clanPlayers as $clanPlayer)
-        <tr>
+        <tr class=" @if($clanPlayer->id == $player->id) highlight @endif ">
             <td>{{ $nr++ }}</td>
             <td><a href="{{ $clanPlayer->getLink() }}">{{ $clanPlayer->name }}</a></td>
             <td>{{ $clanPlayer->total_score }}</td>

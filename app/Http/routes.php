@@ -17,3 +17,11 @@ Route::get('/', 'Home@index');
 Route::get('clan/{id}/{slug}', ['as' => 'clan', 'uses' => 'Home@clan']);
 Route::get('player/{pid}/{slug}', ['as' => 'player', 'uses' => 'Home@player']);
 Route::get('server/{id}/{slug}', ['as' => 'server', 'uses' => 'Home@server']);
+
+Route::get('servers', ['as' => 'servers', 'uses' => 'Home@servers']);
+Route::get('players', ['as' => 'players', 'uses' => 'Home@players']);
+Route::get('clans', ['as' => 'clans', 'uses' => 'Home@clans']);
+Route::post('players', ['as' => 'players.search', 'uses' => 'Home@playerSearch']);
+Route::post('clans', ['as' => 'clans.search', 'uses' => 'Home@clanSearch']);
+
+

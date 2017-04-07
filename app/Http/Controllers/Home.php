@@ -3,13 +3,13 @@
 namespace PRStats\Http\Controllers;
 
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use PRStats\Models\Clan;
 use PRStats\Models\Player;
 use PRStats\Models\Server;
 
 class Home extends Controller
 {
-    //
     public function index()
     {
         //top players
@@ -19,31 +19,29 @@ class Home extends Controller
             ->take(50)
             ->get();
 
-//        //top clans
-//        $clans = Clan::where('updated_at', '>', Carbon::now()->subWeek())
-//            ->orderBy('total_score', 'desc')
-//            ->take(50)
-//            ->get();
-//
-//        //top servers
-//        $servers = Server::where('updated_at', '>', Carbon::now()->subDay())
-//            ->orderBy('total_score', 'desc')
-//            ->take(50)
-//            ->get();
-
         return view('home', ['players' => $players]);
-//        return view('home', ['players' => $players, 'clans' => $clans, 'servers' => $servers]);
     }
 
     public function clans()
     {
         //top clans
-        $clans = Clan::where('updated_at', '>', Carbon::now()->subWeek())
-            ->orderBy('total_score', 'desc')
+        $clans = Clan::orderBy('total_score', 'desc')
             ->take(50)
             ->get();
 
         return view('clans', ['clans' => $clans]);
+    }
+
+    public function clanSearch(Request $request)
+    {
+        //top players
+        $clans = Clan::with('players')
+            ->where('name', 'LIKE', '%'.$request->q.'%')
+            ->orderBy('name', 'asc')
+            ->take(50)
+            ->get();
+
+        return view('clans', ['clans' => $clans, 'query'=>$request->q]);
     }
 
     public function clan($id, $slug)
@@ -79,12 +77,24 @@ class Home extends Controller
     {
         //top players
         $players = Player::with('clan')
-            ->where('updated_at', '>', Carbon::now()->subMonth())
+//            ->where('updated_at', '>', Carbon::now()->subMonth())
             ->orderBy('total_score', 'desc')
             ->take(50)
             ->get();
 
         return view('players', ['players' => $players]);
+    }
+
+    public function playerSearch(Request $request)
+    {
+        //top players
+        $players = Player::with('clan')
+            ->where('name', 'LIKE', '%'.$request->q.'%')
+            ->orderBy('name', 'asc')
+            ->take(50)
+            ->get();
+
+        return view('players', ['players' => $players, 'query'=>$request->q]);
     }
 
 

@@ -42,8 +42,10 @@
         Total deaths: <strong>{{ $clan->players->sum('total_deaths') }}</strong><br />
         First seen <abbr title="{{ $clan->created_at->format('Y-m-d') }}"><strong>{{ $clan->created_at->diffForHumans() }}</strong></abbr><br />
         <?php $last = $players->sortByDesc('updated_at')->first(); ?>
-        Last seen <abbr title="{{ $last->updated_at->format('Y-m-d') }}"><strong>{{ $last->updated_at->diffForHumans() }}</strong></abbr> on
-        <a href="{{ $last->server->getLink() }}">{{ $last->server->name }}</a><br />
+        @if($last)
+            Last seen <abbr title="{{ $last->updated_at->format('Y-m-d') }}"><strong>{{ $last->updated_at->diffForHumans() }}</strong></abbr> on
+            <a href="{{ $last->server->getLink() }}">{{ $last->server->name }}</a><br />
+        @endif
     </p>
     <div class="clear"></div>
 @endsection

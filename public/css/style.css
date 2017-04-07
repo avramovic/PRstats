@@ -43,8 +43,7 @@ html
 	overflow: auto;
 	background: #FFF url("../images/bg-pr.jpg") no-repeat fixed;
 	background-size: cover;
-	background-positio;
-	
+
 	-webkit-font-smoothing: antialiased;
 	-webkit-text-size-adjust: 100%;
 	-ms-text-size-adjust: 100%;
@@ -376,4 +375,8 @@ abbr {
 	-webkit-border-radius: 50%;
 	-moz-border-radius: 50%;
 	border-radius: 50%;
+}
+
+tr.highlight > td {
+	font-weight: bold;
 }
