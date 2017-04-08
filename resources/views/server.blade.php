@@ -47,7 +47,7 @@
         @if(filter_var($server->community_website, FILTER_VALIDATE_URL))
             <p><a href="{{ $server->community_website }}" target="_blank"><img src="{{ $server->server_logo }}" alt="{{ $server->name }} logo" class="server-logo" /></a></p>
         @else
-            <p><img src="{{ $server->server_logo }}" alt="{{ $server->name }} logo" class="server-logo" /></p>
+            <p><img src="{{ $server->server_logo }}" alt="{{ $server->name }} logo" onerror="$(this).hide()" class="server-logo" /></p>
         @endif
     @else
         @if(filter_var($server->community_website, FILTER_VALIDATE_URL))
