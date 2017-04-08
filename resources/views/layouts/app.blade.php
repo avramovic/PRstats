@@ -4,11 +4,9 @@
 <!--[if IE 8 ]><html class="ie ie8" lang="en"><![endif]-->
 <!--[if (gte IE 9)|!(IE)]><!--><html lang="en"><!--<![endif]-->
 <head>
-    <!-- Website Template designed by www.downloadwebsitetemplates.co.uk -->
     <meta charset="UTF-8">
     <title>@yield('title') &bull; PR stats</title>
-    <meta name="description" content="Alan Ford stripoteka">
-    <meta name="keywords" content="alan ford, alan, ford, stripovi, android, aplikacija">
+    <meta name="description" content="Project Reality stats">
     <link rel="shortcut icon" href="/images/logo.png" type="image/png"/ >
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- link rel="shortcut icon" href="/images/ico/favicon.png" -->
