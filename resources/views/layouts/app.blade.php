@@ -40,8 +40,7 @@
 
         <div id="copyright" class="bodycontainer clearfix">
 
-            <p>Copyright &copy; {{ date('Y') }}, <a href="http://www.avramovic.info" target="_blank">Nemanja Avramovic</a> a.k.a.
-                <a href="#">Sgt_Baker</a> </p>
+            <p>Copyright &copy; {{ date('Y') }}, <a href="http://www.avramovic.info" target="_blank">Nemanja Avramovic</a> {{-- a.k.a. <a href="#">Sgt_Baker</a> </p> --}}
 
         </div>
 
