@@ -2,6 +2,7 @@
 
 namespace PRStats\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Server extends Model
@@ -17,5 +18,10 @@ class Server extends Model
     public function players()
     {
         return $this->hasMany(Player::class);
+    }
+
+    public function wasSeenRecently($mins = 5)
+    {
+        return $this->updated_at->diffInMinutes() < $mins;
     }
 }

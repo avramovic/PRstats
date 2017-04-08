@@ -5,7 +5,11 @@
 @endsection
 
 @section('content')
-    <p><strong>Top players:</strong></p>
+    @if($server->wasSeenRecently())
+        <p><strong>Active players:</strong></p>
+    @else
+        <p><strong>Top players:</strong></p>
+    @endif
 
     <table align="center">
         <thead>
@@ -63,7 +67,7 @@
         <p>{!! str_replace('|', '<br />', $server->server_text) !!}</p>
     @endif
 
-    @if($server->updated_at->diffInMinutes() < 5)
+    @if($server->wasSeenRecently())
         <h3>Currently playing</h3>
         <p>
             Map: <strong>{{ $server->last_map }}</strong><br />

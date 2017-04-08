@@ -68,7 +68,16 @@ class Home extends Controller
     {
         $server = Server::where('id', $id)->firstOrFail();
 
-        $players = $server->players()->take(50)->orderBy('total_score', 'desc')->get();
+        $timestamp = Carbon::parse('2017-04-07 00:00:00');
+
+        if ($server->wasSeenRecently()) {
+            $timestamp = Carbon::now()->subMinutes(5);
+        }
+
+        $players = $server->players()
+            ->where('updated_at', '>', $timestamp)
+            ->take(64)
+            ->orderBy('total_score', 'desc')->get();
 
         return view('server', ['server' => $server, 'players' => $players]);
     }
