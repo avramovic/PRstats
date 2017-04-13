@@ -69,8 +69,8 @@
 
     @if($server->wasSeenRecently())
         <h3>Currently playing</h3>
-        <p><img src="{{ $server->getLastMapImageUrl() }}" alt="{{ $server->last_map }}" title="{{ $server->last_map }}"></p>
         <p>
+            <img src="{{ $server->getLastMapImageUrl() }}" alt="{{ $server->last_map }}" title="{{ $server->last_map }}"><br />
             Map: <strong>{{ $server->last_map }}</strong><br />
             Players (free): <strong>{{ $server->num_players }}</strong> (<strong>{{ ($server->max_players-$server->reserved_slots)-$server->num_players }}</strong>)<br />
             Team 1: <strong>{{ $server->team1_name }}</strong> (<abbr title="score / kills / deaths">{{ $server->team1_score }}/{{ $server->team1_kills }}/{{ $server->team1_deaths }}</abbr>)<br />
