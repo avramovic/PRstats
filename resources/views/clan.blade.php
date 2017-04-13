@@ -37,9 +37,10 @@
     <p>
         <img data-hash="{{ md5($clan->name) }}" src="https://vanillicon.com/{{ md5($clan->name) }}.png" alt="{{ $clan->name }}'s avatar" class="avatar">
         Members: <strong>{{ $clan->players->count() }}</strong><br />
-        Total score: <strong>{{ $clan->players->sum('total_score') }}</strong><br />
-        Total kills: <strong>{{ $clan->players->sum('total_kills') }}</strong><br />
-        Total deaths: <strong>{{ $clan->players->sum('total_deaths') }}</strong><br />
+        Total score: <strong>{{ $clan->total_score }}</strong><br />
+        Total kills: <strong>{{ $clan->total_kills }}</strong><br />
+        Total deaths: <strong>{{ $clan->total_deaths }}</strong><br />
+        K/D ratio: <strong>{{ $clan->total_deaths == 0 ? $clan->total_kills : round($clan->total_kills/$clan->total_deaths, 2) }}</strong><br />
         First seen <abbr title="{{ $clan->created_at->format('Y-m-d') }}"><strong>{{ $clan->created_at->diffForHumans() }}</strong></abbr><br />
         <?php $last = $players->sortByDesc('updated_at')->first(); ?>
         @if($last)
