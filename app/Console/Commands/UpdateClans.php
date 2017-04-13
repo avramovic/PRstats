@@ -24,8 +24,6 @@ class UpdateClans extends Command
 
     /**
      * Create a new command instance.
-     *
-     * @return void
      */
     public function __construct()
     {
@@ -41,7 +39,7 @@ class UpdateClans extends Command
     {
         //get clans
         $this->line(Carbon::now());
-        $clans = Clan::with('players')->orderBy('updated_at', 'asc')->take(50)->get();
+        $clans = Clan::with('players')->orderBy('updated_at', 'asc')->take(100)->get();
 
 //        dd($clans->toJson());
 
