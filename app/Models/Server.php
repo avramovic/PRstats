@@ -24,4 +24,14 @@ class Server extends Model
     {
         return $this->updated_at->diffInMinutes() < $mins;
     }
+
+    public function getMapImageName()
+    {
+        return strtolower(str_replace(' ', '', $this->last_map));
+    }
+
+    public function getLastMapImageUrl()
+    {
+        return '//www.realitymod.com/mapgallery/images/maps/'.$this->getMapImageName().'/tile.jpg';
+    }
 }

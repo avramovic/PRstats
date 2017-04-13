@@ -69,6 +69,7 @@
 
     @if($server->wasSeenRecently())
         <h3>Currently playing</h3>
+        <p><img src="{{ $server->getLastMapImageUrl() }}" alt="{{ $server->last_map }}" title="{{ $server->last_map }}"></p>
         <p>
             Map: <strong>{{ $server->last_map }}</strong><br />
             Players (free): <strong>{{ $server->num_players }}</strong> (<strong>{{ ($server->max_players-$server->reserved_slots)-$server->num_players }}</strong>)<br />
@@ -90,6 +91,8 @@
         Battle records: <a href="{{ $server->br_download }}" target="_blank">{{ $server->br_download }}</a><br />
         @endif
         First seen <abbr title="{{ $server->created_at->format('Y-m-d') }}"><strong>{{ $server->created_at->diffForHumans() }}</strong></abbr><br />
+        @if(!$server->wasSeenRecently())
         Last seen <abbr title="{{ $server->updated_at->format('Y-m-d') }}"><strong>{{ $server->updated_at->diffForHumans() }}</strong></abbr> playing map <strong>{{ $server->last_map }}</strong>
+        @endif
     </p>
 @endsection
