@@ -41,7 +41,7 @@ html
 {
 	height: 100%;
 	overflow: auto;
-	background: #FFF url("../images/bg-pr.jpg") no-repeat fixed;
+	background: #000 url("../images/bg-pr.jpg") no-repeat fixed;
 	background-size: cover;
 
 	-webkit-font-smoothing: antialiased;

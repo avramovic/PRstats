@@ -30,8 +30,8 @@ class Server extends Model
         return strtolower(str_replace(' ', '', $this->last_map));
     }
 
-    public function getLastMapImageUrl()
+    public function getLastMapImageUrl($image='tile')
     {
-        return '//www.realitymod.com/mapgallery/images/maps/'.$this->getMapImageName().'/tile.jpg';
+        return '//www.realitymod.com/mapgallery/images/maps/'.$this->getMapImageName().'/'.$image.'.jpg';
     }
 }
