@@ -198,7 +198,8 @@ class PRSpyParse extends Command
         $this->line("[".date('H:i:s')."] Finished all in {$diff} seconds");
     }
 
-    private function decodeName($name) {
+    private function decodeName($name)
+    {
         $name = htmlspecialchars_decode($name);
         return str_replace('&apos;', '\'', $name);
     }
