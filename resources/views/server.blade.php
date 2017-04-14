@@ -6,7 +6,7 @@
 
 @section('content')
     @if($server->wasSeenRecently())
-        <p><strong>Active players:</strong></p>
+        <p><strong>Currently playing:</strong></p>
     @else
         <p><strong>Top players:</strong></p>
     @endif
@@ -17,9 +17,9 @@
                 <th>#</th>
                 <th>Clan</th>
                 <th>Name</th>
-                <th>Total score</th>
-                <th>Total kills</th>
-                <th>Total deaths</th>
+                <th>Score</th>
+                <th>Kills</th>
+                <th>Deaths</th>
             </tr>
         </thead>
         <tbody>
@@ -35,9 +35,9 @@
                 @endif
             </td>
             <td><a href="{{ $player->getLink() }}">{{ $player->name }}</a></td>
-            <td>{{ $player->total_score }}</td>
-            <td>{{ $player->total_kills }}</td>
-            <td>{{ $player->total_deaths }}</td>
+            <td>{{ $server->wasSeenRecently() ? $player->last_score : $player->total_score }}</td>
+            <td>{{ $server->wasSeenRecently() ? $player->last_kills : $player->total_kills }}</td>
+            <td>{{ $server->wasSeenRecently() ? $player->last_deaths : $player->total_deaths }}</td>
         </tr>
     @endforeach
 
