@@ -54,10 +54,14 @@ class PRSpyParse extends Command
                 continue;
             }
 
-            $newgame = false;
+            $newgame    = false;
+            $serverName = trim(preg_replace('/^\[.*?\]/is', '', $this->decodeName($serverData->ServerName), 1));
 
-            $server = Server::where('ip_address', $serverData->IPAddress)
-                ->where('game_port', $serverData->GamePort)
+            $server = Server::where('name', $serverName)
+                ->orWhere(function ($query) use ($serverData) {
+                    $query->where('ip_address', $serverData->IPAddress)
+                        ->where('game_port', $serverData->GamePort);
+                })
                 ->first();
 
             if ($server == null) {
@@ -74,7 +78,7 @@ class PRSpyParse extends Command
                 $server->last_map = $serverData->MapName;
             }
 
-            $server->name           = trim(preg_replace('/^\[.*?\]/is', '', $this->decodeName($serverData->ServerName), 1));
+            $server->name           = $serverName;
             $server->country        = $serverData->Country;
             $server->num_players    = $serverData->NumPlayers;
             $server->max_players    = $serverData->MaxPlayers;
@@ -90,7 +94,6 @@ class PRSpyParse extends Command
             $server->server_logo       = $serverData->ServerLogo;
             $server->community_website = $serverData->CommunityWebsite;
 
-            //
             if ($newgame) {
                 $server->games_played++;
                 $server->total_score += $serverData->Teams[0]->Score + $serverData->Teams[1]->Score;
@@ -138,11 +141,10 @@ class PRSpyParse extends Command
                     $player->clan_id = $clan->id;
                 } else {
                     $player->clan_id = null;
-
                 }
 
                 $player->name = $this->decodeName($name);
-                $player->slug = str_slug($name);
+                $player->slug = str_slug($player->name);
 
                 $player->total_score  = ($player->last_score > $playerData->Score) ?
                     $player->total_score + $playerData->Score :
