@@ -74,10 +74,18 @@ class Home extends Controller
             $timestamp = Carbon::now()->subMinutes(5);
         }
 
-        $players = $server->players()
-            ->where('updated_at', '>', $timestamp)
-            ->take(64)
-            ->orderBy('total_score', 'desc')->get();
+        if ($server->wasSeenRecently()) {
+            $players = $server->players()
+                ->where('updated_at', '>', $timestamp)
+                ->take(64)
+                ->orderBy('last_score', 'desc')->get();
+        } else {
+            $players = $server->players()
+                ->where('updated_at', '>', $timestamp)
+                ->take(64)
+                ->orderBy('total_score', 'desc')->get();
+
+        }
 
         return view('server', ['server' => $server, 'players' => $players]);
     }
