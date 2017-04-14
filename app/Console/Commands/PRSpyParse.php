@@ -74,7 +74,7 @@ class PRSpyParse extends Command
                 $server->last_map = $serverData->MapName;
             }
 
-            $server->name           = trim(preg_replace('/^\[.*?\]/is', '', htmlspecialchars_decode($serverData->ServerName), 1));
+            $server->name           = trim(preg_replace('/^\[.*?\]/is', '', $this->decodeName($serverData->ServerName), 1));
             $server->country        = $serverData->Country;
             $server->num_players    = $serverData->NumPlayers;
             $server->max_players    = $serverData->MaxPlayers;
@@ -121,17 +121,17 @@ class PRSpyParse extends Command
                 }
 
                 $hasClan = (strpos($playerData->Name, ' ') !== false);
-                $name    = htmlspecialchars_decode($playerData->Name);
+                $name    = $this->decodeName($playerData->Name);
 
                 if ($hasClan) {
                     $parts   = explode(' ', $playerData->Name);
                     $clanTag = $parts[0];
                     $name    = $parts[1];
 
-                    $clan = Clan::where('name', htmlspecialchars_decode($clanTag))->first();
+                    $clan = Clan::where('name', $this->decodeName($clanTag))->first();
                     if ($clan == null) {
                         $clan       = new Clan;
-                        $clan->name = htmlspecialchars_decode($clanTag);
+                        $clan->name = $this->decodeName($clanTag);
                         $clan->slug = str_slug($clan->name);
                         $clan->save();
                     }
@@ -141,7 +141,7 @@ class PRSpyParse extends Command
 
                 }
 
-                $player->name = htmlspecialchars_decode($name);
+                $player->name = $this->decodeName($name);
                 $player->slug = str_slug($name);
 
                 $player->total_score  = ($player->last_score > $playerData->Score) ?
@@ -196,5 +196,10 @@ class PRSpyParse extends Command
 
         $diff = microtime(true) - $start;
         $this->line("[".date('H:i:s')."] Finished all in {$diff} seconds");
+    }
+
+    private function decodeName($name) {
+        $name = htmlspecialchars_decode($name);
+        return str_replace('&apos;', '\'', $name);
     }
 }
