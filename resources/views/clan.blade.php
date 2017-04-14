@@ -42,10 +42,9 @@
         Total deaths: <strong>{{ $clan->total_deaths }}</strong><br />
         K/D ratio: <strong>{{ $clan->total_deaths == 0 ? $clan->total_kills : round($clan->total_kills/$clan->total_deaths, 2) }}</strong><br />
         First seen <abbr title="{{ $clan->created_at->format('Y-m-d') }}"><strong>{{ $clan->created_at->diffForHumans() }}</strong></abbr><br />
-        <?php $last = $players->sortByDesc('updated_at')->first(); ?>
-        @if($last)
-            Last seen <abbr title="{{ $last->updated_at->format('Y-m-d') }}"><strong>{{ $last->updated_at->diffForHumans() }}</strong></abbr> on
-            <a href="{{ $last->server->getLink() }}">{{ $last->server->name }}</a><br />
+        @if($clan->last_player_seen)
+            Last seen <abbr title="{{ $clan->last_player_seen->updated_at->format('Y-m-d') }}"><strong>{{ $clan->last_player_seen->updated_at->diffForHumans() }}</strong></abbr> on
+            <a href="{{ $clan->last_player_seen->server->getLink() }}">{{ $clan->last_player_seen->server->name }}</a><br />
         @endif
     </p>
     <div class="clear"></div>

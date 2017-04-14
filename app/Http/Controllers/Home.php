@@ -50,7 +50,7 @@ class Home extends Controller
 
         $players = $clan->players()->take(50)->orderBy('total_score', 'desc')->get();
 
-        return view('clan', ['clan' => $clan, 'players' => $players]);
+        return view('clan', ['clan' => $clan, 'players' => $players, 'server' => $clan->last_player_seen->server]);
     }
 
     public function servers()
@@ -119,7 +119,7 @@ class Home extends Controller
             });
         }
 
-        return view('player', ['player' => $player, 'clanPlayers' => $players]);
+        return view('player', ['player' => $player, 'clanPlayers' => $players, 'server' => $player->server]);
     }
 
 }

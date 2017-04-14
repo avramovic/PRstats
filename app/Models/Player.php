@@ -6,18 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Player extends Model
 {
-    protected $clanTag = null;
-
-//    public function setGameName($gameName) {
-//        $this->name = $gameName;
-//        $spacePos = strpos($gameName, ' ');
-//        if ($spacePos !== false) {
-////            $parts = explode(' ', $gameName);
-//            $this->clanTag = substr($gameName, 0, $spacePos);
-//            $this->name = substr($gameName, $spacePos);
-//        }
-//    }
-
     public function getLink()
     {
         $slug = empty($this->slug) ? 'player' : $this->slug;

@@ -23,4 +23,9 @@ class Clan extends Model
     {
         return $this->players->sortByDesc('total_score')->first();
     }
+
+    public function getLastPlayerSeenAttribute()
+    {
+        return $this->players->sortByDesc('updated_at')->first();
+    }
 }
