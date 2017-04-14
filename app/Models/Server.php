@@ -2,12 +2,12 @@
 
 namespace PRStats\Models;
 
-use Carbon\Carbon;
+use PRStats\Models\Traits\WasSeenRecentlyTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class Server extends Model
 {
-    //
+    use WasSeenRecentlyTrait;
 
     public function getLink()
     {
@@ -20,17 +20,12 @@ class Server extends Model
         return $this->hasMany(Player::class);
     }
 
-    public function wasSeenRecently($mins = 5)
-    {
-        return $this->updated_at->diffInMinutes() < $mins;
-    }
-
     public function getMapImageName()
     {
         return strtolower(str_replace(' ', '', $this->last_map));
     }
 
-    public function getLastMapImageUrl($image='tile')
+    public function getLastMapImageUrl($image = 'tile')
     {
         return '//www.realitymod.com/mapgallery/images/maps/'.$this->getMapImageName().'/'.$image.'.jpg';
     }

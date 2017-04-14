@@ -2,10 +2,13 @@
 
 namespace PRStats\Models;
 
+use PRStats\Models\Traits\WasSeenRecentlyTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class Player extends Model
 {
+    use WasSeenRecentlyTrait;
+
     public function getLink()
     {
         $slug = empty($this->slug) ? 'player' : $this->slug;
@@ -35,4 +38,5 @@ class Player extends Model
 
         return $this->getClanNameAttribute().' '.$this->name;
     }
+
 }
