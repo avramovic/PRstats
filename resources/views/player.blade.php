@@ -40,6 +40,7 @@
 @section('right')
     <h2>{{ $player->name }} stats</h2>
     <div class="clear"></div>
+
     <p>
         <img data-hash="{{ md5($player->name) }}" src="https://vanillicon.com/{{ md5($player->name) }}.png" alt="{{ $player->name }}'s avatar" class="avatar">
         Total score: <strong>{{ $player->total_score }}</strong><br />
@@ -49,9 +50,26 @@
         Total played: <abbr title="Since {{ $player->created_at->format('Y-m-d') }}"><strong>~{{ Carbon\Carbon::now()->addMinutes($player->minutes_played)->diffForHumans(null, true) }}</strong></abbr><br />
         Games played: <strong>{{ $player->games_played }}</strong><br />
         First seen <abbr title="{{ $player->created_at->format('Y-m-d') }}"><strong>{{ $player->created_at->diffForHumans() }}</strong></abbr><br />
-        Last seen <abbr title="{{ $player->updated_at->format('Y-m-d') }}"><strong>{{ $player->updated_at->diffForHumans() }}</strong></abbr> on
-        <a href="{{ $player->server->getLink() }}">{{ $player->server->name }}</a><br />
+        @if(!$player->wasSeenRecently())
+            Last seen <abbr title="{{ $player->updated_at->format('Y-m-d') }}"><strong>{{ $player->updated_at->diffForHumans() }}</strong></abbr> on
+            <a href="{{ $player->server->getLink() }}">{{ $player->server->name }}</a><br />
+        @endif
     </p>
+
+    @if($player->wasSeenRecently())
+        <hr />
+
+        <h3>Currently playing</h3>
+        <p>
+            <img src="{{ $player->server->getLastMapImageUrl() }}" class="pr-map" alt="{{ $player->server->last_map }}" title="{{ $player->server->last_map }}"><br />
+            Server: <strong><a href="{{ $player->server->getLink() }}">{{ $player->server->name }}</a></strong><br />
+            Map: <strong>{{ $player->server->last_map }}</strong><br />
+            Players (free): <strong>{{ $player->server->num_players }}</strong> (<strong>{{ ($player->server->max_players-$player->server->reserved_slots)-$player->server->num_players }}</strong>)<br />
+            Team 1: <strong>{{ $player->server->team1_name }}</strong> (<abbr title="score / kills / deaths">{{ $player->server->team1_score }}/{{ $player->server->team1_kills }}/{{ $player->server->team1_deaths }}</abbr>)<br />
+            Team 2: <strong>{{ $player->server->team2_name }}</strong> (<abbr title="score / kills / deaths">{{ $player->server->team2_score }}/{{ $player->server->team2_kills }}/{{ $player->server->team2_deaths }}</abbr>)<br />
+        </p>
+    @endif
+
     <div class="clear"></div>
 
 @endsection
