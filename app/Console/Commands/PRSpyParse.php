@@ -50,7 +50,7 @@ class PRSpyParse extends Command
         $start = microtime(true);
 
         foreach ($servers as $serverData) {
-            if ($serverData->Password || ($serverData->NumPlayers < 2)) {
+            if ($serverData->Password || ($serverData->NumPlayers < 2) || $serverData->CoopEnabled == true) {
                 continue;
             }
 
