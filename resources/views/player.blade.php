@@ -15,7 +15,7 @@
                 <th>Name</th>
                 <th>Total score</th>
                 <th>Total kills</th>
-                <th>Total deaths</th>
+                {{--<th>Total deaths</th>--}}
             </tr>
         </thead>
         <tbody>
