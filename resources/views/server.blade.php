@@ -7,42 +7,41 @@
 @section('content')
     @if($server->wasSeenRecently())
         <p><strong>Currently playing:</strong></p>
-    @else
-        <p><strong>Top players:</strong></p>
+
+        <table align="center">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Clan</th>
+                    <th>Name</th>
+                    <th>Score</th>
+                    <th>Kills</th>
+                    <th>Deaths</th>
+                </tr>
+            </thead>
+            <tbody>
+        <?php $nr = 1; ?>
+        @foreach($players as $player)
+            <tr>
+                <td>{{ $nr++ }}</td>
+                <td>
+                    @if($player->clan)
+                        <span class="clan"><a href="{{ $player->clan->getLink() }}">{{ $player->clan_name }}</a></span>
+                    @else
+                        &mdash;
+                    @endif
+                </td>
+                <td><a href="{{ $player->getLink() }}">{{ $player->name }}</a></td>
+                <td>{{ $server->wasSeenRecently() ? $player->last_score : $player->total_score }}</td>
+                <td>{{ $server->wasSeenRecently() ? $player->last_kills : $player->total_kills }}</td>
+                <td>{{ $server->wasSeenRecently() ? $player->last_deaths : $player->total_deaths }}</td>
+            </tr>
+        @endforeach
+
+            </tbody>
+        </table>
     @endif
 
-    <table align="center">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Clan</th>
-                <th>Name</th>
-                <th>Score</th>
-                <th>Kills</th>
-                <th>Deaths</th>
-            </tr>
-        </thead>
-        <tbody>
-    <?php $nr = 1; ?>
-    @foreach($players as $player)
-        <tr>
-            <td>{{ $nr++ }}</td>
-            <td>
-                @if($player->clan)
-                    <span class="clan"><a href="{{ $player->clan->getLink() }}">{{ $player->clan_name }}</a></span>
-                @else
-                    &mdash;
-                @endif
-            </td>
-            <td><a href="{{ $player->getLink() }}">{{ $player->name }}</a></td>
-            <td>{{ $server->wasSeenRecently() ? $player->last_score : $player->total_score }}</td>
-            <td>{{ $server->wasSeenRecently() ? $player->last_kills : $player->total_kills }}</td>
-            <td>{{ $server->wasSeenRecently() ? $player->last_deaths : $player->total_deaths }}</td>
-        </tr>
-    @endforeach
-
-        </tbody>
-    </table>
 @endsection
 
 @section('right')
