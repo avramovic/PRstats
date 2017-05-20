@@ -10,6 +10,10 @@ use PRStats\Models\Server;
 
 class Home extends Controller
 {
+    protected $banned = [
+        '100384079',
+    ];
+
     public function index()
     {
         //top players
@@ -117,6 +121,10 @@ class Home extends Controller
 
     public function player($pid, $slug)
     {
+        if (in_array($pid, $this->banned)) {
+            abort(404);
+        }
+
         $player = Player::with('clan', 'server')->where('pid', $pid)->firstOrFail();
 
         $players = null;

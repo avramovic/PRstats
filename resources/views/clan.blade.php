@@ -12,7 +12,7 @@
                 <th>Name</th>
                 <th>Total score</th>
                 <th>Total kills</th>
-                {{--<th>Total deaths</th>--}}
+                <th>Total deaths</th>
             </tr>
         </thead>
         <tbody>
@@ -23,7 +23,7 @@
             <td><a href="{{ $player->getLink() }}">{{ $player->name }}</a></td>
             <td>{{ $player->total_score }}</td>
             <td>{{ $player->total_kills }}</td>
-{{--            <td>{{ $player->total_deaths }}</td>--}}
+            <td>{{ $player->total_deaths }}</td>
         </tr>
     @endforeach
 
