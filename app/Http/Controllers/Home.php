@@ -23,7 +23,29 @@ class Home extends Controller
             ->take(50)
             ->get();
 
-        return view('home', ['players' => $players]);
+        $newest = Player::with('clan')
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        $longest = Player::with('clan')
+            ->orderBy('minutes_played', 'desc')
+            ->first();
+
+        $mostKills = Player::with('clan')
+            ->orderBy('total_kills', 'desc')
+            ->first();
+
+        $mostDeaths = Player::with('clan')
+            ->orderBy('total_deaths', 'desc')
+            ->first();
+
+        return view('home', [
+            'players'    => $players,
+            'newest'     => $newest,
+            'longest'    => $longest,
+            'mostKills'  => $mostKills,
+            'mostDeaths' => $mostDeaths,
+        ]);
     }
 
     public function clans()
@@ -45,7 +67,7 @@ class Home extends Controller
             ->take(50)
             ->get();
 
-        return view('clans', ['clans' => $clans, 'query'=>$request->q]);
+        return view('clans', ['clans' => $clans, 'query' => $request->q]);
     }
 
     public function clan($id, $slug)
@@ -111,11 +133,12 @@ class Home extends Controller
         //top players
         $players = Player::with('clan')
             ->where('name', 'LIKE', '%'.$request->q.'%')
+            ->whereNotIn('pid', $this->banned)
             ->orderBy('name', 'asc')
             ->take(50)
             ->get();
 
-        return view('players', ['players' => $players, 'query'=>$request->q]);
+        return view('players', ['players' => $players, 'query' => $request->q]);
     }
 
 
@@ -130,7 +153,7 @@ class Home extends Controller
         $players = null;
 
         if ($player->clan) {
-            $players = $player->clan->players->sortByDesc(function($item) {
+            $players = $player->clan->players->sortByDesc(function ($item) {
                 return $item->total_score;
             });
         }

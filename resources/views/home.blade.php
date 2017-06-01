@@ -29,9 +29,9 @@
                 @endif
             </td>
             <td><a href="{{ $player->getLink() }}">{{ $player->name }}</a></td>
-            <td>{{ $player->monthly_score }}</td>
-            <td>{{ $player->monthly_kills }}</td>
-            <td>{{ $player->monthly_deaths }}</td>
+            <td>{!! $player->formatScoreHtml('monthly_score') !!}</td>
+            <td>{!! $player->formatScoreHtml('monthly_kills') !!}</td>
+            <td>{!! $player->formatScoreHtml('monthly_deaths') !!}</td>
         </tr>
     @endforeach
 
@@ -45,4 +45,71 @@
         which have been playing in the last month and their monthly score.</p>
     <p>Due to PR being a frankenstein of a game, your stats won't count until you are in the top 64 players on the server.
         Consider that a feature, a nice way of filtering AFKers and lousy players :-)</p>
+@endsection
+
+@section('rightbottom')
+    <div class="right">
+        <div class="darkbg">
+            <a href="{{ $newest->getLink() }}">
+                <img src="https://vanillicon.com/{{ md5($newest->name) }}.png" style="float:right; width: 70px; height: 70px;">
+            </a>
+            <h3>Newest player: {{ $newest->created_at->diffForHumans() }}</h3>
+            <p>
+                @if($newest->clan)
+                    <a href="{{ $newest->clan->getLink() }}">{{ $newest->clan->name }}
+                        @endif
+
+                        <a href="{{ $newest->getLink() }}">{{ $newest->name }}</a>
+            </p>
+        </div>
+    </div>
+
+
+    <div class="right">
+        <div class="darkbg">
+            <a href="{{ $longest->getLink() }}">
+                <img src="https://vanillicon.com/{{ md5($longest->name) }}.png" style="float:right; width: 70px; height: 70px;">
+            </a>
+            <h3>Longest in-game: {{ Carbon\Carbon::now()->addMinutes($longest->minutes_played)->diffForHumans(null, true) }}</h3>
+            <p>
+            @if($longest->clan)
+                <a href="{{ $longest->clan->getLink() }}">{{ $longest->clan->name }}
+            @endif
+
+                <a href="{{ $longest->getLink() }}">{{ $longest->name }}</a>
+            </p>
+        </div>
+    </div>
+
+    <div class="right">
+        <div class="darkbg">
+            <a href="{{ $mostKills->getLink() }}">
+                <img src="https://vanillicon.com/{{ md5($mostKills->name) }}.png" style="float:right; width: 70px; height: 70px;">
+            </a>
+            <h3>Most kills: {{ $mostKills->total_kills }}</h3>
+            <p>
+            @if($mostKills->clan)
+                <a href="{{ $mostKills->clan->getLink() }}">{{ $mostKills->clan->name }}
+            @endif
+
+                <a href="{{ $mostKills->getLink() }}">{{ $mostKills->name }}</a>
+            </p>
+        </div>
+    </div>
+
+    <div class="right">
+        <div class="darkbg">
+            <a href="{{ $mostDeaths->getLink() }}">
+                <img src="https://vanillicon.com/{{ md5($mostDeaths->name) }}.png" style="float:right; width: 70px; height: 70px;">
+            </a>
+            <h3>Most deaths: {{ $mostDeaths->total_deaths }}</h3>
+            <p>
+            @if($mostDeaths->clan)
+                <a href="{{ $mostDeaths->clan->getLink() }}">{{ $mostDeaths->clan->name }}
+            @endif
+
+                <a href="{{ $mostDeaths->getLink() }}">{{ $mostDeaths->name }}</a>
+            </p>
+        </div>
+    </div>
 @endsection
