@@ -24,9 +24,9 @@
         <tr class=" @if($clanPlayer->id == $player->id) highlight @endif ">
             <td>{{ $nr++ }}</td>
             <td><a href="{{ $clanPlayer->getLink() }}">{{ $clanPlayer->name }}</a></td>
-            <td>{{ $clanPlayer->total_score }}</td>
-            <td>{{ $clanPlayer->total_kills }}</td>
-            <td>{{ $clanPlayer->total_deaths }}</td>
+            <td>{!! $clanPlayer->formatScoreHtml('total_score') !!}</td>
+            <td>{!! $clanPlayer->formatScoreHtml('total_kills') !!}</td>
+            <td>{!! $clanPlayer->formatScoreHtml('total_deaths') !!}</td>
         </tr>
     @endforeach
 
