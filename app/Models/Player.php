@@ -2,12 +2,13 @@
 
 namespace PRStats\Models;
 
+use PRStats\Models\Traits\FormatScoreTrait;
 use PRStats\Models\Traits\WasSeenRecentlyTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class Player extends Model
 {
-    use WasSeenRecentlyTrait;
+    use WasSeenRecentlyTrait, FormatScoreTrait;
 
     public function getLink()
     {

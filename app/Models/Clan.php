@@ -3,10 +3,11 @@
 namespace PRStats\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use PRStats\Models\Traits\FormatScoreTrait;
 
 class Clan extends Model
 {
-    //
+    use FormatScoreTrait;
 
     public function getLink()
     {

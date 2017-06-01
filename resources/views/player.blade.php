@@ -43,9 +43,9 @@
 
     <p>
         <img data-hash="{{ md5($player->name) }}" src="https://vanillicon.com/{{ md5($player->name) }}.png" alt="{{ $player->name }}'s avatar" class="avatar">
-        Total score: <strong>{{ $player->total_score }}</strong><br />
-        Total kills: <strong>{{ $player->total_kills }}</strong><br />
-        Total deaths: <strong>{{ $player->total_deaths }}</strong><br />
+        Total score: <strong>{!! $player->formatScoreHtml('total_score') !!}</strong><br />
+        Total kills: <strong>{!! $player->formatScoreHtml('total_kills') !!}</strong><br />
+        Total deaths: <strong>{!! $player->formatScoreHtml('total_deaths') !!}</strong><br />
         K/D ratio: <strong>{{ $player->total_deaths == 0 ? $player->total_kills : round($player->total_kills/$player->total_deaths, 2) }}</strong><br />
         Total played: <abbr title="Since {{ $player->created_at->format('Y-m-d') }}"><strong>~{{ Carbon\Carbon::now()->addMinutes($player->minutes_played)->diffForHumans(null, true) }}</strong></abbr><br />
         Games played: <strong>{{ $player->games_played }}</strong><br />

@@ -36,6 +36,9 @@
                 @yield('right')
                 </div>
             </div>
+
+            @yield('rightbottom')
+            </div>
         </div>
 
         <div id="copyright" class="bodycontainer clearfix">

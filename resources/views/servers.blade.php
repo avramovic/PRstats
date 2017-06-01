@@ -21,13 +21,14 @@
         </thead>
         <tbody>
     <?php $nr = 1; ?>
+    <?php /** @var $server \PRStats\Models\Server */ ?>
     @forelse($servers as $server)
         <tr>
             <td>{{ $nr++ }}</td>
             <td><a href="{{ $server->getLink() }}">{{ $server->name }}</a></td>
-            <td>{{ $server->total_score }}</td>
-            <td>{{ $server->total_kills }}</td>
-            <td>{{ $server->total_deaths }}</td>
+            <td>{!! $server->formatScoreHtml('total_score') !!}</td>
+            <td>{!! $server->formatScoreHtml('total_kills') !!}</td>
+            <td>{!! $server->formatScoreHtml('total_deaths') !!}</td>
         </tr>
     @empty
         <tr>

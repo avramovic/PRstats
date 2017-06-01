@@ -33,9 +33,9 @@
                     &mdash;
                 @endif
             </td>
-            <td>{{ $clan->total_score }}</td>
-            <td>{{ $clan->total_kills }}</td>
-            <td>{{ $clan->total_deaths }}</td>
+            <td>{!! $clan->formatScoreHtml('total_score') !!}</td>
+            <td>{!! $clan->formatScoreHtml('total_kills') !!}</td>
+            <td>{!! $clan->formatScoreHtml('total_deaths') !!}</td>
         </tr>
     @empty
         <tr>

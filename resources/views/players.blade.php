@@ -33,9 +33,9 @@
                 @endif
             </td>
             <td><a href="{{ $player->getLink() }}">{{ $player->name }}</a></td>
-            <td>{{ $player->total_score }}</td>
-            <td>{{ $player->total_kills }}</td>
-            <td>{{ $player->total_deaths }}</td>
+            <td>{!! $player->formatScoreHtml('total_score') !!}</td>
+            <td>{!! $player->formatScoreHtml('total_kills') !!}</td>
+            <td>{!! $player->formatScoreHtml('total_deaths') !!}</td>
         </tr>
     @empty
         <tr>

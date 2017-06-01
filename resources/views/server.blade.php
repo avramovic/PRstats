@@ -32,9 +32,9 @@
                     @endif
                 </td>
                 <td><a href="{{ $player->getLink() }}">{{ $player->name }}</a></td>
-                <td>{{ $server->wasSeenRecently() ? $player->last_score : $player->total_score }}</td>
-                <td>{{ $server->wasSeenRecently() ? $player->last_kills : $player->total_kills }}</td>
-                <td>{{ $server->wasSeenRecently() ? $player->last_deaths : $player->total_deaths }}</td>
+                <td>{{ $server->wasSeenRecently() ? $player->formatScoreHtml('last_score') : $player->formatScoreHtml('total_score') }}</td>
+                <td>{{ $server->wasSeenRecently() ? $player->formatScoreHtml('last_kills') : $player->formatScoreHtml('total_kills') }}</td>
+                <td>{{ $server->wasSeenRecently() ? $player->formatScoreHtml('last_deaths') : $player->formatScoreHtml('total_deaths') }}</td>
             </tr>
         @endforeach
 
@@ -83,9 +83,9 @@
         Country: <strong>{{ $server->country }}</strong><br />
         Platform: <strong>{{ $server->os }}</strong><br />
         Total players: <strong>{{ $server->players->count() }}</strong><br />
-        Total score: <strong>{{ $server->players->sum('total_score') }}</strong><br />
-        Total kills: <strong>{{ $server->players->sum('total_kills') }}</strong><br />
-        Total deaths: <strong>{{ $server->players->sum('total_deaths') }}</strong><br />
+        Total score: <strong>{!! $server->formatValueHtml($server->players->sum('total_score'))  !!}</strong><br />
+        Total kills: <strong>{!! $server->formatValueHtml($server->players->sum('total_kills'))  !!}</strong><br />
+        Total deaths: <strong>{!! $server->formatValueHtml($server->players->sum('total_deaths'))  !!}</strong><br />
         @if(filter_var($server->br_download, FILTER_VALIDATE_URL))
         Battle records: <a href="{{ $server->br_download }}" target="_blank">{{ $server->br_download }}</a><br />
         @endif
