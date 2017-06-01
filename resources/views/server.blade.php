@@ -83,9 +83,9 @@
         Country: <strong>{{ $server->country }}</strong><br />
         Platform: <strong>{{ $server->os }}</strong><br />
         Total players: <strong>{{ $server->players->count() }}</strong><br />
-        Total score: <strong>{!! $server->formatValueHtml($server->players->sum('total_score'))  !!}</strong><br />
-        Total kills: <strong>{!! $server->formatValueHtml($server->players->sum('total_kills'))  !!}</strong><br />
-        Total deaths: <strong>{!! $server->formatValueHtml($server->players->sum('total_deaths'))  !!}</strong><br />
+        Total score: <strong>{!! $server->formatScoreHtml('total_score') !!}</strong><br />
+        Total kills: <strong>{!! $server->formatScoreHtml('total_kills') !!}</strong><br />
+        Total deaths: <strong>{!! $server->formatScoreHtml('total_deaths') !!}</strong><br />
         @if(filter_var($server->br_download, FILTER_VALIDATE_URL))
         Battle records: <a href="{{ $server->br_download }}" target="_blank">{{ $server->br_download }}</a><br />
         @endif
