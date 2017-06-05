@@ -37,6 +37,8 @@
 
         </tbody>
     </table>
+
+    <!-- testing deployment -->
 @endsection
 
 @section('right')
