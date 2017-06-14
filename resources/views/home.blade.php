@@ -72,7 +72,7 @@
             <a href="{{ $longest->getLink() }}">
                 <img src="https://vanillicon.com/{{ md5($longest->name) }}.png" style="float:right; width: 70px; height: 70px;">
             </a>
-            <h3>Longest in-game: {{ Carbon\Carbon::now()->addMinutes($longest->minutes_played)->diffForHumans(null, true) }}</h3>
+            <h3>Longest in-game: <abbr title="{{ round($longest->minutes_played / 60, 1) }} hour(s)">{{ Carbon\Carbon::now()->addMinutes($longest->minutes_played)->diffForHumans(null, true) }}</abbr></h3>
             <p>
             @if($longest->clan)
                 <a href="{{ $longest->clan->getLink() }}">{{ $longest->clan->name }}

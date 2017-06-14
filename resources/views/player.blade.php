@@ -47,7 +47,7 @@
         Total kills: <strong>{!! $player->formatScoreHtml('total_kills') !!}</strong><br />
         Total deaths: <strong>{!! $player->formatScoreHtml('total_deaths') !!}</strong><br />
         K/D ratio: <strong>{{ $player->total_deaths == 0 ? $player->total_kills : round($player->total_kills/$player->total_deaths, 2) }}</strong><br />
-        Total played: <abbr title="Since {{ $player->created_at->format('Y-m-d') }}"><strong>~{{ Carbon\Carbon::now()->addMinutes($player->minutes_played)->diffForHumans(null, true) }}</strong></abbr><br />
+        Total played: <abbr title="{{ round($player->minutes_played / 60, 1) }} hour(s)"><strong>~{{ Carbon\Carbon::now()->addMinutes($player->minutes_played)->diffForHumans(null, true) }}</strong></abbr><br />
         Games played: <strong>{{ $player->games_played }}</strong><br />
         First seen <abbr title="{{ $player->created_at->format('Y-m-d') }}"><strong>{{ $player->created_at->diffForHumans() }}</strong></abbr><br />
         @if(!$player->wasSeenRecently())
