@@ -53,7 +53,7 @@
     <div class="right">
         <div class="darkbg">
             <a href="{{ $newest->getLink() }}">
-                <img src="https://vanillicon.com/{{ md5($newest->name) }}.png" style="float:right; width: 70px; height: 70px;">
+                <img src="https://vanillicon.com/{{ md5($newest->name) }}.png" class="avatar" style="width: 70px; height: 70px;">
             </a>
             <h3>Newest player: {{ $newest->created_at->diffForHumans() }}</h3>
             <p>
@@ -70,7 +70,7 @@
     <div class="right">
         <div class="darkbg">
             <a href="{{ $longest->getLink() }}">
-                <img src="https://vanillicon.com/{{ md5($longest->name) }}.png" style="float:right; width: 70px; height: 70px;">
+                <img src="https://vanillicon.com/{{ md5($longest->name) }}.png" class="avatar" style="width: 70px; height: 70px;">
             </a>
             <h3>Longest in-game: <abbr title="{{ round($longest->minutes_played / 60, 1) }} hour(s)">{{ Carbon\Carbon::now()->addMinutes($longest->minutes_played)->diffForHumans(null, true) }}</abbr></h3>
             <p>
@@ -86,7 +86,7 @@
     <div class="right">
         <div class="darkbg">
             <a href="{{ $mostKills->getLink() }}">
-                <img src="https://vanillicon.com/{{ md5($mostKills->name) }}.png" style="float:right; width: 70px; height: 70px;">
+                <img src="https://vanillicon.com/{{ md5($mostKills->name) }}.png" class="avatar" style="width: 70px; height: 70px;">
             </a>
             <h3>Most kills: {{ $mostKills->total_kills }}</h3>
             <p>
@@ -102,7 +102,7 @@
     <div class="right">
         <div class="darkbg">
             <a href="{{ $mostDeaths->getLink() }}">
-                <img src="https://vanillicon.com/{{ md5($mostDeaths->name) }}.png" style="float:right; width: 70px; height: 70px;">
+                <img src="https://vanillicon.com/{{ md5($mostDeaths->name) }}.png" class="avatar" style="width: 70px; height: 70px;">
             </a>
             <h3>Most deaths: {{ $mostDeaths->total_deaths }}</h3>
             <p>
