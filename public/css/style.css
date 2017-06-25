@@ -380,3 +380,11 @@ abbr {
 tr.highlight > td {
 	font-weight: bold;
 }
+
+#copyright {
+	background-color: rgba(0,0,0,0.5);
+}
+
+#copyright small {
+    font-size: smaller;
+}

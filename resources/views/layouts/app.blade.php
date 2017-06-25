@@ -43,7 +43,9 @@
 
         <div id="copyright" class="bodycontainer clearfix">
 
-            <p>Copyright &copy; {{ date('Y') }}, <a href="http://www.avramovic.info" target="_blank">Nemanja Avramovic</a> a.k.a. <a href="/player/100182208/sgt-baker">Sgt_Baker</a> </p>
+            <p>Tracking {{ \PRStats\Models\Player::count() }} players and {{ \PRStats\Models\Clan::count() }} clans on {{ \PRStats\Models\Server::count() }} servers.</p>
+
+            <p><small>Copyright &copy; {{ date('Y') }}, <a href="http://www.avramovic.info" target="_blank">Nemanja Avramovic</a> a.k.a. <a href="/player/100182208/sgt-baker">Sgt_Baker</a></small></p>
 
         </div>
 
