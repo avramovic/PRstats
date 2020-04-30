@@ -40,155 +40,171 @@ class PRSpyParse extends Command
     public function handle()
     {
         $start = microtime(true);
-        $data  = file_get_contents('http://www.realitymod.com/prspy/json/serverdata.json');
+        $data  = file_get_contents('https://servers.realitymod.com/api/ServerInfo');
         $diff  = microtime(true) - $start;
         $this->line("[".date('H:i:s')."] Downloaded prspy data in {$diff} seconds");
         $this->line("");
         $data    = json_decode(trim($data, '"'));
-        $servers = isset($data->Data) ? $data->Data : [];
+        $servers = isset($data->servers) ? $data->servers : [];
 
         $start = microtime(true);
 
         foreach ($servers as $serverData) {
-            if ($serverData->Password || ($serverData->NumPlayers < 2) || $serverData->CoopEnabled == true) {
+            if (!empty($serverData->properties->password) || ($serverData->properties->numplayers < 2)) {
                 continue;
             }
 
             $newgame    = false;
-            $serverName = trim(preg_replace('/^\[.*?\]/is', '', $this->decodeName($serverData->ServerName), 1));
+            $serverName = trim(preg_replace('/^\[.*?\]/is', '', $this->decodeName($serverData->properties->hostname), 1));
 
             $server = Server::where('name', $serverName)
                 ->orWhere(function ($query) use ($serverData) {
-                    $query->where('ip_address', $serverData->IPAddress)
-                        ->where('game_port', $serverData->GamePort);
+                    $query->where('ip_address', $serverData->serverIp)
+                        ->where('game_port', $serverData->properties->hostport);
                 })
                 ->first();
 
             if ($server == null) {
                 $server               = new Server;
-                $server->ip_address   = $serverData->IPAddress;
-                $server->game_port    = $serverData->GamePort;
+                $server->ip_address   = $serverData->serverIp;
+                $server->game_port    = $serverData->properties->hostport;
                 $server->games_played = 1;
                 $newgame              = true;
                 $server->save();
             }
 
-            if ($server->last_map != $serverData->MapName) {
+            if ($server->last_map != $serverData->properties->mapname) {
                 $newgame          = true;
-                $server->last_map = $serverData->MapName;
+                $server->last_map = $serverData->properties->mapname;
             }
 
             $server->name           = $serverName;
-            $server->country        = $serverData->Country;
-            $server->num_players    = $serverData->NumPlayers;
-            $server->max_players    = $serverData->MaxPlayers;
-            $server->reserved_slots = $serverData->ReservedSlots;
-            $server->os             = $serverData->OS;
+            $server->country        = $serverData->config->countryFlag;
+            $server->num_players    = $serverData->properties->numplayers;
+            $server->max_players    = $serverData->properties->maxplayers;
+            $server->reserved_slots = $serverData->properties->bf2_reservedslots;
+            $server->os             = $serverData->properties->bf2_os;
 
-            if ($serverData->BattleRecorder) {
-                $server->br_index    = $serverData->BRIndex;
-                $server->br_download = $serverData->BRDownload;
+            if ($serverData->properties->bf2_d_dl) {
+                $server->br_index    = $serverData->properties->bf2_d_idx;
+                $server->br_download = $serverData->properties->bf2_d_dl;
             }
 
-            $server->server_text       = $serverData->ServerText;
-            $server->server_logo       = $serverData->ServerLogo;
-            $server->community_website = $serverData->CommunityWebsite;
-
-            if ($newgame) {
-                $server->games_played++;
-                $server->total_score += $serverData->Teams[0]->Score + $serverData->Teams[1]->Score;
-
-            } else {
-                $server->total_score += ($serverData->Teams[0]->Score - $server->team1_score)
-                    + ($serverData->Teams[1]->Score - $server->team2_score);
-            }
+            $server->server_text       = $serverData->properties->bf2_sponsortext;
+            $server->server_logo       = $serverData->properties->bf2_sponsorlogo_url;
+            $server->community_website = $serverData->properties->bf2_communitylogo_url;
 
             //process numbers
-            $server->team1_name   = $serverData->Teams[0]->Name;
-            $server->team1_score  = $serverData->Teams[0]->Score;
-            $server->team1_kills  = $serverData->Teams[0]->Kills;
-            $server->team1_deaths = $serverData->Teams[0]->Deaths;
+            $server->team1_name = $serverData->properties->bf2_team1;
+            $server->team2_name = $serverData->properties->bf2_team2;
 
-            $server->team2_name   = $serverData->Teams[1]->Name;
-            $server->team2_score  = $serverData->Teams[1]->Score;
-            $server->team2_kills  = $serverData->Teams[1]->Kills;
-            $server->team2_deaths = $serverData->Teams[1]->Deaths;
+            $team1_score = $team1_kills = $team1_deaths = 0;
+            $team2_score = $team2_kills = $team2_deaths = 0;
 
             //process players & clans
-            foreach ($serverData->Players as $playerData) {
-                $player = Player::where('pid', $playerData->Pid)->first();
+            foreach ($serverData->players as $playerData) {
+                $name = $this->decodeName($playerData->name);
+                $pid = collect(explode(' ', $name))->last();
+                $pid  = md5($pid);
+
+                $player = Player::where('pid', $pid)->first();
                 if ($player == null) {
                     $player               = new Player;
-                    $player->pid          = $playerData->Pid;
+                    $player->pid          = $pid;
                     $player->games_played = 1;
                 }
 
-                $hasClan = (strpos($playerData->Name, ' ') !== false);
-                $name    = $this->decodeName($playerData->Name);
+                $hasClan = (strpos($name, ' ') !== false);
 
                 if ($hasClan) {
-                    $parts   = explode(' ', $playerData->Name);
+                    $parts   = explode(' ', $playerData->name);
                     $clanTag = $parts[0];
                     $name    = $parts[1];
 
-                    $clan = Clan::where('name', $this->decodeName($clanTag))->first();
-                    if ($clan == null) {
-                        $clan       = new Clan;
-                        $clan->name = $this->decodeName($clanTag);
-                        $clan->slug = str_slug($clan->name);
-                        $clan->save();
+                    if (!empty($clanTag)) {
+                        $clan = Clan::where('name', $this->decodeName($clanTag))->first();
+                        if ($clan == null) {
+                            $clan       = new Clan;
+                            $clan->name = $this->decodeName($clanTag);
+                            $clan->slug = str_slug($clan->name);
+                            $clan->save();
+                        }
+                        $player->clan_id = $clan->id;
+                    } else {
+                        $player->clan_id = null;
                     }
-                    $player->clan_id = $clan->id;
+
                 } else {
                     $player->clan_id = null;
                 }
 
-                $player->name = $this->decodeName($name);
+                $player->name = trim($this->decodeName($name));
                 $player->slug = str_slug($player->name);
 
-                $player->total_score  = ($player->last_score > $playerData->Score) ?
-                    $player->total_score + $playerData->Score :
-                    $player->total_score + $playerData->Score - $player->last_score;
-                $player->total_kills  = ($player->last_kills > $playerData->Kills) ?
-                    $player->total_kills + $playerData->Kills :
-                    $player->total_kills + $playerData->Kills - $player->last_kills;
-                $player->total_deaths = ($player->last_deaths > $playerData->Deaths) ?
-                    $player->total_deaths + $playerData->Deaths :
-                    $player->total_deaths + $playerData->Deaths - $player->last_deaths;
+                $player->total_score  = ($player->last_score > $playerData->score) ?
+                    $player->total_score + $playerData->score :
+                    $player->total_score + $playerData->score - $player->last_score;
+                $player->total_kills  = ($player->last_kills > $playerData->kills) ?
+                    $player->total_kills + $playerData->kills :
+                    $player->total_kills + $playerData->kills - $player->last_kills;
+                $player->total_deaths = ($player->last_deaths > $playerData->deaths) ?
+                    $player->total_deaths + $playerData->deaths :
+                    $player->total_deaths + $playerData->deaths - $player->last_deaths;
 
-                $player->monthly_score  = ($player->last_score > $playerData->Score) ?
-                    $player->monthly_score + $playerData->Score :
-                    $player->monthly_score + $playerData->Score - $player->last_score;
-                $player->monthly_kills  = ($player->last_kills > $playerData->Kills) ?
-                    $player->monthly_kills + $playerData->Kills :
-                    $player->monthly_kills + $playerData->Kills - $player->last_kills;
-                $player->monthly_deaths = ($player->last_deaths > $playerData->Deaths) ?
-                    $player->monthly_deaths + $playerData->Deaths :
-                    $player->monthly_deaths + $playerData->Deaths - $player->last_deaths;
-
-
-                $player->games_played = ($player->last_score > $playerData->Score) ? $player->games_played + 1 : (int)$player->games_played;
-
-                $server->total_score  = ($player->last_score > $playerData->Score) ?
-                    $server->total_score + $playerData->Score :
-                    $server->total_score + $playerData->Score - $player->last_score;
-                $server->total_kills  = ($player->last_kills > $playerData->Kills) ?
-                    $server->total_kills + $playerData->Kills :
-                    $server->total_kills + $playerData->Kills - $player->last_kills;
-                $server->total_deaths = ($player->last_deaths > $playerData->Deaths) ?
-                    $server->total_deaths + $playerData->Deaths :
-                    $server->total_deaths + $playerData->Deaths - $player->last_deaths;
+                $player->monthly_score  = ($player->last_score > $playerData->score) ?
+                    $player->monthly_score + $playerData->score :
+                    $player->monthly_score + $playerData->score - $player->last_score;
+                $player->monthly_kills  = ($player->last_kills > $playerData->kills) ?
+                    $player->monthly_kills + $playerData->kills :
+                    $player->monthly_kills + $playerData->kills - $player->last_kills;
+                $player->monthly_deaths = ($player->last_deaths > $playerData->deaths) ?
+                    $player->monthly_deaths + $playerData->deaths :
+                    $player->monthly_deaths + $playerData->deaths - $player->last_deaths;
 
 
-                $player->last_score  = $playerData->Score;
-                $player->last_kills  = $playerData->Kills;
-                $player->last_deaths = $playerData->Deaths;
+                $player->games_played = ($player->last_score > $playerData->score) ? $player->games_played + 1 : (int)$player->games_played;
+
+                $server->total_score  = ($player->last_score > $playerData->score) ?
+                    $server->total_score + $playerData->score :
+                    $server->total_score + $playerData->score - $player->last_score;
+                $server->total_kills  = ($player->last_kills > $playerData->kills) ?
+                    $server->total_kills + $playerData->kills :
+                    $server->total_kills + $playerData->kills - $player->last_kills;
+                $server->total_deaths = ($player->last_deaths > $playerData->deaths) ?
+                    $server->total_deaths + $playerData->deaths :
+                    $server->total_deaths + $playerData->deaths - $player->last_deaths;
+
+                if ($playerData->team == 1) {
+                    $team1_deaths += $playerData->deaths;
+                    $team1_kills  += $playerData->kills;
+                    $team1_score  += $playerData->score;
+                } elseif ($playerData->team == 2) {
+                    $team2_deaths += $playerData->deaths;
+                    $team2_kills  += $playerData->kills;
+                    $team2_score  += $playerData->score;
+                }
+
+                $player->last_score  = $playerData->score;
+                $player->last_kills  = $playerData->kills;
+                $player->last_deaths = $playerData->deaths;
                 $minutes             = (int)$player->minutes_played;
                 $minutes++;
                 $player->minutes_played = $minutes;
 
                 $player->server_id = $server->id;
                 $player->save();
+            }
+
+            $server->team1_score  = $team1_score;
+            $server->team1_kills  = $team1_kills;
+            $server->team1_deaths = $team1_deaths;
+            $server->team2_score  = $team2_score;
+            $server->team2_kills  = $team2_kills;
+            $server->team2_deaths = $team2_deaths;
+            $server->total_score  = $team1_score + $team2_score;
+
+            if ($newgame) {
+                $server->games_played++;
             }
 
             $server->save();
@@ -203,6 +219,6 @@ class PRSpyParse extends Command
     private function decodeName($name)
     {
         $name = htmlspecialchars_decode($name);
-        return str_replace('&apos;', '\'', $name);
+        return trim(str_replace('&apos;', '\'', $name));
     }
 }

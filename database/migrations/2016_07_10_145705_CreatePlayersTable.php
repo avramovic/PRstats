@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreatePlayersTable extends Migration
 {
@@ -16,7 +16,7 @@ class CreatePlayersTable extends Migration
             $table->increments('id');
             $table->integer('clan_id')->unsigned()->nullable()->index();
             $table->integer('server_id')->unsigned()->nullable()->index();
-            $table->integer('pid')->unsigned()->index();
+            $table->string('pid')->index();
             $table->string('name')->index();
             $table->string('slug')->nullable()->index();
             $table->integer('total_score')->unsigned()->default(0);
