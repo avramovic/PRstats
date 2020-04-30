@@ -156,6 +156,7 @@ return [
         PRStats\Providers\EventServiceProvider::class,
         PRStats\Providers\RouteServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+        Laravel\Tinker\TinkerServiceProvider::class
 
 
     ],

@@ -2,8 +2,8 @@
 
 namespace PRStats\Providers;
 
-use Illuminate\Routing\Router;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Routing\Router;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -22,11 +22,11 @@ class RouteServiceProvider extends ServiceProvider
      * @param  \Illuminate\Routing\Router  $router
      * @return void
      */
-    public function boot(Router $router)
+    public function boot()
     {
         //
 
-        parent::boot($router);
+        parent::boot();
     }
 
     /**
