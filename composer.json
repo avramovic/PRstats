@@ -6,9 +6,10 @@
     "type": "project",
     "require": {
         "php": ">=5.5.9",
-        "laravel/framework": "5.5.*",
-        "laravelcollective/html": "5.5",
-        "laravel/tinker": "v1.0.10"
+        "laravel/framework": "5.6.*",
+        "laravelcollective/html": "5.6",
+        "laravel/tinker": "v1.0.10",
+        "fideloper/proxy": "^4.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -39,12 +40,10 @@
             "php artisan key:generate"
         ],
         "post-install-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postInstall",
-            "php artisan optimize"
+            "Illuminate\\Foundation\\ComposerScripts::postInstall"
         ],
         "post-update-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-            "php artisan optimize"
+            "Illuminate\\Foundation\\ComposerScripts::postUpdate"
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",

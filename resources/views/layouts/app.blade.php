@@ -45,7 +45,7 @@
 
             <p>Tracking {{ \PRStats\Models\Player::count() }} players and {{ \PRStats\Models\Clan::count() }} clans on {{ \PRStats\Models\Server::count() }} servers.</p>
 
-            <p><small>Copyright &copy; {{ date('Y') }}, <a href="http://www.avramovic.info" target="_blank">Nemanja Avramovic</a> a.k.a. <a href="/player/100182208/sgt-baker">Sgt_Baker</a></small></p>
+            <p><small>Copyright &copy; {{ date('Y') }}, <a href="http://www.avramovic.info" target="_blank">Nemanja Avramovic</a> a.k.a. <a href="/player/{{ md5('Sgt_Baker') }}/sgt-baker">Sgt_Baker</a></small></p>
 
         </div>
 
@@ -57,16 +57,16 @@
 <script src="/js/scripts.js"></script>
 @yield('scripts')
 
-<script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+{{--<script>--}}
+    {{--(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){--}}
+                {{--(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),--}}
+            {{--m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)--}}
+    {{--})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');--}}
 
-    ga('create', 'UA-369402-20', 'auto');
-    ga('send', 'pageview');
+    {{--ga('create', 'UA-369402-20', 'auto');--}}
+    {{--ga('send', 'pageview');--}}
 
-</script>
+{{--</script>--}}
 
 </body>
 </html>
