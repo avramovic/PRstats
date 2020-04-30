@@ -32,4 +32,9 @@ class Kernel extends ConsoleKernel
         $schedule->command('prspy:clans')->everyMinute();
         $schedule->command('prspy:clearmonthly')->monthly();
     }
+
+    public function commands()
+    {
+        $this->load(__DIR__.'/Commands');
+    }
 }
