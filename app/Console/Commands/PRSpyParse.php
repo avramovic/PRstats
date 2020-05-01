@@ -50,12 +50,14 @@ class PRSpyParse extends Command
         $start = microtime(true);
 
         foreach ($servers as $serverData) {
-            if (!empty($serverData->properties->password) || ($serverData->properties->numplayers < 2)) {
-                continue;
-            }
 
             $newgame    = false;
             $serverName = trim(preg_replace('/^\[.*?\]/is', '', $this->decodeName($serverData->properties->hostname), 1));
+
+            if (!empty($serverData->properties->password) || ($serverData->properties->numplayers < 2) || (stripos($serverData->properties->gametype, 'coop') !== false)) {
+                $this->line('Skipping '.$serverName);
+                continue;
+            }
 
             $server = Server::where('name', $serverName)
                 ->orWhere(function ($query) use ($serverData) {
