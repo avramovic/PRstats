@@ -2,9 +2,9 @@
 
 namespace PRStats\Models;
 
+use Illuminate\Database\Eloquent\Model;
 use PRStats\Models\Traits\FormatScoreTrait;
 use PRStats\Models\Traits\WasSeenRecentlyTrait;
-use Illuminate\Database\Eloquent\Model;
 
 class Player extends Model
 {
@@ -38,6 +38,11 @@ class Player extends Model
         }
 
         return $this->getClanNameAttribute().' '.$this->name;
+    }
+
+    public function matches()
+    {
+        return $this->belongsToMany(Match::class)->withTimestamps()->withPivot(['score', 'kills', 'deaths']);;
     }
 
 }

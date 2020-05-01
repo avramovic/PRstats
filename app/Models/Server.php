@@ -2,9 +2,9 @@
 
 namespace PRStats\Models;
 
+use Illuminate\Database\Eloquent\Model;
 use PRStats\Models\Traits\FormatScoreTrait;
 use PRStats\Models\Traits\WasSeenRecentlyTrait;
-use Illuminate\Database\Eloquent\Model;
 
 class Server extends Model
 {
@@ -29,5 +29,10 @@ class Server extends Model
     public function getLastMapImageUrl($image = 'tile')
     {
         return '//www.realitymod.com/mapgallery/images/maps/'.$this->getMapImageName().'/'.$image.'.jpg';
+    }
+
+    public function matches()
+    {
+        return $this->hasMany(Match::class);
     }
 }
