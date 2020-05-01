@@ -2,8 +2,10 @@
 
 namespace PRStats\Console\Commands;
 
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use PRStats\Models\Clan;
+use PRStats\Models\Match;
 use PRStats\Models\Player;
 use PRStats\Models\Server;
 
@@ -22,15 +24,6 @@ class PRSpyParse extends Command
      * @var string
      */
     protected $description = 'Parse PRSpy data';
-
-    /**
-     * Create a new command instance.
-     *
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     /**
      * Execute the console command.
@@ -78,6 +71,31 @@ class PRSpyParse extends Command
             if ($server->last_map != $serverData->properties->mapname) {
                 $newgame          = true;
                 $server->last_map = $serverData->properties->mapname;
+
+                /** @var Match $match */
+                $match = Match::create([
+                    'server_id'  => $server->id,
+                    'map'        => $serverData->properties->mapname,
+                    'team1_name' => $serverData->properties->bf2_team1,
+                    'team2_name' => $serverData->properties->bf2_team2,
+                ]);
+            } else {
+                $match = $server->matches()
+                    ->where('map', $serverData->properties->mapname)
+                    ->orderBy('id', 'desc')
+                    ->first();
+
+                //just a safe check
+                if (!$match) {
+                    $match = Match::create([
+                        'server_id'  => $server->id,
+                        'map'        => $serverData->properties->mapname,
+                        'team1_name' => $serverData->properties->bf2_team1,
+                        'team2_name' => $serverData->properties->bf2_team2,
+                    ]);
+                } else {
+                    $match->update(['updated_at' => Carbon::now()]);
+                }
             }
 
             $server->name           = $serverName;
@@ -106,7 +124,7 @@ class PRSpyParse extends Command
             //process players & clans
             foreach ($serverData->players as $playerData) {
                 $name = $this->decodeName($playerData->name);
-                $pid = collect(explode(' ', $name))->last();
+                $pid  = collect(explode(' ', $name))->last();
                 $pid  = md5($pid);
 
                 $player = Player::where('pid', $pid)->first();
@@ -195,6 +213,24 @@ class PRSpyParse extends Command
 
                 $player->server_id = $server->id;
                 $player->save();
+
+                if ($match->players->contains('id', $player->id)) {
+                    $match->players()->updateExistingPivot($player->id, [
+                        'deaths' => $playerData->deaths,
+                        'kills'  => $playerData->kills,
+                        'score'  => $playerData->score,
+                        'team'   => ($playerData->team == 1) ? $serverData->properties->bf2_team1 : $serverData->properties->bf2_team2,
+                    ]);
+                } else {
+                    $match->players()->attach($player->id, [
+                        'deaths' => $playerData->deaths,
+                        'kills'  => $playerData->kills,
+                        'score'  => $playerData->score,
+                        'team'   => ($playerData->team == 1) ? $serverData->properties->bf2_team1 : $serverData->properties->bf2_team2,
+                    ]);
+
+                    $match->load(['players']);
+                }
             }
 
             $server->team1_score  = $team1_score;
