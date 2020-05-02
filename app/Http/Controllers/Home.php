@@ -150,7 +150,7 @@ class Home extends Controller
 
         $player = Player::with(['server',
             'matches'        => function ($q) {
-                return $q->orderBy('id', 'desc')->limit(50);
+                return $q->orderBy('match_player.updated_at', 'desc')->limit(50);
             },
             'clan.players' => function ($q) {
                 return $q->withCount('matches')->orderBy('total_score', 'desc');

@@ -58,7 +58,7 @@
         <tbody>
         <?php $nr = 1; ?>
         @foreach($player->matches as $match)
-            <tr style="@if($match->wasSeenRecently() && $match->server_id == $player->server_id)font-weight: bold;@endif">
+            <tr style="@if($match->wasSeenRecently() && $loop->index == 0)font-weight: bold;@endif">
                 <td>{{ $nr++ }}</td>
                 <td class="nowrap"><a href="{{ $match->getLink() }}">{{ $match->map }}</a></td>
                 <td><a href="{{ $match->server->getLink() }}">{{ $match->server->name }}</a></td>
