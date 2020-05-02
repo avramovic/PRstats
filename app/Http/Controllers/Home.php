@@ -19,7 +19,9 @@ class Home extends Controller
     {
         //top players
         $players = Player::with('clan')
-            ->withCount('matches')
+            ->withCount(['matches' => function ($q) {
+                return $q->where('match_player.updated_at', '>=', Carbon::now()->startOfMonth());
+            }])
             ->where('updated_at', '>', Carbon::now()->startOfMonth())
             ->orderBy('monthly_score', 'desc')
             ->take(50)
