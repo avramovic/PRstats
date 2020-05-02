@@ -89,7 +89,7 @@
     <hr />
 
     <p>
-        Country: <strong>{{ $currentMatch->server->country }}</strong><br />
+        Country:<br /><img src="https://www.countryflags.io/{{ strtolower($currentMatch->server->country) }}/shiny/64.png" alt="{{ $currentMatch->server->country }}" title="{{ $currentMatch->server->country }}" /><br />
         Platform: <strong>{{ $currentMatch->server->os }}</strong><br />
         Total players: <strong>{{ $currentMatch->server->players->count() }}</strong><br />
         Total score: <strong>{!! $currentMatch->server->formatScoreHtml('total_score') !!}</strong><br />
