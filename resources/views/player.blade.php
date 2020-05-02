@@ -58,7 +58,7 @@
         <tbody>
         <?php $nr = 1; ?>
         @foreach($player->matches as $match)
-            <tr style="@if($player->wasSeenRecently() && $match->server_id == $player->server_id && $match->map == $player->server->last_map)font-weight: bold;@endif">
+            <tr style="@if($match->wasSeenRecently() && $player->wasSeenRecently() && $match->server_id == $player->server_id && $match->map == $player->server->last_map)font-weight: bold;@endif">
                 <td>{{ $nr++ }}</td>
                 <td class="nowrap"><a href="{{ $match->getLink() }}">{{ $match->map }}</a></td>
                 <td><a href="{{ $match->server->getLink() }}">{{ $match->server->name }}</a></td>
@@ -95,10 +95,10 @@
 
     @if($player->wasSeenRecently())
         <hr />
-
+        @php $currentMatch = $player->matches->first() @endphp
         <h3>Currently playing</h3>
         <p>
-            <img src="{{ $player->server->getLastMapImageUrl() }}" class="pr-map" alt="{{ $player->server->last_map }}" title="{{ $player->server->last_map }}"><br />
+            <img width="70%" height="auto" src="{{ $currentMatch->getNavigationMapImageUrl() }}" class="pr-map" alt="{{ $currentMatch->map }}" title="{{ $currentMatch->map }}"><br />
             Server: <strong><a href="{{ $player->server->getLink() }}">{{ $player->server->name }}</a></strong><br />
             Map: <strong>{{ $player->server->last_map }}</strong><br />
             Players (free): <strong>{{ $player->server->num_players }}</strong> (<strong>{{ ($player->server->max_players-$player->server->reserved_slots)-$player->server->num_players }}</strong>)<br />
