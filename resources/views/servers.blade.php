@@ -14,6 +14,7 @@
             <tr>
                 <th>#</th>
                 <th>Server name</th>
+                <th>Country</th>
                 <th>Total score</th>
                 <th>Total kills</th>
                 <th>Total deaths</th>
@@ -27,6 +28,7 @@
         <tr>
             <td>{{ $nr++ }}</td>
             <td><a href="{{ $server->getLink() }}">{{ $server->name }}</a></td>
+            <td><img src="https://www.countryflags.io/{{ strtolower($server->country) }}/shiny/24.png" alt="{{ $server->country }}" title="{{ $server->country }}" /></td>
             <td>{!! $server->formatScoreHtml('total_score') !!}</td>
             <td>{!! $server->formatScoreHtml('total_kills') !!}</td>
             <td>{!! $server->formatScoreHtml('total_deaths') !!}</td>
