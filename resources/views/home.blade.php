@@ -59,7 +59,7 @@
             @foreach($newest as $new)
                 <ul class="players">
                     <li>
-                        @if($new->clan)<a href="{{ $new->clan->getLink() }}">{{ $new->clan->name }}@endif<a href="{{ $new->getLink() }}">{{ $new->name }}</a>
+                        @if($new->clan)<a href="{{ $new->clan->getLink() }}">{{ $new->clan->name }}@endif <a href="{{ $new->getLink() }}">{{ $new->name }}</a>
                         ({{ $new->created_at->diffForHumans() }})
                     </li>
                 </ul>
@@ -77,7 +77,7 @@
             @foreach($longest as $new)
                 <ul class="players">
                     <li>
-                        @if($new->clan)<a href="{{ $new->clan->getLink() }}">{{ $new->clan->name }}@endif<a href="{{ $new->getLink() }}">{{ $new->name }}</a>
+                        @if($new->clan)<a href="{{ $new->clan->getLink() }}">{{ $new->clan->name }}@endif <a href="{{ $new->getLink() }}">{{ $new->name }}</a>
                             (<abbr title="{{ round($new->minutes_played / 60, 1) }} hour(s)">{{ Carbon\Carbon::now()->addMinutes($new->minutes_played)->diffForHumans(null, true) }}</abbr>)
                     </li>
                 </ul>
@@ -95,7 +95,7 @@
             @foreach($mostKills as $new)
                 <ul class="players">
                     <li>
-                        @if($new->clan)<a href="{{ $new->clan->getLink() }}">{{ $new->clan->name }}@endif<a href="{{ $new->getLink() }}">{{ $new->name }}</a>
+                        @if($new->clan)<a href="{{ $new->clan->getLink() }}">{{ $new->clan->name }}@endif <a href="{{ $new->getLink() }}">{{ $new->name }}</a>
                             ({{ $new->total_kills }})
                     </li>
                 </ul>
@@ -112,7 +112,7 @@
             @foreach($mostDeaths as $new)
                 <ul class="players">
                     <li>
-                        @if($new->clan)<a href="{{ $new->clan->getLink() }}">{{ $new->clan->name }}@endif<a href="{{ $new->getLink() }}">{{ $new->name }}</a>
+                        @if($new->clan)<a href="{{ $new->clan->getLink() }}">{{ $new->clan->name }}@endif <a href="{{ $new->getLink() }}">{{ $new->name }}</a>
                             ({{ $new->total_deaths }})
                     </li>
                 </ul>
