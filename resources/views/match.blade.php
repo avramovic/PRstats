@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    {{$match->map}} played on {{ $match->created_at->format('Y-m-d') }}
+    {{$match->map}} / {{ $match->created_at->format('Y-m-d') }}
 @endsection
 
 @section('content')

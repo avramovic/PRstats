@@ -48,7 +48,7 @@ class PRSpyParse extends Command
             $serverName = trim(preg_replace('/^\[.*?\]/is', '', $this->decodeName($serverData->properties->hostname), 1));
 
             if (!empty($serverData->properties->password) || ($serverData->properties->numplayers < 2) || (stripos($serverData->properties->gametype, 'coop') !== false)) {
-                $this->line('Skipping '.$serverName);
+                $this->line("[".date('H:i:s')."] Skipping ".$serverName." (no players / password / coop)");
                 continue;
             }
 
@@ -239,7 +239,6 @@ class PRSpyParse extends Command
             $server->team2_score  = $team2_score;
             $server->team2_kills  = $team2_kills;
             $server->team2_deaths = $team2_deaths;
-            $server->total_score  = $team1_score + $team2_score;
 
             if ($newgame) {
                 $server->games_played++;

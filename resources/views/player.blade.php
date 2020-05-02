@@ -45,10 +45,11 @@
         <thead>
         <tr>
             <th>#</th>
-            <th>Map</th>
+            <th class="nowrap">Map</th>
             <th>Server</th>
-            <th>Date</th>
-            <th>Time</th>
+            <th class="nowrap">Date</th>
+            <th class="nowrap">Time</th>
+            <th class="nowrap">Score</th>
         </tr>
         </thead>
         <tbody>
@@ -56,15 +57,11 @@
         @foreach($player->matches as $match)
             <tr style="@if($match->wasSeenRecently() && $match->server_id == $player->server_id)font-weight: bold;@endif">
                 <td>{{ $nr++ }}</td>
-                <td><a href="{{ $match->getLink() }}">{{ $match->map }}</a></td>
+                <td class="nowrap"><a href="{{ $match->getLink() }}">{{ $match->map }}</a></td>
                 <td><a href="{{ $match->server->getLink() }}">{{ $match->server->name }}</a></td>
-                <td>{{ $match->pivot->created_at->format('Y-m-d') }}</td>
-                @if($match->wasSeenRecently())
-                    <td>since {{ $match->pivot->created_at->format('H:i') }}</td>
-                @else
-                    <td>{{ $match->pivot->created_at->format('H:i') }} to {!! $match->pivot->updated_at->format('H:i') !!}</td>
-                @endif
-
+                <td class="nowrap">{{ $match->pivot->created_at->format('Y-m-d') }}</td>
+                <td class="nowrap">{{ $match->inGameTime() }}</td>
+                <td class="nowrap">{{ $player->formatValueHtml($match->pivot->score) }}</td>
             </tr>
         @endforeach
 

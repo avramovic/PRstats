@@ -305,14 +305,14 @@ ol {
 
 .left {
 	float: left;
-	width: 50%;
+	width: 60%;
 	text-align: left;
 }
 
 .right {
 	float: right;
 	text-align: left;
-	width: 50%;
+	width: 40%;
 }
 
 .darkbg {
@@ -395,4 +395,8 @@ ul.players {
 	-webkit-columns: 2 !important;
 	-moz-columns: 2 !important;
 	list-style-position: inside;
+}
+
+th.nowrap, td.nowrap {
+	white-space: nowrap;
 }

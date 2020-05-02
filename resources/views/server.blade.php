@@ -69,7 +69,7 @@
             <td>{{ $match->team1_name }}</td>
             <td>{{ $match->team2_name }}</td>
             <td>{{ $match->created_at->format('Y-m-d') }}</td>
-            <td>{{ $match->created_at->format('H:i') }} to {{ $match->updated_at->format('H:i') }}</td>
+            <td>{{ $match->lengthForHumans() }} <span class="small">({{ $match->created_at->format('H:i') }} to {{ $match->updated_at->format('H:i') }})</span></td>
 
         </tr>
     @endforeach
