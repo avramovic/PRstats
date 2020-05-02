@@ -25,7 +25,7 @@
             <td>{!! $player->formatScoreHtml('total_score') !!}</td>
             <td>{!! $player->formatScoreHtml('total_kills') !!}</td>
             <td>{!! $player->formatScoreHtml('total_deaths') !!}</td>
-            <td>{!! $player->matches->count() !!}</td>
+            <td>{!! $player->matches_count !!}</td>
         </tr>
     @endforeach
 

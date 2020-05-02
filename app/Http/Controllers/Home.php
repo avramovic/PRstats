@@ -79,7 +79,7 @@ class Home extends Controller
     {
         $clan = Clan::where('id', $id)->firstOrFail();
 
-        $players = $clan->players()->with(['matches'])->orderBy('total_score', 'desc')->get();
+        $players = $clan->players()->withCount(['matches'])->orderBy('total_score', 'desc')->get();
 
         return view('clan', ['clan' => $clan, 'players' => $players, 'server' => $clan->last_player_seen->server]);
     }
