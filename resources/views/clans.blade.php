@@ -15,6 +15,7 @@
                 <th>#</th>
                 <th>Clan</th>
                 <th>Top player</th>
+                <th>Members</th>
                 <th>Clan score</th>
                 <th>Clan kills</th>
                 <th>Clan deaths</th>
@@ -33,6 +34,7 @@
                     &mdash;
                 @endif
             </td>
+            <td>{!! $clan->players_count !!}</td>
             <td>{!! $clan->formatScoreHtml('total_score') !!}</td>
             <td>{!! $clan->formatScoreHtml('total_kills') !!}</td>
             <td>{!! $clan->formatScoreHtml('total_deaths') !!}</td>

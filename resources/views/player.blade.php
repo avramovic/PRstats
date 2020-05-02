@@ -16,6 +16,7 @@
                 <th>Total score</th>
                 <th>Total kills</th>
                 <th>Total deaths</th>
+                <th>Matches</th>
             </tr>
         </thead>
         <tbody>
@@ -27,6 +28,7 @@
             <td>{!! $clanPlayer->formatScoreHtml('total_score') !!}</td>
             <td>{!! $clanPlayer->formatScoreHtml('total_kills') !!}</td>
             <td>{!! $clanPlayer->formatScoreHtml('total_deaths') !!}</td>
+            <td>{!! $clanPlayer->matches_count !!}</td>
         </tr>
     @endforeach
 

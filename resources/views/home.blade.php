@@ -14,6 +14,7 @@
                 <th>Monthly score</th>
                 <th>Monthly kills</th>
                 <th>Monthly deaths</th>
+                <th>Matches</th>
             </tr>
         </thead>
         <tbody>
@@ -32,6 +33,7 @@
             <td>{!! $player->formatScoreHtml('monthly_score') !!}</td>
             <td>{!! $player->formatScoreHtml('monthly_kills') !!}</td>
             <td>{!! $player->formatScoreHtml('monthly_deaths') !!}</td>
+            <td>{!! $player->matches_count !!}</td>
         </tr>
     @endforeach
 

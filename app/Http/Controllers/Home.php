@@ -19,6 +19,7 @@ class Home extends Controller
     {
         //top players
         $players = Player::with('clan')
+            ->withCount('matches')
             ->where('updated_at', '>', Carbon::now()->startOfMonth())
             ->orderBy('monthly_score', 'desc')
             ->take(50)
@@ -56,7 +57,8 @@ class Home extends Controller
     public function clans()
     {
         //top clans
-        $clans = Clan::orderBy('total_score', 'desc')
+        $clans = Clan::withCount('players')
+            ->orderBy('total_score', 'desc')
             ->take(50)
             ->get();
 
@@ -66,7 +68,7 @@ class Home extends Controller
     public function clanSearch(Request $request)
     {
         //top players
-        $clans = Clan::with('players')
+        $clans = Clan::withCount('players')
             ->where('name', 'LIKE', '%'.$request->q.'%')
             ->orderBy('name', 'asc')
             ->take(50)
@@ -87,7 +89,8 @@ class Home extends Controller
     public function servers()
     {
         //top servers
-        $servers = Server::where('updated_at', '>', Carbon::now()->subDay())
+        $servers = Server::withCount('matches')
+            ->where('updated_at', '>', Carbon::now()->subDay())
             ->orderBy('total_score', 'desc')
             ->take(50)
             ->get();
@@ -107,24 +110,6 @@ class Home extends Controller
                     ->orderBy('match_player.score', 'desc');
             }])->firstOrFail();
 
-//        $timestamp = Carbon::parse('2017-04-07 00:00:00');
-//
-//        if ($server->wasSeenRecently()) {
-//            $timestamp = Carbon::now()->subMinutes(5);
-//        }
-//
-//        if ($server->wasSeenRecently()) {
-//            $players = $server->players()
-//                ->where('updated_at', '>', $timestamp)
-//                ->take(64)
-//                ->orderBy('last_score', 'desc')->get();
-//        } else {
-//            $players = $server->players()
-//                ->where('updated_at', '>', $timestamp)
-//                ->take(64)
-//                ->orderBy('total_score', 'desc')->get();
-//
-//        }
 
         return view('server', ['server' => $server]);
     }
@@ -132,7 +117,7 @@ class Home extends Controller
     public function players()
     {
         //top players
-        $players = Player::with('clan')
+        $players = Player::with('clan')->withCount('matches')
 //            ->where('updated_at', '>', Carbon::now()->subMonth())
             ->orderBy('total_score', 'desc')
             ->take(50)
@@ -144,7 +129,7 @@ class Home extends Controller
     public function playerSearch(Request $request)
     {
         //top players
-        $players = Player::with('clan')
+        $players = Player::with('clan')->withCount('matches')
             ->where('name', 'LIKE', '%'.$request->q.'%')
             ->whereNotIn('pid', $this->banned)
             ->orderBy('name', 'asc')
@@ -161,19 +146,16 @@ class Home extends Controller
             abort(404);
         }
 
-        $player = Player::with(['clan', 'server', 'matches' => function ($q) {
-            return $q->orderBy('id', 'desc')->limit(50);
-        }])->where('pid', $pid)->firstOrFail();
+        $player = Player::with(['server',
+            'matches'        => function ($q) {
+                return $q->orderBy('id', 'desc')->limit(50);
+            },
+            'clan.players' => function ($q) {
+                return $q->withCount('matches')->orderBy('total_score', 'desc');
+            }])
+            ->where('pid', $pid)->firstOrFail();
 
-        $players = null;
-
-        if ($player->clan) {
-            $players = $player->clan->players->sortByDesc(function ($item) {
-                return $item->total_score;
-            });
-        }
-
-        return view('player', ['player' => $player, 'clanPlayers' => $players, 'server' => $player->server]);
+        return view('player', ['player' => $player, 'clanPlayers' => $player->clan->players, 'server' => $player->server]);
     }
 
     public function matchDetails($id, $map)

@@ -17,6 +17,7 @@
                 <th>Total score</th>
                 <th>Total kills</th>
                 <th>Total deaths</th>
+                <th>Matches</th>
             </tr>
         </thead>
         <tbody>
@@ -29,6 +30,7 @@
             <td>{!! $server->formatScoreHtml('total_score') !!}</td>
             <td>{!! $server->formatScoreHtml('total_kills') !!}</td>
             <td>{!! $server->formatScoreHtml('total_deaths') !!}</td>
+            <td>{!! $server->matches_count !!}</td>
         </tr>
     @empty
         <tr>

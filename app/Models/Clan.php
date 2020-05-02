@@ -20,6 +20,11 @@ class Clan extends Model
         return $this->hasMany(Player::class);
     }
 
+    public function matches()
+    {
+        return $this->hasManyThrough(Match::class, Player::class);
+    }
+
     public function getLeaderAttribute()
     {
         return $this->players->sortByDesc('total_score')->first();
