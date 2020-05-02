@@ -81,12 +81,12 @@ class PRSpyParse extends Command
                 ]);
             } else {
                 $match = $server->matches()
-                    ->where('map', $serverData->properties->mapname)
+//                    ->where('map', $serverData->properties->mapname)
                     ->orderBy('id', 'desc')
                     ->first();
 
                 //just a safe check
-                if (!$match) {
+                if (!$match || $match->map != $serverData->properties->mapname) {
                     $match = Match::create([
                         'server_id'  => $server->id,
                         'map'        => $serverData->properties->mapname,
