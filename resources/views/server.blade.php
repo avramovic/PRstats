@@ -7,7 +7,7 @@
 @section('content')
     @if($server->wasSeenRecently())
         @php $match = $server->matches->shift() @endphp
-        <p><strong>Currently playing {{ $match->map }}</strong></p>
+        <p><strong>Currently playing <u>{{ $match->map }}</u></strong></p>
         <p>since {{ $match->created_at->format('Y-m-d') }} at {{ $match->created_at->format('H:i') }} ({{ $match->lengthForHumans() }})</p>
 
         <table align="center">
