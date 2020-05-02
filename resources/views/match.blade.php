@@ -18,6 +18,7 @@
                     <th>#</th>
                     <th>Clan</th>
                     <th>Name</th>
+                    <th>Team</th>
                     <th>Score</th>
                     <th>Kills</th>
                     <th>Deaths</th>
@@ -37,6 +38,7 @@
                     @endif
                 </td>
                 <td><a href="{{ $player->getLink() }}">{{ $player->name }}</a></td>
+                <td>{{  $player->pivot->team  }}</td>
                 <td>{{  $player->formatValueHtml($player->pivot->score)  }}</td>
                 <td>{{  $player->formatValueHtml($player->pivot->kills)  }}</td>
                 <td>{{  $player->formatValueHtml($player->pivot->deaths)  }}</td>
