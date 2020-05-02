@@ -42,7 +42,7 @@ class Player extends Model
 
     public function matches()
     {
-        return $this->belongsToMany(Match::class)->withTimestamps()->withPivot(['score', 'kills', 'deaths']);;
+        return $this->belongsToMany(Match::class)->withTimestamps()->withPivot(['score', 'kills', 'deaths', 'team']);
     }
 
 }

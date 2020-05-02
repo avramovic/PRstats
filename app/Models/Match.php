@@ -21,7 +21,7 @@ class Match extends Model
 
     public function players()
     {
-        return $this->belongsToMany(Player::class)->withTimestamps()->withPivot(['score', 'kills', 'deaths']);
+        return $this->belongsToMany(Player::class)->withTimestamps()->withPivot(['score', 'kills', 'deaths', 'team']);
     }
 
     public function formatFromToTime()
