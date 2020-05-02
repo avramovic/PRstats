@@ -153,9 +153,10 @@ class Home extends Controller
             'clan.players' => function ($q) {
                 return $q->withCount('matches')->orderBy('total_score', 'desc');
             }])
-            ->where('pid', $pid)->firstOrFail();
+            ->where('pid', $pid)
+            ->firstOrFail();
 
-        return view('player', ['player' => $player, 'clanPlayers' => $player->clan->players, 'server' => $player->server]);
+        return view('player', ['player' => $player, 'clanPlayers' => $player->clan ? $player->clan->players : collect([]), 'server' => $player->server]);
     }
 
     public function matchDetails($id, $map)
