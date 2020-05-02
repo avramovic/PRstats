@@ -5,6 +5,7 @@ namespace PRStats\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use PRStats\Models\Clan;
+use PRStats\Models\Match;
 use PRStats\Models\Player;
 use PRStats\Models\Server;
 
@@ -25,19 +26,23 @@ class Home extends Controller
 
         $newest = Player::with('clan')
             ->orderBy('created_at', 'desc')
-            ->first();
+            ->limit(10)
+            ->get();
 
         $longest = Player::with('clan')
             ->orderBy('minutes_played', 'desc')
-            ->first();
+            ->limit(10)
+            ->get();
 
         $mostKills = Player::with('clan')
             ->orderBy('total_kills', 'desc')
-            ->first();
+            ->limit(10)
+            ->get();
 
         $mostDeaths = Player::with('clan')
             ->orderBy('total_deaths', 'desc')
-            ->first();
+            ->limit(10)
+            ->get();
 
         return view('home', [
             'players'    => $players,
@@ -92,28 +97,36 @@ class Home extends Controller
 
     public function server($id, $slug)
     {
-        $server = Server::where('id', $id)->firstOrFail();
+        $threeMinAgo = Carbon::now()->subMinute(3);
+        $server      = Server::where('id', $id)->with([
+            'matches'         => function ($q) {
+                return $q->orderBy('id', 'desc')->limit(50);
+            },
+            'matches.players' => function ($q) use ($threeMinAgo) {
+                return $q->where('match_player.updated_at', '>=', $threeMinAgo)
+                    ->orderBy('match_player.score', 'desc');
+            }])->firstOrFail();
 
-        $timestamp = Carbon::parse('2017-04-07 00:00:00');
+//        $timestamp = Carbon::parse('2017-04-07 00:00:00');
+//
+//        if ($server->wasSeenRecently()) {
+//            $timestamp = Carbon::now()->subMinutes(5);
+//        }
+//
+//        if ($server->wasSeenRecently()) {
+//            $players = $server->players()
+//                ->where('updated_at', '>', $timestamp)
+//                ->take(64)
+//                ->orderBy('last_score', 'desc')->get();
+//        } else {
+//            $players = $server->players()
+//                ->where('updated_at', '>', $timestamp)
+//                ->take(64)
+//                ->orderBy('total_score', 'desc')->get();
+//
+//        }
 
-        if ($server->wasSeenRecently()) {
-            $timestamp = Carbon::now()->subMinutes(5);
-        }
-
-        if ($server->wasSeenRecently()) {
-            $players = $server->players()
-                ->where('updated_at', '>', $timestamp)
-                ->take(64)
-                ->orderBy('last_score', 'desc')->get();
-        } else {
-            $players = $server->players()
-                ->where('updated_at', '>', $timestamp)
-                ->take(64)
-                ->orderBy('total_score', 'desc')->get();
-
-        }
-
-        return view('server', ['server' => $server, 'players' => $players]);
+        return view('server', ['server' => $server]);
     }
 
     public function players()
@@ -148,7 +161,9 @@ class Home extends Controller
             abort(404);
         }
 
-        $player = Player::with('clan', 'server')->where('pid', $pid)->firstOrFail();
+        $player = Player::with(['clan', 'server', 'matches' => function ($q) {
+            return $q->orderBy('id', 'desc')->limit(50);
+        }])->where('pid', $pid)->firstOrFail();
 
         $players = null;
 
@@ -159,6 +174,15 @@ class Home extends Controller
         }
 
         return view('player', ['player' => $player, 'clanPlayers' => $players, 'server' => $player->server]);
+    }
+
+    public function matchDetails($id, $map)
+    {
+        $match = Match::with(['server', 'players' => function ($q) {
+            return $q->orderBy('match_player.score', 'desc');
+        }])->findOrFail($id);
+
+        return view('match', ['match' => $match]);
     }
 
 }

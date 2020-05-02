@@ -17,7 +17,7 @@
 </head>
 <body>
 
-<div id="outercont" class="clearfix" style="background: #FFF url({{ isset($server) ? $server->getLastMapImageUrl('background') : \PRStats\Models\Server::all()->random()->getLastMapImageUrl('background') }}) no-repeat fixed; background-size: cover;">
+<div id="outercont" class="clearfix" style="background: #FFF url({{ isset($match) ? $match->getMapImageUrl('background') : (isset($server) ? $server->getLastMapImageUrl('background') : \PRStats\Models\Server::all()->random()->getLastMapImageUrl('background')) }}) no-repeat fixed; background-size: cover;">
     <div id="innercont" class="clearfix">
 
         <div id="content" class="bodycontainer clearfix">

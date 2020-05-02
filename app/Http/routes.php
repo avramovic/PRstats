@@ -23,5 +23,6 @@ Route::get('players', ['as' => 'players', 'uses' => 'Home@players']);
 Route::get('clans', ['as' => 'clans', 'uses' => 'Home@clans']);
 Route::post('players', ['as' => 'players.search', 'uses' => 'Home@playerSearch']);
 Route::post('clans', ['as' => 'clans.search', 'uses' => 'Home@clanSearch']);
+Route::get('match/{id}/{map}', ['as' => 'match', 'uses' => 'Home@matchDetails']);
 
 

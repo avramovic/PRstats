@@ -6,7 +6,9 @@
 
 @section('content')
     @if($server->wasSeenRecently())
-        <p><strong>Currently playing:</strong></p>
+        @php $match = $server->matches->shift() @endphp
+        <p><strong>Currently playing {{ $match->map }}</strong></p>
+        <p>since {{ $match->created_at->format('Y-m-d') }} at {{ $match->created_at->format('H:i') }} ({{ $match->lengthForHumans() }})</p>
 
         <table align="center">
             <thead>
@@ -17,11 +19,12 @@
                     <th>Score</th>
                     <th>Kills</th>
                     <th>Deaths</th>
+                    <th>Time</th>
                 </tr>
             </thead>
             <tbody>
         <?php $nr = 1; ?>
-        @foreach($players as $player)
+        @foreach($match->players as $player)
             <tr>
                 <td>{{ $nr++ }}</td>
                 <td>
@@ -32,15 +35,47 @@
                     @endif
                 </td>
                 <td><a href="{{ $player->getLink() }}">{{ $player->name }}</a></td>
-                <td>{{ $server->wasSeenRecently() ? $player->formatScoreHtml('last_score') : $player->formatScoreHtml('total_score') }}</td>
-                <td>{{ $server->wasSeenRecently() ? $player->formatScoreHtml('last_kills') : $player->formatScoreHtml('total_kills') }}</td>
-                <td>{{ $server->wasSeenRecently() ? $player->formatScoreHtml('last_deaths') : $player->formatScoreHtml('total_deaths') }}</td>
+                <td>{{  $player->formatValueHtml($player->pivot->score)  }}</td>
+                <td>{{  $player->formatValueHtml($player->pivot->kills)  }}</td>
+                <td>{{  $player->formatValueHtml($player->pivot->deaths)  }}</td>
+                <td>{{  $player->inGameTime()  }}</td>
             </tr>
         @endforeach
 
             </tbody>
         </table>
     @endif
+
+    <p>&nbsp;</p>
+    <p><strong>Previous matches on {{ $server->name }}</strong></p>
+
+    <table align="center">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Map</th>
+        <th>Team 1</th>
+        <th>Team 2</th>
+        <th>Date</th>
+        <th>Time</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php $nr = 1; ?>
+    @foreach($server->matches as $match)
+        <tr>
+            <td>{{ $nr++ }}</td>
+            <td><a href="{{ $match->getLink() }}">{{ $match->map }}</a></td>
+            <td>{{ $match->team1_name }}</td>
+            <td>{{ $match->team2_name }}</td>
+            <td>{{ $match->created_at->format('Y-m-d') }}</td>
+            <td>{{ $match->created_at->format('H:i') }} to {{ $match->updated_at->format('H:i') }}</td>
+
+        </tr>
+    @endforeach
+
+    </tbody>
+    </table>
 
 @endsection
 

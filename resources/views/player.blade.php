@@ -35,6 +35,42 @@
     @else
         <p>This player does not belong to any clan.</p>
     @endif
+
+
+
+    <p>&nbsp;</p>
+    <p><strong>Previous matches of {{ $player->name }}</strong></p>
+
+    <table align="center">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Map</th>
+            <th>Server</th>
+            <th>Date</th>
+            <th>Time</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php $nr = 1; ?>
+        @foreach($player->matches as $match)
+            <tr style="@if($match->wasSeenRecently())font-weight: bold;@endif">
+                <td>{{ $nr++ }}</td>
+                <td><a href="{{ $match->getLink() }}">{{ $match->map }}</a></td>
+                <td><a href="{{ $match->server->getLink() }}">{{ $match->server->name }}</a></td>
+                <td>{{ $match->pivot->created_at->format('Y-m-d') }}</td>
+                @if($match->wasSeenRecently())
+                    <td>since {{ $match->pivot->created_at->format('H:i') }}</td>
+                @else
+                    <td>{{ $match->pivot->created_at->format('H:i') }} to {!! $match->pivot->updated_at->format('H:i') !!}</td>
+                @endif
+
+            </tr>
+        @endforeach
+
+        </tbody>
+    </table>
+
 @endsection
 
 @section('right')

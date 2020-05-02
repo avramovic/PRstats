@@ -52,66 +52,71 @@
 @section('rightbottom')
     <div class="right">
         <div class="darkbg">
-            <a href="{{ $newest->getLink() }}">
-                <img src="https://vanillicon.com/{{ md5($newest->name) }}.png" class="avatar" style="width: 70px; height: 70px;">
+            <a href="{{ $newest->first()->getLink() }}">
+                <img src="https://vanillicon.com/{{ md5($newest->first()->name) }}.png" class="avatar" style="width: 70px; height: 70px;">
             </a>
-            <h3>Newest player: {{ $newest->created_at->diffForHumans() }}</h3>
-            <p>
-                @if($newest->clan)
-                    <a href="{{ $newest->clan->getLink() }}">{{ $newest->clan->name }}
-                        @endif
-
-                        <a href="{{ $newest->getLink() }}">{{ $newest->name }}</a>
-            </p>
+            <h3>Newest players:</h3>
+            @foreach($newest as $new)
+                <ul class="players">
+                    <li>
+                        @if($new->clan)<a href="{{ $new->clan->getLink() }}">{{ $new->clan->name }}@endif<a href="{{ $new->getLink() }}">{{ $new->name }}</a>
+                        ({{ $new->created_at->diffForHumans() }})
+                    </li>
+                </ul>
+            @endforeach
         </div>
     </div>
 
 
     <div class="right">
         <div class="darkbg">
-            <a href="{{ $longest->getLink() }}">
-                <img src="https://vanillicon.com/{{ md5($longest->name) }}.png" class="avatar" style="width: 70px; height: 70px;">
+            <a href="{{ $longest->first()->getLink() }}">
+                <img src="https://vanillicon.com/{{ md5($longest->first()->name) }}.png" class="avatar" style="width: 70px; height: 70px;">
             </a>
-            <h3>Longest in-game: <abbr title="{{ round($longest->minutes_played / 60, 1) }} hour(s)">{{ Carbon\Carbon::now()->addMinutes($longest->minutes_played)->diffForHumans(null, true) }}</abbr></h3>
-            <p>
-            @if($longest->clan)
-                <a href="{{ $longest->clan->getLink() }}">{{ $longest->clan->name }}
-            @endif
-
-                <a href="{{ $longest->getLink() }}">{{ $longest->name }}</a>
-            </p>
+            <h3>Longest in-game:</h3>
+            @foreach($longest as $new)
+                <ul class="players">
+                    <li>
+                        @if($new->clan)<a href="{{ $new->clan->getLink() }}">{{ $new->clan->name }}@endif<a href="{{ $new->getLink() }}">{{ $new->name }}</a>
+                            (<abbr title="{{ round($new->minutes_played / 60, 1) }} hour(s)">{{ Carbon\Carbon::now()->addMinutes($new->minutes_played)->diffForHumans(null, true) }}</abbr>)
+                    </li>
+                </ul>
+            @endforeach
         </div>
     </div>
 
     <div class="right">
         <div class="darkbg">
-            <a href="{{ $mostKills->getLink() }}">
-                <img src="https://vanillicon.com/{{ md5($mostKills->name) }}.png" class="avatar" style="width: 70px; height: 70px;">
+            <a href="{{ $mostKills->first()->getLink() }}">
+                <img src="https://vanillicon.com/{{ md5($mostKills->first()->name) }}.png" class="avatar" style="width: 70px; height: 70px;">
             </a>
-            <h3>Most kills: {{ $mostKills->total_kills }}</h3>
-            <p>
-            @if($mostKills->clan)
-                <a href="{{ $mostKills->clan->getLink() }}">{{ $mostKills->clan->name }}
-            @endif
+            <h3>Most kills:</h3>
 
-                <a href="{{ $mostKills->getLink() }}">{{ $mostKills->name }}</a>
-            </p>
+            @foreach($mostKills as $new)
+                <ul class="players">
+                    <li>
+                        @if($new->clan)<a href="{{ $new->clan->getLink() }}">{{ $new->clan->name }}@endif<a href="{{ $new->getLink() }}">{{ $new->name }}</a>
+                            ({{ $new->total_kills }})
+                    </li>
+                </ul>
+            @endforeach
         </div>
     </div>
 
     <div class="right">
         <div class="darkbg">
-            <a href="{{ $mostDeaths->getLink() }}">
-                <img src="https://vanillicon.com/{{ md5($mostDeaths->name) }}.png" class="avatar" style="width: 70px; height: 70px;">
+            <a href="{{ $mostDeaths->first()->getLink() }}">
+                <img src="https://vanillicon.com/{{ md5($mostDeaths->first()->name) }}.png" class="avatar" style="width: 70px; height: 70px;">
             </a>
-            <h3>Most deaths: {{ $mostDeaths->total_deaths }}</h3>
-            <p>
-            @if($mostDeaths->clan)
-                <a href="{{ $mostDeaths->clan->getLink() }}">{{ $mostDeaths->clan->name }}
-            @endif
-
-                <a href="{{ $mostDeaths->getLink() }}">{{ $mostDeaths->name }}</a>
-            </p>
+            <h3>Most deaths:</h3>
+            @foreach($mostDeaths as $new)
+                <ul class="players">
+                    <li>
+                        @if($new->clan)<a href="{{ $new->clan->getLink() }}">{{ $new->clan->name }}@endif<a href="{{ $new->getLink() }}">{{ $new->name }}</a>
+                            ({{ $new->total_deaths }})
+                    </li>
+                </ul>
+            @endforeach
         </div>
     </div>
 @endsection
