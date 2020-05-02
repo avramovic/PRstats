@@ -16,8 +16,8 @@
     <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 </head>
 <body>
-
-<div id="outercont" class="clearfix" style="background: #FFF url({{ isset($match) ? $match->getMapImageUrl('background') : (isset($server) ? $server->getLastMapImageUrl('background') : \PRStats\Models\Server::all()->random()->getLastMapImageUrl('background')) }}) no-repeat fixed; background-size: cover;">
+{{--{!! dd($match, $server) !!}--}}
+<div id="outercont" class="clearfix" style="background: #FFF url({{ isset($currentMatch) ? $currentMatch->getMapImageUrl('background') : (isset($server) ? $server->getLastMapImageUrl('background') : \PRStats\Models\Server::all()->random()->getLastMapImageUrl('background')) }}) no-repeat fixed; background-size: cover;">
     <div id="innercont" class="clearfix">
 
         <div id="content" class="bodycontainer clearfix">

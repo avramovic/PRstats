@@ -167,7 +167,7 @@ class Home extends Controller
             return $q->orderBy('match_player.score', 'desc');
         }])->findOrFail($id);
 
-        return view('match', ['match' => $match]);
+        return view('match', ['currentMatch' => $match]);
     }
 
 }
