@@ -391,10 +391,6 @@ tr.highlight > td {
 
 ul.players {
 	font-size: 15px !important;
-	columns: 2 !important;
-	-webkit-columns: 2 !important;
-	-moz-columns: 2 !important;
-	list-style-position: inside;
 }
 
 th.nowrap, td.nowrap {
