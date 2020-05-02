@@ -118,7 +118,7 @@
                 $('.avatar').each(function() {
                     var $this = $(this);
                     var hash = $this.data('hash');
-                    $this.attr('src', 'http://unicornify.appspot.com/avatar/'+hash+'?s=100');
+                    $this.attr('src', 'https://unicornify.pictures/avatar/'+hash+'?s=100');
                 });
             });
         });
