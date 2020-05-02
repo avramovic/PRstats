@@ -6,9 +6,9 @@
 
 @section('content')
     @if($server->wasSeenRecently())
-        @php $match = $server->matches->shift() @endphp
-        <p><strong>Currently playing <u>{{ $match->map }}</u></strong></p>
-        <p>since {{ $match->created_at->format('Y-m-d') }} at {{ $match->created_at->format('H:i') }} ({{ $match->lengthForHumans() }})</p>
+        @php $currentMatch = $server->matches->shift() @endphp
+        <p><strong>Currently playing <u>{{ $currentMatch->map }}</u></strong></p>
+        <p>since {{ $currentMatch->created_at->format('Y-m-d') }} at {{ $currentMatch->created_at->format('H:i') }} ({{ $currentMatch->lengthForHumans() }})</p>
 
         <table align="center">
             <thead>
@@ -25,7 +25,7 @@
             </thead>
             <tbody>
         <?php $nr = 1; ?>
-        @foreach($match->players as $player)
+        @foreach($currentMatch->players as $player)
             <tr>
                 <td>{{ $nr++ }}</td>
                 <td>
@@ -97,8 +97,6 @@
         @endif
     @endif
 
-    <p>Slots (reserved): <strong>{{ $server->max_players }}</strong> (<strong>{{ $server->reserved_slots }}</strong>)</p>
-
     @if(!empty($server->server_text))
         <p>{!! str_replace('|', '<br />', $server->server_text) !!}</p>
     @endif
@@ -106,8 +104,9 @@
     @if($server->wasSeenRecently())
         <h3>Currently playing</h3>
         <p>
-            <img src="{{ $server->getLastMapImageUrl() }}" class="pr-map" alt="{{ $server->last_map }}" title="{{ $server->last_map }}"><br />
-            Map: <strong>{{ $server->last_map }}</strong><br />
+            <img width="70%" height="auto" src="{{ $currentMatch->getNavigationMapImageUrl() }}" class="pr-map" alt="{{ $currentMatch->map }}" title="{{ $currentMatch->map }}"><br />
+            Map: <strong><a href="{{ $currentMatch->getLink() }}">{{ $currentMatch->map }}</a></strong><br />
+            Slots (reserved): <strong>{{ $server->max_players }}</strong> (<strong>{{ $server->reserved_slots }}</strong>)<br />
             Players (free): <strong>{{ $server->num_players }}</strong> (<strong>{{ ($server->max_players-$server->reserved_slots)-$server->num_players }}</strong>)<br />
             Team 1: <strong>{{ $server->team1_name }}</strong> (<abbr title="score / kills / deaths">{{ $server->team1_score }}/{{ $server->team1_kills }}/{{ $server->team1_deaths }}</abbr>)<br />
             Team 2: <strong>{{ $server->team2_name }}</strong> (<abbr title="score / kills / deaths">{{ $server->team2_score }}/{{ $server->team2_kills }}/{{ $server->team2_deaths }}</abbr>)<br />
@@ -117,7 +116,8 @@
     <hr />
 
     <p>
-        Country: <strong>{{ $server->country }}</strong><br />
+        <p>
+        Country:<br /><img src="https://www.countryflags.io/{{ strtolower($server->country) }}/shiny/64.png" alt="{{ $server->country }}" title="{{ $server->country }}" /><br />
         Platform: <strong>{{ $server->os }}</strong><br />
         Total players: <strong>{{ $server->players->count() }}</strong><br />
         Total score: <strong>{!! $server->formatScoreHtml('total_score') !!}</strong><br />

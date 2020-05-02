@@ -45,6 +45,14 @@ class Match extends Model
         return '//www.realitymod.com/mapgallery/images/maps/'.$this->getMapImageName().'/'.$image.'.jpg';
     }
 
+    public function getNavigationMapImageUrl()
+    {
+        if (empty($this->gamemode)) {
+            return $this->getMapImageUrl();
+        }
+
+        return '//www.realitymod.com/mapgallery/images/maps/'.$this->getMapImageName().'/mapoverview_'.$this->gamemode.'_64.jpg';
+    }
 
     public function getLink()
     {

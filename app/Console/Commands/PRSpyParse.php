@@ -90,11 +90,16 @@ class PRSpyParse extends Command
                     $match = Match::create([
                         'server_id'  => $server->id,
                         'map'        => $serverData->properties->mapname,
+                        'gamemode'   => $serverData->properties->gametype,
                         'team1_name' => $serverData->properties->bf2_team1,
                         'team2_name' => $serverData->properties->bf2_team2,
                     ]);
                 } else {
-                    $match->update(['updated_at' => Carbon::now()]);
+                    $match->update([
+                        'updated_at' => Carbon::now(),
+                        'gamemode'   => $serverData->properties->gametype,
+
+                    ]);
                 }
             }
 
