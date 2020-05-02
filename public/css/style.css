@@ -400,3 +400,7 @@ ul.players {
 th.nowrap, td.nowrap {
 	white-space: nowrap;
 }
+
+.smalltext {
+	font-size: small;
+}

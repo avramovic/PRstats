@@ -67,11 +67,11 @@
     @foreach($server->matches as $match)
         <tr>
             <td>{{ $nr++ }}</td>
-            <td><a href="{{ $match->getLink() }}">{{ $match->map }}</a></td>
+            <td class="nowrap"><a href="{{ $match->getLink() }}">{{ $match->map }}</a></td>
             <td>{{ $match->team1_name }}</td>
             <td>{{ $match->team2_name }}</td>
-            <td>{{ $match->created_at->format('Y-m-d') }}</td>
-            <td>{{ $match->lengthForHumans() }} <span class="small">({{ $match->created_at->format('H:i') }} to {{ $match->updated_at->format('H:i') }})</span></td>
+            <td class="nowrap">{{ $match->created_at->format('Y-m-d') }}</td>
+            <td class="nowrap">{{ $match->created_at->format('H:i') }} to {{ $match->updated_at->format('H:i') }} <span class="smalltext">({{ $match->lengthForHumans() }})</span></td>
 
         </tr>
     @endforeach

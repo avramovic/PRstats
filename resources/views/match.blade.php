@@ -6,10 +6,10 @@
 
 @section('content')
     @if($match->wasSeenRecently())
-        <p><strong>Currently playing {{ $match->map }}  <a href="{{ $match->server->getLink() }}">{{ $match->server->name }}</a></strong></p></p>
+        <p><strong>Currently playing <u>{{ $match->map }}</u> on <a href="{{ $match->server->getLink() }}">{{ $match->server->name }}</a></strong></p></p>
         <p>since {{ $match->created_at->format('Y-m-d') }} at {{ $match->created_at->format('H:i') }} ({{ $match->lengthForHumans() }})</p>
     @else
-        <p><strong>Played {{ $match->map }} on <a href="{{ $match->server->getLink() }}">{{ $match->server->name }}</a></strong></p>
+        <p><strong>Played <u>{{ $match->map }}</u> on <a href="{{ $match->server->getLink() }}">{{ $match->server->name }}</a></strong></p>
         <p>on {{ $match->created_at->format('Y-m-d') }} from {{ $match->created_at->format('H:i') }} to {{ $match->updated_at->format('H:i') }} ({{ $match->lengthForHumans() }})</p>
     @endif
         <table align="center">

@@ -24,16 +24,6 @@ class Match extends Model
         return $this->belongsToMany(Player::class)->withTimestamps()->withPivot(['score', 'kills', 'deaths', 'team']);
     }
 
-    public function formatFromToTime()
-    {
-        if ($this->created_at->format('Y-m-d') == $this->updated_at->format('Y-m-d')) {
-            return $this->created_at->format('Y-m-d')." from ".$this->created_at->format('H:i')." to ".$this->updated_at->format('H:i');
-        }
-
-        return "from ".$this->created_at->format('Y-m-d \a\t H:i')." to ".$this->updated_at->format('Y-m-d \a\t H:i');
-
-    }
-
     public function lengthInMinutes()
     {
         return $this->updated_at->diffInMinutes($this->created_at);
@@ -41,7 +31,8 @@ class Match extends Model
 
     public function lengthForHumans()
     {
-        return $this->updated_at->diffForHumans($this->created_at, CarbonInterface::DIFF_ABSOLUTE);
+        $diff = $this->updated_at->diffForHumans($this->created_at, CarbonInterface::DIFF_ABSOLUTE);
+        return str_replace(['seconds', 'second', 'minutes', 'minute', 'hours', 'hour'], ['sec', 'sec', 'min', 'min', 'hr', 'hr'], $diff);
     }
 
     public function getMapImageName()
