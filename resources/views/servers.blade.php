@@ -16,8 +16,8 @@
                 <th>Server name</th>
                 <th>Country</th>
                 <th>Total score</th>
-                <th>Total kills</th>
-                <th>Total deaths</th>
+                <th>Players</th>
+                <th>Playing</th>
                 <th>Matches</th>
             </tr>
         </thead>
@@ -30,8 +30,8 @@
             <td><a href="{{ $server->getLink() }}">{{ $server->name }}</a></td>
             <td><img src="https://www.countryflags.io/{{ strtolower($server->country) }}/shiny/24.png" alt="{{ $server->country }}" title="{{ $server->country }}" /></td>
             <td>{!! $server->formatScoreHtml('total_score') !!}</td>
-            <td>{!! $server->formatScoreHtml('total_kills') !!}</td>
-            <td>{!! $server->formatScoreHtml('total_deaths') !!}</td>
+            <td>{!! $server->wasSeenRecently() ? $server->num_players : '&mdash;' !!}</td>
+            <td>{!! $server->wasSeenRecently() ? $server->last_map : '&mdash;' !!}</td>
             <td>{!! $server->matches_count !!}</td>
         </tr>
     @empty
