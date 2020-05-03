@@ -10,6 +10,8 @@ class Clan extends Model
 {
     use FormatScoreTrait, HasCountryFlag;
 
+    protected $guarded = ['id'];
+
     public function getLink()
     {
         $slug = empty($this->slug) ? 'clan' : $this->slug;

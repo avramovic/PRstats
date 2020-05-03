@@ -11,6 +11,8 @@ class Player extends Model
 {
     use WasSeenRecentlyTrait, FormatScoreTrait, HasCountryFlag;
 
+    protected $guarded = ['id'];
+
     public function getLink()
     {
         $slug = empty($this->slug) ? 'player' : $this->slug;

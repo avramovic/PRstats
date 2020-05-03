@@ -12,6 +12,8 @@ class Server extends Model
 {
     use WasSeenRecentlyTrait, FormatScoreTrait, HasCountryFlag;
 
+    protected $guarded = ['id'];
+
     public function getLink()
     {
         $slug = Str::slug($this->name);
