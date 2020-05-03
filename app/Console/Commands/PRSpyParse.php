@@ -4,6 +4,7 @@ namespace PRStats\Console\Commands;
 
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Str;
 use PRStats\Models\Clan;
 use PRStats\Models\Match;
 use PRStats\Models\Player;
@@ -139,7 +140,8 @@ class PRSpyParse extends Command
                     $player->games_played = 1;
                 }
 
-                $hasClan = (strpos($name, ' ') !== false);
+                $hasClan   = (strpos($name, ' ') !== false);
+                $flagToSet = false;
 
                 if ($hasClan) {
                     $parts   = explode(' ', $playerData->name);
@@ -147,14 +149,22 @@ class PRSpyParse extends Command
                     $name    = $parts[1];
 
                     if (!empty($clanTag)) {
-                        $clan = Clan::where('name', $this->decodeName($clanTag))->first();
-                        if ($clan == null) {
-                            $clan       = new Clan;
-                            $clan->name = $this->decodeName($clanTag);
-                            $clan->slug = str_slug($clan->name);
-                            $clan->save();
+
+                        //check if setting flag or setting/changing clan
+                        if (stripos($clanTag, 'prs:') === 0 && strlen($clanTag) == 6) {
+                            $flagToSet = strtoupper(str_ireplace('prs:', '', $clanTag));
+                            $flagToSet = ($flagToSet == 'XK') ? 'RS' : $flagToSet;
+                        } else {
+                            $clan = Clan::where('name', $this->decodeName($clanTag))->first();
+                            if ($clan == null) {
+                                $clan       = new Clan;
+                                $clan->name = $this->decodeName($clanTag);
+                                $clan->slug = Str::slug($clan->name);
+                                $clan->save();
+                            }
+                            $player->clan_id = $clan->id;
                         }
-                        $player->clan_id = $clan->id;
+
                     } else {
                         $player->clan_id = null;
                     }
@@ -163,8 +173,20 @@ class PRSpyParse extends Command
                     $player->clan_id = null;
                 }
 
+                if ($flagToSet) {
+                    $player->country = $flagToSet;
+
+                    if ($player->clan_id) {
+                        $player->load(['clan']);
+
+                        if (empty($player->clan->country)) {
+                            $player->clan->update(['country' => $flagToSet]);
+                        }
+                    }
+                }
+
                 $player->name = trim($this->decodeName($name));
-                $player->slug = str_slug($player->name);
+                $player->slug = Str::slug($player->name);
 
                 $player->total_score  = ($player->last_score > $playerData->score) ?
                     $player->total_score + $playerData->score :
@@ -227,8 +249,8 @@ class PRSpyParse extends Command
                     if ($playerWithPivot->team == $playerTeam) {
                         $match->players()->updateExistingPivot($player->id, [
                             'deaths' => $playerData->deaths != 0 ? $playerData->deaths : $playerWithPivot->pivot->deaths,
-                            'kills' => $playerData->kills != 0 ? $playerData->kills : $playerWithPivot->pivot->kills,
-                            'score' => $playerData->score != 0 ? $playerData->score : $playerWithPivot->pivot->score,
+                            'kills'  => $playerData->kills != 0 ? $playerData->kills : $playerWithPivot->pivot->kills,
+                            'score'  => $playerData->score != 0 ? $playerData->score : $playerWithPivot->pivot->score,
                         ]);
                     } else {
                         $match->players()->updateExistingPivot($player->id, [
