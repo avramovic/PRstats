@@ -219,19 +219,32 @@ class PRSpyParse extends Command
                 $player->server_id = $server->id;
                 $player->save();
 
+                $playerTeam = ($playerData->team == 1) ? $serverData->properties->bf2_team1 : $serverData->properties->bf2_team2;
+
                 if ($match->players->contains('id', $player->id)) {
-                    $match->players()->updateExistingPivot($player->id, [
-                        'deaths' => $playerData->deaths,
-                        'kills'  => $playerData->kills,
-                        'score'  => $playerData->score,
-                        'team'   => ($playerData->team == 1) ? $serverData->properties->bf2_team1 : $serverData->properties->bf2_team2,
-                    ]);
+                    $playerWithPivot = $match->players->where('id', $player->id)->first();
+
+                    if ($playerWithPivot->team == $playerTeam) {
+                        $match->players()->updateExistingPivot($player->id, [
+                            'deaths' => $playerData->deaths != 0 ? $playerData->deaths : $playerWithPivot->pivot->deaths,
+                            'kills' => $playerData->kills != 0 ? $playerData->kills : $playerWithPivot->pivot->kills,
+                            'score' => $playerData->score != 0 ? $playerData->score : $playerWithPivot->pivot->score,
+                        ]);
+                    } else {
+                        $match->players()->updateExistingPivot($player->id, [
+                            'deaths' => $playerData->deaths,
+                            'kills'  => $playerData->kills,
+                            'score'  => $playerData->score,
+                            'team'   => $playerTeam,
+                        ]);
+                    }
+
                 } else {
                     $match->players()->attach($player->id, [
                         'deaths' => $playerData->deaths,
                         'kills'  => $playerData->kills,
                         'score'  => $playerData->score,
-                        'team'   => ($playerData->team == 1) ? $serverData->properties->bf2_team1 : $serverData->properties->bf2_team2,
+                        'team'   => $playerTeam,
                     ]);
 
                     $match->load(['players']);
