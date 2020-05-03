@@ -14,11 +14,10 @@
             <tr>
                 <th>#</th>
                 <th>Server name</th>
-                <th>Country</th>
+                <th>Flag</th>
                 <th>Total score</th>
-                <th>Players</th>
-                <th>Playing</th>
-                <th>Matches</th>
+                <th>Online</th>
+                <th>Map</th>
             </tr>
         </thead>
         <tbody>
@@ -30,9 +29,12 @@
             <td><a href="{{ $server->getLink() }}">{{ $server->name }}</a></td>
             <td><img src="https://www.countryflags.io/{{ strtolower($server->country) }}/shiny/24.png" alt="{{ $server->country }}" title="{{ $server->country }}" /></td>
             <td>{!! $server->formatScoreHtml('total_score') !!}</td>
-            <td>{!! $server->wasSeenRecently() ? $server->num_players : '&mdash;' !!}</td>
-            <td>{!! $server->wasSeenRecently() ? $server->last_map : '&mdash;' !!}</td>
-            <td>{!! $server->matches_count !!}</td>
+            @if($server->wasSeenRecently())
+                <td>{!! $server->num_players !!}</td>
+                <td class="nowrap">{!! $server->last_map !!}</td>
+            @else
+                <td colspan="2" style="text-align: center"><em class="smalltext">seen {{ $server->updated_at->diffForHumans() }}</em></td>
+            @endif
         </tr>
     @empty
         <tr>
