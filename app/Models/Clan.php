@@ -4,10 +4,11 @@ namespace PRStats\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use PRStats\Models\Traits\FormatScoreTrait;
+use PRStats\Models\Traits\HasCountryFlag;
 
 class Clan extends Model
 {
-    use FormatScoreTrait;
+    use FormatScoreTrait, HasCountryFlag;
 
     public function getLink()
     {

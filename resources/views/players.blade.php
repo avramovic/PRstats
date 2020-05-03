@@ -13,7 +13,9 @@
         <thead>
             <tr>
                 <th>#</th>
+                <th></th>
                 <th>Clan</th>
+                <th></th>
                 <th>Name</th>
                 <th>Total score</th>
                 <th>Total kills</th>
@@ -26,6 +28,7 @@
     @forelse($players as $player)
         <tr>
             <td>{{ $nr++ }}</td>
+            <td>{!! $player->clan ? $player->clan->getCountryFlagHtml() : '' !!}</td>
             <td>
                 @if($player->clan)
                     <span class="clan"><a href="{{ $player->clan->getLink() }}">{{ $player->clan_name }}</a></span>
@@ -33,6 +36,7 @@
                     &mdash;
                 @endif
             </td>
+            <td>{!! $player->getCountryFlagHtml() !!}</td>
             <td><a href="{{ $player->getLink() }}">{{ $player->name }}</a></td>
             <td>{!! $player->formatScoreHtml('total_score') !!}</td>
             <td>{!! $player->formatScoreHtml('total_kills') !!}</td>

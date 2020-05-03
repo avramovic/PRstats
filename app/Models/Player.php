@@ -4,11 +4,12 @@ namespace PRStats\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use PRStats\Models\Traits\FormatScoreTrait;
+use PRStats\Models\Traits\HasCountryFlag;
 use PRStats\Models\Traits\WasSeenRecentlyTrait;
 
 class Player extends Model
 {
-    use WasSeenRecentlyTrait, FormatScoreTrait;
+    use WasSeenRecentlyTrait, FormatScoreTrait, HasCountryFlag;
 
     public function getLink()
     {

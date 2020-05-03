@@ -13,7 +13,9 @@
         <thead>
             <tr>
                 <th>#</th>
+                <th></th>
                 <th>Clan</th>
+                <th></th>
                 <th>Top player</th>
                 <th>Members</th>
                 <th>Clan score</th>
@@ -26,7 +28,9 @@
     @forelse($clans as $clan)
         <tr>
             <td>{{ $nr++ }}</td>
+            <td>{!! $clan->getCountryFlagHtml() !!}</td>
             <td><a href="{{ $clan->getLink() }}">{{ $clan->name }}</a></td>
+            <td>{!! $clan->leader ? $clan->leader->getCountryFlagHtml() : '' !!}</td>
             <td>
                 @if($clan->leader)
                     <span class="clan"><a href="{{ $clan->leader->getLink() }}">{{ $clan->leader->name }}</a></span>

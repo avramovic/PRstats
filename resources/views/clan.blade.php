@@ -9,6 +9,7 @@
         <thead>
             <tr>
                 <th>#</th>
+                <th></th>
                 <th>Name</th>
                 <th>Total score</th>
                 <th>Total kills</th>
@@ -21,6 +22,7 @@
     @foreach($players as $player)
         <tr>
             <td>{{ $nr++ }}</td>
+            <td>{!! $player->getCountryFlagHtml() !!}</td>
             <td><a href="{{ $player->getLink() }}">{{ $player->name }}</a></td>
             <td>{!! $player->formatScoreHtml('total_score') !!}</td>
             <td>{!! $player->formatScoreHtml('total_kills') !!}</td>
@@ -38,6 +40,9 @@
     <div class="clear"></div>
     <p>
         <img data-hash="{{ md5($clan->name) }}" src="https://vanillicon.com/{{ md5($clan->name) }}.png" alt="{{ $clan->name }}'s avatar" class="avatar">
+        @if($clan->country)
+            {!! $clan->getCountryFlagHtml(64) !!}<br/>
+        @endif
         Members: <strong>{{ $clan->players->count() }}</strong><br />
         Total score: <strong>{!! $clan->formatScoreHtml('total_score') !!}</strong><br />
         Total kills: <strong>{!! $clan->formatScoreHtml('total_kills') !!}</strong><br />

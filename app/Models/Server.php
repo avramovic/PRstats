@@ -3,16 +3,18 @@
 namespace PRStats\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use PRStats\Models\Traits\FormatScoreTrait;
+use PRStats\Models\Traits\HasCountryFlag;
 use PRStats\Models\Traits\WasSeenRecentlyTrait;
 
 class Server extends Model
 {
-    use WasSeenRecentlyTrait, FormatScoreTrait;
+    use WasSeenRecentlyTrait, FormatScoreTrait, HasCountryFlag;
 
     public function getLink()
     {
-        $slug = str_slug($this->name);
+        $slug = Str::slug($this->name);
         return route('server', [$this->id, $slug]);
     }
 

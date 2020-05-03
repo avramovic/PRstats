@@ -7,33 +7,35 @@
 @section('content')
     @if($player->clan)
         <div class="clear" xmlns="http://www.w3.org/1999/html"></div>
-    <p><strong>{{ $player->name }}</strong> is a member of <a href="{{ $player->clan->getLink() }}">{{ $player->clan->name }}</a> clan, and its members are:</p>
-    <table align="center">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Total score</th>
-                <th>Total kills</th>
-                <th>Total deaths</th>
-                <th>Matches</th>
-            </tr>
-        </thead>
-        <tbody>
-    <?php $nr = 1; ?>
-    @foreach($clanPlayers as $clanPlayer)
-        <tr class=" @if($clanPlayer->id == $player->id) highlight @endif ">
-            <td>{{ $nr++ }}</td>
-            <td><a href="{{ $clanPlayer->getLink() }}">{{ $clanPlayer->name }}</a></td>
-            <td>{!! $clanPlayer->formatScoreHtml('total_score') !!}</td>
-            <td>{!! $clanPlayer->formatScoreHtml('total_kills') !!}</td>
-            <td>{!! $clanPlayer->formatScoreHtml('total_deaths') !!}</td>
-            <td>{!! $clanPlayer->matches_count !!}</td>
-        </tr>
-    @endforeach
+        <p><strong>{{ $player->name }}</strong> is a member of {!! $player->clan->getCountryFlagHtml() !!} <a href="{{ $player->clan->getLink() }}">{{ $player->clan->name }}</a> clan, and its members are:</p>
+        <table align="center">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Total score</th>
+                    <th>Total kills</th>
+                    <th>Total deaths</th>
+                    <th>Matches</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php $nr = 1; ?>
+            @foreach($clanPlayers as $clanPlayer)
+                <tr class=" @if($clanPlayer->id == $player->id) highlight @endif ">
+                    <td>{{ $nr++ }}</td>
+                    <td>{!! $clanPlayer->getCountryFlagHtml() !!}</td>
+                    <td><a href="{{ $clanPlayer->getLink() }}">{{ $clanPlayer->name }}</a></td>
+                    <td>{!! $clanPlayer->formatScoreHtml('total_score') !!}</td>
+                    <td>{!! $clanPlayer->formatScoreHtml('total_kills') !!}</td>
+                    <td>{!! $clanPlayer->formatScoreHtml('total_deaths') !!}</td>
+                    <td>{!! $clanPlayer->matches_count !!}</td>
+                </tr>
+            @endforeach
 
-        </tbody>
-    </table>
+            </tbody>
+        </table>
     @else
         <p>This player does not belong to any clan.</p>
     @endif
@@ -80,6 +82,9 @@
 
     <p>
         <img data-hash="{{ md5($player->name) }}" src="https://vanillicon.com/{{ md5($player->name) }}.png" alt="{{ $player->name }}'s avatar" class="avatar">
+        @if($player->country)
+            {!! $player->getCountryFlagHtml(64) !!}<br/>
+        @endif
         Total score: <strong>{!! $player->formatScoreHtml('total_score') !!}</strong><br />
         Total kills: <strong>{!! $player->formatScoreHtml('total_kills') !!}</strong><br />
         Total deaths: <strong>{!! $player->formatScoreHtml('total_deaths') !!}</strong><br />

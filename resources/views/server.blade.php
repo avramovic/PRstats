@@ -14,7 +14,9 @@
             <thead>
                 <tr>
                     <th>#</th>
+                    <th></th>
                     <th>Clan</th>
+                    <th></th>
                     <th>Name</th>
                     <th>Team</th>
                     <th>Score</th>
@@ -28,6 +30,7 @@
         @foreach($currentMatch->players as $player)
             <tr>
                 <td>{{ $nr++ }}</td>
+                <td>{!! $player->clan ? $player->clan->getCountryFlagHtml() : '' !!}</td>
                 <td>
                     @if($player->clan)
                         <span class="clan"><a href="{{ $player->clan->getLink() }}">{{ $player->clan_name }}</a></span>
@@ -35,6 +38,7 @@
                         &mdash;
                     @endif
                 </td>
+                <td>{!! $player->getCountryFlagHtml() !!}</td>
                 <td><a href="{{ $player->getLink() }}">{{ $player->name }}</a></td>
                 <td>{{ $player->pivot->team }}</td>
                 <td>{{ $player->formatValueHtml($player->pivot->score)  }}</td>
@@ -117,7 +121,9 @@
 
     <p>
         <p>
-        Country:<br /><img src="https://www.countryflags.io/{{ strtolower($server->country) }}/shiny/64.png" alt="{{ $server->country }}" title="{{ $server->country }}" /><br />
+        @if($server->country)
+            {!! $server->getCountryFlagHtml(64) !!}<br/>
+        @endif
         Platform: <strong>{{ $server->os }}</strong><br />
         Total players: <strong>{{ $server->players->count() }}</strong><br />
         Total score: <strong>{!! $server->formatScoreHtml('total_score') !!}</strong><br />
