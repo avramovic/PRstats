@@ -51,8 +51,7 @@
 
 @section('right')
     <h2>Player search</h2>
-    {!! \Form::open(['route' => 'players.search', 'method' => 'post']) !!}
-    {!! csrf_field() !!}
+    {!! \Form::open(['route' => 'players.search', 'method' => 'get']) !!}
     <input type="text" name="q" minlength="3" required value="{{ isset($query) ? $query : '' }}"/>
     {!! \Form::submit('Search') !!}
     {!! Form::close() !!}

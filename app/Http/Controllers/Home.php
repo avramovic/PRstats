@@ -133,7 +133,7 @@ class Home extends Controller
         //top players
         $players = Player::with('clan')->withCount('matches')
             ->where('name', 'LIKE', '%'.$request->q.'%')
-            ->whereNotIn('pid', $this->banned)
+            ->orWhere('slug','LIKE', '%'.$request->q.'%')
             ->orderBy('name', 'asc')
             ->take(50)
             ->get();
@@ -159,6 +159,22 @@ class Home extends Controller
             ->firstOrFail();
 
         return view('player', ['player' => $player, 'clanPlayers' => $player->clan ? $player->clan->players : collect([]), 'server' => $player->server]);
+    }
+
+    public function playerShorUrl($slug)
+    {
+        $candidates = Player::where('slug', 'like', $slug)->get();
+
+//        dd($candidates->toArray());
+
+        if ($candidates->count() == 0) {
+            abort(404);
+        } elseif ($candidates->count() == 1) {
+            $player = $candidates->first();
+            return redirect()->route('player', [$player->pid, $player->slug]);
+        } else {
+            return redirect()->route('players.search', ['q'=>$slug]);
+        }
     }
 
     public function matchDetails($id, $map)
