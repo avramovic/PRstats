@@ -63,7 +63,7 @@ class PRSpyParse extends Command
 
             if ($server == null) {
                 $server               = new Server;
-                $server->server_id = $serverData->serverId;
+                $server->server_id    = $serverData->serverId;
                 $server->games_played = 1;
                 $newgame              = true;
                 $server->save();
@@ -105,6 +105,7 @@ class PRSpyParse extends Command
             }
 
             $server->name           = $serverName;
+            $server->server_id      = $serverData->serverId;
             $server->country        = $serverData->countryFlag;
             $server->num_players    = $serverData->properties->numplayers;
             $server->max_players    = $serverData->properties->maxplayers;
