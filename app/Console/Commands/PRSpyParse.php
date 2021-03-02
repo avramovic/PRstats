@@ -45,6 +45,10 @@ class PRSpyParse extends Command
 
         foreach ($servers as $serverData) {
 
+            if (empty($serverData->serverId)) {
+                continue;
+            }
+
             $newgame    = false;
             $serverName = trim(preg_replace('/^\[.*?\]/is', '', $this->decodeName($serverData->properties->hostname), 1));
 
@@ -54,16 +58,12 @@ class PRSpyParse extends Command
             }
 
             $server = Server::where('name', $serverName)
-                ->orWhere(function ($query) use ($serverData) {
-                    $query->where('ip_address', $serverData->serverIp)
-                        ->where('game_port', $serverData->properties->hostport);
-                })
+                ->orWhere('server_id', $serverData->serverId)
                 ->first();
 
             if ($server == null) {
                 $server               = new Server;
-                $server->ip_address   = $serverData->serverIp;
-                $server->game_port    = $serverData->properties->hostport;
+                $server->server_id = $serverData->serverId;
                 $server->games_played = 1;
                 $newgame              = true;
                 $server->save();
@@ -105,14 +105,14 @@ class PRSpyParse extends Command
             }
 
             $server->name           = $serverName;
-            $server->country        = $serverData->config->countryFlag;
+            $server->country        = $serverData->countryFlag;
             $server->num_players    = $serverData->properties->numplayers;
             $server->max_players    = $serverData->properties->maxplayers;
             $server->reserved_slots = $serverData->properties->bf2_reservedslots;
             $server->os             = $serverData->properties->bf2_os;
 
             if ($serverData->properties->bf2_d_dl) {
-                $server->br_index    = $serverData->properties->bf2_d_idx;
+//                $server->br_index    = $serverData->properties->bf2_d_idx;
                 $server->br_download = $serverData->properties->bf2_d_dl;
             }
 
