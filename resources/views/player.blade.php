@@ -81,7 +81,7 @@
     <div class="clear"></div>
 
     <p>
-        <img data-hash="{{ md5($player->name) }}" src="https://vanillicon.com/{{ md5($player->name) }}.png" alt="{{ $player->name }}'s avatar" class="avatar">
+        <img data-hash="{{ md5($player->name) }}" src="{{ $player->getAvatarUrl() }}" alt="{{ $player->name }}'s avatar" class="avatar">
         @if($player->country)
             {!! $player->getCountryFlagHtml(64) !!}<br/>
         @endif

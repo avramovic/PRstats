@@ -59,7 +59,7 @@
     <div class="right">
         <div class="darkbg">
             <a href="{{ $newest->first()->getLink() }}">
-                <img src="https://vanillicon.com/{{ md5($newest->first()->name) }}.png" class="avatar" style="width: 70px; height: 70px;">
+                <img src="{{ $newest->first()->getAvatarUrl() }}" class="avatar" style="width: 70px; height: 70px;">
             </a>
             <h3>Newest players:</h3>
             @foreach($newest as $new)
@@ -77,7 +77,7 @@
     <div class="right">
         <div class="darkbg">
             <a href="{{ $longest->first()->getLink() }}">
-                <img src="https://vanillicon.com/{{ md5($longest->first()->name) }}.png" class="avatar" style="width: 70px; height: 70px;">
+                <img src="{{ $longest->first()->getAvatarUrl() }}" class="avatar" style="width: 70px; height: 70px;">
             </a>
             <h3>Longest in-game:</h3>
             @foreach($longest as $new)
@@ -94,7 +94,7 @@
     <div class="right">
         <div class="darkbg">
             <a href="{{ $mostKills->first()->getLink() }}">
-                <img src="https://vanillicon.com/{{ md5($mostKills->first()->name) }}.png" class="avatar" style="width: 70px; height: 70px;">
+                <img src="{{ $mostKills->first()->getAvatarUrl() }}" class="avatar" style="width: 70px; height: 70px;">
             </a>
             <h3>Most kills:</h3>
 
@@ -112,7 +112,7 @@
     <div class="right">
         <div class="darkbg">
             <a href="{{ $mostDeaths->first()->getLink() }}">
-                <img src="https://vanillicon.com/{{ md5($mostDeaths->first()->name) }}.png" class="avatar" style="width: 70px; height: 70px;">
+                <img src="{{ $mostDeaths->first()->getAvatarUrl() }}" class="avatar" style="width: 70px; height: 70px;">
             </a>
             <h3>Most deaths:</h3>
             @foreach($mostDeaths as $new)

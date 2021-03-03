@@ -39,7 +39,7 @@
     <h2>{{ $clan->name }} clan stats</h2>
     <div class="clear"></div>
     <p>
-        <img data-hash="{{ md5($clan->name) }}" src="https://vanillicon.com/{{ md5($clan->name) }}.png" alt="{{ $clan->name }}'s avatar" class="avatar">
+        <img data-hash="{{ md5($clan->name) }}" src="{{ $clan->players->count() > 0 ? $clan->players->random()->getAvatarUrl() : '/favicon.ico'  }}" alt="{{ $clan->name }}'s avatar" class="avatar">
         @if($clan->country)
             {!! $clan->getCountryFlagHtml(64) !!}<br/>
         @endif

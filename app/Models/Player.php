@@ -48,4 +48,13 @@ class Player extends Model
         return $this->belongsToMany(Match::class)->withTimestamps()->withPivot(['score', 'kills', 'deaths', 'team']);
     }
 
+    public function getAvatarUrl($size=140)
+    {
+        return vsprintf('https://robohash.org/%s.png?set=set5&size=%dx%d', [
+            md5($this->name),
+            $size,
+            $size,
+        ]);
+    }
+
 }
