@@ -68,5 +68,17 @@
 
 {{--</script>--}}
 
+<script>
+    var retries = {};
+    function reloadImage(img) {
+        retries[img.src] = retries[img.src] || 0;
+
+        if (retries[img.src] < 100) {
+            img.src = ''+img.src;
+            retries[img.src]++;
+        }
+    }
+</script>
+
 </body>
 </html>
