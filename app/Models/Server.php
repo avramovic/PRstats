@@ -2,6 +2,7 @@
 
 namespace PRStats\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use PRStats\Models\Traits\FormatScoreTrait;
@@ -38,5 +39,77 @@ class Server extends Model
     public function matches()
     {
         return $this->hasMany(Match::class);
+    }
+
+    public function lastMatch()
+    {
+        return $this->matches->sortByDesc('id')->first();
+    }
+
+    public function dailyActivity($days = 7)
+    {
+        $stats = \DB::table('match_player')
+            ->select(\DB::raw('count(distinct player_id) as plr_cnt, date(updated_at) as date'))
+            ->whereIn('match_id', function ($q) use ($days) {
+                $q->select('id')
+                    ->from('matches')
+                    ->where('server_id', $this->id)
+                    ->where('created_at', '>=', Carbon::now()->subDays($days));
+            })
+            ->groupBy(\DB::raw('YEAR(updated_at), MONTH(updated_at), DAYOFMONTH(updated_at)'))
+            ->orderBy('updated_at', 'desc')
+            ->limit($days)
+            ->get();
+
+        $data = [];
+
+        foreach ($stats as $stat) {
+            $data[$stat->date] = $stat->plr_cnt;
+        }
+
+        $result = [];
+        $start  = Carbon::now()->endOfDay();
+        $end    = Carbon::now()->subDays($days-1);
+
+        for ($date = $end->copy(); $date->lte($start); $date=$date->copy()->addDay()) {
+            $m = (string)$date->toDateString();
+            $result[$m] = isset($data[$m]) ? (int)$data[$m] : 0;
+        }
+
+        return ($result);
+    }
+
+
+    public function monthlyActivity($months = 12)
+    {
+        $stats = \DB::table('match_player')
+            ->select(\DB::raw('count(distinct player_id) as plr_cnt, month(updated_at) as date'))
+            ->whereIn('match_id', function ($q) use ($months) {
+                $q->select('id')
+                    ->from('matches')
+                    ->where('server_id', $this->id)
+                    ->where('created_at', '>=', Carbon::now()->subMonths($months));
+            })
+            ->groupBy(\DB::raw('YEAR(updated_at), MONTH(updated_at)'))
+            ->orderBy('updated_at', 'desc')
+            ->limit($months)
+            ->get();
+
+        $data = [];
+
+        foreach ($stats as $stat) {
+            $data[$stat->date] = $stat->plr_cnt;
+        }
+
+        $result = [];
+        $start  = Carbon::now()->endOfDay();
+        $end    = Carbon::now()->subMonths($months-1);
+
+        for ($date = $end->copy(); $date->lte($start); $date=$date->copy()->addMonth()) {
+            $m = (string)$date->format('n');
+            $result[$m] = isset($data[$m]) ? (int)$data[$m] : 0;
+        }
+
+        return ($result);
     }
 }

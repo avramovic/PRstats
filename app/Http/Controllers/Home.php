@@ -92,28 +92,42 @@ class Home extends Controller
     {
         //top servers
         $servers = Server::withCount('matches')
-            ->where('updated_at', '>', Carbon::now()->subDay())
+            ->where('updated_at', '>', Carbon::now()->subWeek())
             ->orderBy('total_score', 'desc')
             ->take(50)
             ->get();
 
-        return view('servers', ['servers' => $servers]);
+        return view('prstats.servers', ['servers' => $servers]);
     }
 
     public function server($id, $slug)
     {
-        $threeMinAgo = Carbon::now()->subMinute(3);
-        $server      = Server::where('id', $id)->with([
-            'matches'         => function ($q) {
-                return $q->orderBy('id', 'desc')->limit(50);
-            },
-            'matches.players' => function ($q) use ($threeMinAgo) {
+        $threeMinAgo = Carbon::now()->subMinutes(4);
+        /**
+         * @var Server
+         */
+        $server = Server::findOrFail($id);
+
+        $previousMatches = $server->matches()
+//            ->when($server->wasSeenRecently(), function())
+            ->where('updated_at', '<', $threeMinAgo)
+            ->orderBy('id', 'desc')
+            ->paginate();
+
+        $lastMatch = $server->matches()
+            ->with(['players' => function ($q) use ($threeMinAgo) {
                 return $q->where('match_player.updated_at', '>=', $threeMinAgo)
                     ->orderBy('match_player.score', 'desc');
-            }])->firstOrFail();
+            }])
+//            ->where('updated_at', '>=', $threeMinAgo)
+            ->orderBy('id', 'desc')
+            ->first();
 
-
-        return view('server', ['server' => $server]);
+        return view('prstats.server', [
+            'server'          => $server,
+            'previousMatches' => $previousMatches,
+            'lastMatch'       => $lastMatch,
+        ]);
     }
 
     public function players()
@@ -133,7 +147,7 @@ class Home extends Controller
         //top players
         $players = Player::with('clan')->withCount('matches')
             ->where('name', 'LIKE', '%'.$request->q.'%')
-            ->orWhere('slug','LIKE', '%'.$request->q.'%')
+            ->orWhere('slug', 'LIKE', '%'.$request->q.'%')
             ->orderBy('name', 'asc')
             ->take(50)
             ->get();
@@ -149,7 +163,7 @@ class Home extends Controller
         }
 
         $player = Player::with(['server',
-            'matches'        => function ($q) {
+            'matches'      => function ($q) {
                 return $q->orderBy('match_player.updated_at', 'desc')->limit(50);
             },
             'clan.players' => function ($q) {
@@ -173,7 +187,7 @@ class Home extends Controller
             $player = $candidates->first();
             return redirect()->route('player', [$player->pid, $player->slug]);
         } else {
-            return redirect()->route('players.search', ['q'=>$slug]);
+            return redirect()->route('players.search', ['q' => $slug]);
         }
     }
 
