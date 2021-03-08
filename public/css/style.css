@@ -11,12 +11,23 @@ Author: Carlos Alvarez
 Website: http://Alvarez.is/
 */
 
-.cf {
-    vertical-align: baseline;
+.server-flag {
+    position: absolute;
+    top: 5px;
+    right: 23px !important;
+}
+
+td a, td a:active, td a:hover, td a:focus {
+    color: #666 !important;
+    text-decoration: underline;
 }
 
 .weather {
     text-shadow: 2px 2px #666;
+}
+
+.weather abbr {
+    color: white;
 }
 
 .strong {
@@ -1112,7 +1123,7 @@ PANELS CONFIGURATIONS
 }
 .weather i {
 	color: white;
-	margin-top: 45px;
+	margin-top: 15px;
 }
 .weather h2 {
 	color: white;
@@ -1378,7 +1389,7 @@ PANELS CONFIGURATIONS
 	font-weight: 700;
 	position: absolute;
 	display: block;
-	/*width: 120px;*/
+	width: 90%;
 }
 .blog-text {
 	margin-left: 8px;

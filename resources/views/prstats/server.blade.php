@@ -82,7 +82,13 @@
     @endif
 
     @if($server->wasSeenRecently())
-        @include('partials.servers.current_match', ['match' => $lastMatch])
+        @component('partials.servers.current_match', ['match' => $lastMatch])
+            @if($lastMatch->server->wasSeenRecently())
+                <h3><i class="fa fa-angle-right"></i> Playing <u>{{ $lastMatch->map }}</u> since {{ $lastMatch->created_at->format('Y-m-d') }} at {{ $lastMatch->created_at->format('H:i') }} ({{ $lastMatch->lengthForHumans() }}) </h3>
+            @else
+                <h3><i class="fa fa-angle-right"></i> Played <u>{{ $lastMatch->map }}</u> on {{ $lastMatch->created_at->format('Y-m-d') }} from {{ $lastMatch->created_at->format('H:i') }} to {{ $lastMatch->updated_at->format('H:i') }} ({{ $lastMatch->lengthForHumans() }})</h3>
+            @endif
+        @endcomponent
     @endif
 
     @include('partials.servers.previous_matches', ['matches' => $previousMatches])

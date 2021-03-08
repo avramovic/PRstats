@@ -57,4 +57,11 @@ class Player extends Model
         ]);
     }
 
+    public function minutesPlayed()
+    {
+        return $this->matches->reduce(function ($carry, $entry) {
+            return $carry + $entry->pivot->updated_at->diffInMinutes($entry->pivot->created_at);
+        }, 0);
+    }
+
 }

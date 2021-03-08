@@ -22,17 +22,16 @@ class Home extends Controller
             ->withCount(['matches' => function ($q) {
                 return $q->where('match_player.updated_at', '>=', Carbon::now()->startOfMonth());
             }])
-            ->where('updated_at', '>', Carbon::now()->startOfMonth())
+            ->where('updated_at', '>=', Carbon::now()->startOfMonth())
             ->orderBy('monthly_score', 'desc')
-            ->take(50)
-            ->get();
+            ->paginate(50);
 
         $newest = Player::with('clan')
             ->orderBy('created_at', 'desc')
             ->limit(10)
             ->get();
 
-        $longest = Player::with('clan')
+        $longest = Player::with(['clan', 'matches'])
             ->orderBy('minutes_played', 'desc')
             ->limit(10)
             ->get();
@@ -47,7 +46,7 @@ class Home extends Controller
             ->limit(10)
             ->get();
 
-        return view('home', [
+        return view('prstats.home', [
             'players'    => $players,
             'newest'     => $newest,
             'longest'    => $longest,
@@ -61,10 +60,9 @@ class Home extends Controller
         //top clans
         $clans = Clan::withCount('players')
             ->orderBy('total_score', 'desc')
-            ->take(50)
-            ->get();
+            ->paginate(50);
 
-        return view('clans', ['clans' => $clans]);
+        return view('prstats.clans', ['clans' => $clans]);
     }
 
     public function clanSearch(Request $request)
@@ -76,7 +74,7 @@ class Home extends Controller
             ->take(50)
             ->get();
 
-        return view('clans', ['clans' => $clans, 'query' => $request->q]);
+        return view('prstats.clans', ['clans' => $clans, 'query' => $request->q]);
     }
 
     public function clan($id, $slug)
@@ -85,7 +83,7 @@ class Home extends Controller
 
         $players = $clan->players()->withCount(['matches'])->orderBy('total_score', 'desc')->get();
 
-        return view('clan', ['clan' => $clan, 'players' => $players, 'server' => $clan->last_player_seen->server]);
+        return view('prstats.clan', ['clan' => $clan, 'players' => $players, 'server' => $clan->last_player_seen->server]);
     }
 
     public function servers()
@@ -109,7 +107,6 @@ class Home extends Controller
         $server = Server::findOrFail($id);
 
         $previousMatches = $server->matches()
-//            ->when($server->wasSeenRecently(), function())
             ->where('updated_at', '<', $threeMinAgo)
             ->orderBy('id', 'desc')
             ->paginate();
@@ -119,7 +116,6 @@ class Home extends Controller
                 return $q->where('match_player.updated_at', '>=', $threeMinAgo)
                     ->orderBy('match_player.score', 'desc');
             }])
-//            ->where('updated_at', '>=', $threeMinAgo)
             ->orderBy('id', 'desc')
             ->first();
 
@@ -134,12 +130,10 @@ class Home extends Controller
     {
         //top players
         $players = Player::with('clan')->withCount('matches')
-//            ->where('updated_at', '>', Carbon::now()->subMonth())
             ->orderBy('total_score', 'desc')
-            ->take(50)
-            ->get();
+            ->paginate(50);
 
-        return view('players', ['players' => $players]);
+        return view('prstats.players', ['players' => $players]);
     }
 
     public function playerSearch(Request $request)
@@ -162,17 +156,32 @@ class Home extends Controller
             abort(404);
         }
 
+        $threeMinAgo = Carbon::now()->subMinutes(3);
+
         $player = Player::with(['server',
-            'matches'      => function ($q) {
-                return $q->orderBy('match_player.updated_at', 'desc')->limit(50);
-            },
             'clan.players' => function ($q) {
                 return $q->withCount('matches')->orderBy('total_score', 'desc');
             }])
             ->where('pid', $pid)
             ->firstOrFail();
 
-        return view('player', ['player' => $player, 'clanPlayers' => $player->clan ? $player->clan->players : collect([]), 'server' => $player->server]);
+        $matches = $player->matches()
+            ->with(['server'])
+            ->where('matches.updated_at', '<', $threeMinAgo)
+            ->orderBy('id', 'desc')
+            ->paginate();
+
+        $lastMatch = $player->matches()
+            ->orderBy('id', 'desc')
+            ->first();
+
+        return view('prstats.player', [
+            'player'      => $player,
+            'clanPlayers' => $player->clan ? $player->clan->players : collect([]),
+            'server'      => $player->server,
+            'matches'     => $matches,
+            'lastMatch'   => $lastMatch,
+        ]);
     }
 
     public function playerShorUrl($slug)
@@ -197,7 +206,7 @@ class Home extends Controller
             return $q->orderBy('match_player.score', 'desc');
         }])->findOrFail($id);
 
-        return view('match', ['currentMatch' => $match]);
+        return view('prstats.match', ['match' => $match]);
     }
 
 }

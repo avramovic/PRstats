@@ -38,6 +38,12 @@ class Match extends Model
         return str_replace(['seconds', 'second', 'minutes', 'minute', 'hours', 'hour'], ['sec', 'sec', 'min', 'min', 'hr', 'hr'], $diff);
     }
 
+    public function pivotLengthForHumans()
+    {
+        $diff = $this->pivot->updated_at->diffForHumans($this->pivot->created_at, CarbonInterface::DIFF_ABSOLUTE);
+        return str_replace(['seconds', 'second', 'minutes', 'minute', 'hours', 'hour'], ['sec', 'sec', 'min', 'min', 'hr', 'hr'], $diff);
+    }
+
     public function getMapImageName()
     {
         return strtolower(str_replace(' ', '', $this->map));

@@ -75,6 +75,17 @@
 <script src="/lib/common-scripts.js"></script>
 <!--script for this page-->
 @yield('scripts')
+<script>
+    var retries = {};
+    function reloadImage(img) {
+        retries[img.src] = retries[img.src] || 0;
+
+        if (retries[img.src] < 250) {
+            img.src = ''+img.src;
+            retries[img.src]++;
+        }
+    }
+</script>
 </body>
 
 </html>

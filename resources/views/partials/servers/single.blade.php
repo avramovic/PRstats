@@ -5,6 +5,7 @@
             <div class="badge badge-popular">@if($server->num_players >= $server->max_players-$server->reserved_slots) FULL @else ONLINE @endif</div>
             @endif
             <div class="blog-title"><a href="{{ $server->getLink() }}">{{ $server->name }}</a></div>
+            <div class="server-flag">{!! $server->getCountryFlagHtml() !!}</div>
         </div>
         <div class="blog-text">
             @if($server->wasSeenRecently())
