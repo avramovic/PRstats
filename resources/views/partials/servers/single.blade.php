@@ -13,7 +13,7 @@
                 <p><i class="fa fa-angle-right"></i> Online players: {{ $server->num_players }} / {{ $server->max_players-$server->reserved_slots }} </p>
             @else
                 <p><i class="fa fa-angle-right"></i> Played <u>{{ $server->lastMatch()->map }}</u> on {{ $server->lastMatch()->created_at->format('Y-m-d') }} from {{ $server->lastMatch()->created_at->format('H:i') }} to {{ $server->lastMatch()->updated_at->format('H:i') }}</p>
-                <p><i class="fa fa-angle-right"></i> Last seen  seen {{ $server->updated_at->diffForHumans() }}</p>
+                <p><i class="fa fa-angle-right"></i> Last seen {{ $server->updated_at->diffForHumans() }}</p>
             @endif
         </div>
     </div>

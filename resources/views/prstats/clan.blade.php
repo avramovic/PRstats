@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    @include('partials.players.clan_table')
+    @include('partials.clans.clan_table')
     @if($playerDetails)
         @include('partials.players.card', ['player' => $playerDetails])
     @endif

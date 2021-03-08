@@ -21,6 +21,7 @@
     <link href="/css/style.css" rel="stylesheet">
     <link href="/css/style-responsive.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/lib/gritter/css/jquery.gritter.css" />
+    <script src="/lib/chart-master/Chart.js"></script>
 
     @yield('header')
 </head>
@@ -77,6 +78,7 @@
 <script type="text/javascript" src="/lib/gritter-conf.js"></script>
 <!--common script for all pages-->
 <script src="/lib/common-scripts.js"></script>
+<script src="/lib/sparkline-chart.js"></script>
 <!--script for this page-->
 @yield('scripts')
 <script>

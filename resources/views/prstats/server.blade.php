@@ -96,9 +96,7 @@
 @endsection
 
 @section('header')
-    <script src="/lib/chart-master/Chart.js"></script>
 @endsection
 
 @section('scripts')
-    <script src="/lib/sparkline-chart.js"></script>
 @endsection

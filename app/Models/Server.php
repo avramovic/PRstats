@@ -79,18 +79,17 @@ class Server extends Model
         return $result;
     }
 
-
     public function weeklyActivity($weeks = 12)
     {
         $stats = \DB::table('match_player')
-            ->select(\DB::raw('count(distinct player_id) as plr_cnt, weekofyear(updated_at) as woy'))
+            ->select(\DB::raw('count(distinct player_id) as plr_cnt, WEEKOFYEAR(updated_at) as woy'))
             ->whereIn('match_id', function ($q) use ($weeks) {
                 $q->select('id')
                     ->from('matches')
                     ->where('server_id', $this->id)
                     ->where('created_at', '>=', Carbon::now()->subWeeks($weeks));
             })
-            ->groupBy(\DB::raw('YEAR(updated_at), MONTH(updated_at)'))
+            ->groupBy(\DB::raw('YEAR(updated_at), WEEKOFYEAR(updated_at)'))
             ->orderBy('updated_at', 'desc')
             ->limit($weeks)
             ->get();
