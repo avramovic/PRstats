@@ -16,7 +16,7 @@ class Player extends Model
     public function getLink()
     {
         $slug = empty($this->slug) ? 'player' : $this->slug;
-        return route('player', [$this->pid, $slug]);
+        return route('player', [$this->id, $slug]);
     }
 
     public function clan()

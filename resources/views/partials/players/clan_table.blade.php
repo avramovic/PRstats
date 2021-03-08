@@ -18,7 +18,7 @@
                 <td>{{ $loop->iteration }}</td>
 
 {{--                    <td>{!! $player->getCountryFlagHtml() !!}</td>--}}
-                <td><a href="{{ $player->getLink() }}">{{ $player->name }}</a></td>
+                <td><a href="?p={{ $player->id }}">{{ $player->name }}</a></td>
 {{--                    <td>{{ $player->pivot->team }}</td>--}}
                 <td class="numeric">{!! $player->formatScoreHtml('total_score') !!}</td>
                 <td class="numeric">{!! $player->formatScoreHtml('total_kills') !!}</td>

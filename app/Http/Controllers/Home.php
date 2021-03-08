@@ -3,6 +3,7 @@
 namespace PRStats\Http\Controllers;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use PRStats\Models\Clan;
 use PRStats\Models\Match;
@@ -11,10 +12,6 @@ use PRStats\Models\Server;
 
 class Home extends Controller
 {
-    protected $banned = [
-        '100384079',
-    ];
-
     public function index()
     {
         //top players
@@ -34,7 +31,10 @@ class Home extends Controller
         $longest = Player::with(['clan', 'matches'])
             ->orderBy('minutes_played', 'desc')
             ->limit(10)
-            ->get();
+            ->get()
+            ->sortByDesc(function($player) {
+                return $player->minutesPlayed();
+            });
 
         $mostKills = Player::with('clan')
             ->orderBy('total_kills', 'desc')
@@ -76,13 +76,23 @@ class Home extends Controller
         return view('prstats.clans', ['clans' => $clans, 'query' => $request->q]);
     }
 
-    public function clan($id, $slug)
+    public function clan($id, $slug, Request $request)
     {
         $clan = Clan::where('id', $id)->firstOrFail();
 
+        /** @var Collection $players */
         $players = $clan->players()->withCount(['matches'])->orderBy('total_score', 'desc')->get();
 
-        return view('prstats.clan', ['clan' => $clan, 'players' => $players, 'server' => $clan->last_player_seen->server]);
+        if ($players->count() > 0) {
+            $playerDetails = $players->find($request->query('p', $players->first()->id)) ?? $players->first();
+        }
+
+        return view('prstats.clan', [
+            'clan'          => $clan,
+            'players'       => $players,
+            'playerDetails' => $playerDetails,
+            'server'        => $clan->last_player_seen->server,
+        ]);
     }
 
     public function servers()
@@ -150,8 +160,15 @@ class Home extends Controller
 
     public function player($pid, $slug)
     {
-        if (in_array($pid, $this->banned)) {
-            abort(404);
+        if (!is_numeric($pid)) {
+            $player = Player::with(['server',
+                'clan.players' => function ($q) {
+                    return $q->withCount('matches')->orderBy('total_score', 'desc');
+                }])
+                ->where('pid', $pid)
+                ->firstOrFail();
+
+            return redirect($player->getLink(), 301);
         }
 
         $threeMinAgo = Carbon::now()->subMinutes(3);
@@ -160,8 +177,7 @@ class Home extends Controller
             'clan.players' => function ($q) {
                 return $q->withCount('matches')->orderBy('total_score', 'desc');
             }])
-            ->where('pid', $pid)
-            ->firstOrFail();
+            ->findOrFail($pid);
 
         $matches = $player->matches()
             ->with(['server'])
@@ -182,7 +198,7 @@ class Home extends Controller
         ]);
     }
 
-    public function playerShorUrl($slug)
+    public function playerShortUrl($slug)
     {
         $candidates = Player::where('slug', 'like', $slug)->get();
 
@@ -192,7 +208,7 @@ class Home extends Controller
             abort(404);
         } elseif ($candidates->count() == 1) {
             $player = $candidates->first();
-            return redirect()->route('player', [$player->pid, $player->slug]);
+            return redirect()->route('player', [$player->id, $player->slug]);
         } else {
             return redirect()->route('players.search', ['q' => $slug]);
         }
