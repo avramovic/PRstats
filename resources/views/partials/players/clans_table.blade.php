@@ -1,4 +1,4 @@
-<div class="col-lg-6">
+<div class="col-lg-8">
     <h4>{{ $slot }}</h4>
     <section id="unseen">
         <table class="table table-bordered table-striped table-condensed">
@@ -6,6 +6,7 @@
             <tr>
                 <th>#</th>
                 <th>Clan</th>
+{{--                <th>Country</th>--}}
                 <th>Members</th>
                 <th class="numeric">Score</th>
                 <th class="numeric">Kills</th>
@@ -19,6 +20,7 @@
                 <td>
                     <a href="{{ $clan->getLink() }}">{{ $clan->name }}</a>
                 </td>
+{{--                <td>{!! $clan->getCountryFlagHtml() !!}</td>--}}
                 <td>{!! $clan->players_count !!}</td>
                 <td>{!! $clan->formatScoreHtml('total_score') !!}</td>
                 <td>{!! $clan->formatScoreHtml('total_kills') !!}</td>

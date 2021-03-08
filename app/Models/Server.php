@@ -72,44 +72,44 @@ class Server extends Model
         $end    = Carbon::now()->subDays($days-1);
 
         for ($date = $end->copy(); $date->lte($start); $date=$date->copy()->addDay()) {
-            $m = (string)$date->toDateString();
-            $result[$m] = isset($data[$m]) ? (int)$data[$m] : 0;
+            $day = (string)$date->toDateString();
+            $result[$day] = isset($data[$day]) ? (int)$data[$day] : 0;
         }
 
-        return ($result);
+        return $result;
     }
 
 
-    public function monthlyActivity($months = 12)
+    public function weeklyActivity($weeks = 12)
     {
         $stats = \DB::table('match_player')
-            ->select(\DB::raw('count(distinct player_id) as plr_cnt, month(updated_at) as date'))
-            ->whereIn('match_id', function ($q) use ($months) {
+            ->select(\DB::raw('count(distinct player_id) as plr_cnt, weekofyear(updated_at) as woy'))
+            ->whereIn('match_id', function ($q) use ($weeks) {
                 $q->select('id')
                     ->from('matches')
                     ->where('server_id', $this->id)
-                    ->where('created_at', '>=', Carbon::now()->subMonths($months));
+                    ->where('created_at', '>=', Carbon::now()->subWeeks($weeks));
             })
             ->groupBy(\DB::raw('YEAR(updated_at), MONTH(updated_at)'))
             ->orderBy('updated_at', 'desc')
-            ->limit($months)
+            ->limit($weeks)
             ->get();
 
         $data = [];
 
         foreach ($stats as $stat) {
-            $data[$stat->date] = $stat->plr_cnt;
+            $data[$stat->woy] = $stat->plr_cnt;
         }
 
         $result = [];
         $start  = Carbon::now()->endOfDay();
-        $end    = Carbon::now()->subMonths($months-1);
+        $end    = Carbon::now()->subWeeks($weeks-1);
 
-        for ($date = $end->copy(); $date->lte($start); $date=$date->copy()->addMonth()) {
-            $m = (string)$date->format('n');
-            $result[$m] = isset($data[$m]) ? (int)$data[$m] : 0;
+        for ($date = $end->copy(); $date->lte($start); $date=$date->copy()->addWeek()) {
+            $week = (int)$date->format('W')-1;
+            $result[$week] = isset($data[$week]) ? (int)$data[$week] : 0;
         }
 
-        return ($result);
+        return $result;
     }
 }

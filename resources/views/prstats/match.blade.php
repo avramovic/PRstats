@@ -14,12 +14,14 @@
 
 @section('content')
 
-    @component('partials.servers.current_match', ['match' => $match])
-    @endcomponent
-
     <div class="row mt">
+        @include('partials.servers.map_card', ['match' => $match])
+        @include('partials.servers.score_card', ['match' => $match])
         @include('partials.servers.single', ['server' => $match->server])
     </div>
+
+    @component('partials.servers.current_match', ['match' => $match])
+    @endcomponent
 
 @endsection
 
