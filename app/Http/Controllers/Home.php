@@ -71,8 +71,7 @@ class Home extends Controller
         $clans = Clan::withCount('players')
             ->where('name', 'LIKE', '%'.$request->q.'%')
             ->orderBy('name', 'asc')
-            ->take(50)
-            ->get();
+            ->paginate(50);
 
         return view('prstats.clans', ['clans' => $clans, 'query' => $request->q]);
     }
@@ -143,10 +142,9 @@ class Home extends Controller
             ->where('name', 'LIKE', '%'.$request->q.'%')
             ->orWhere('slug', 'LIKE', '%'.$request->q.'%')
             ->orderBy('name', 'asc')
-            ->take(50)
-            ->get();
+            ->paginate(50);
 
-        return view('players', ['players' => $players, 'query' => $request->q]);
+        return view('prstats.players', ['players' => $players, 'query' => $request->q]);
     }
 
 

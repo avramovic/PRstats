@@ -17,7 +17,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($matches as $match)
+                    @forelse($matches as $match)
                         <tr style="@if($match->wasSeenRecently()) strong @endif">
                             <td>{{ $matches->perPage()*($matches->currentPage()-1)+$loop->iteration }}</td>
                             <td class="nowrap"><a href="{{ $match->getLink() }}">{{ $match->map }}</a></td>
@@ -28,7 +28,11 @@
                             <td class="nowrap">{{ $match->pivot->updated_at->toDateTimeString() }}</td>
                             <td class="nowrap">{{ $match->pivotLengthForHumans() }}</td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="8">No matches found.</td>
+                        </tr>
+                    @endforelse
                     </tbody>
                 </table>
                 <div class="centered">

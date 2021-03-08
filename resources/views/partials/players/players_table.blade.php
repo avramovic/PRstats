@@ -13,7 +13,7 @@
             </tr>
             </thead>
             <tbody>
-            @foreach($players as $player)
+            @forelse($players as $player)
             <tr>
                 <td>{{ $players->perPage()*($players->currentPage()-1)+$loop->iteration }}</td>
                 <td>
@@ -28,7 +28,11 @@
                 <td>{!! $player->formatScoreHtml($metric.'_kills') !!}</td>
                 <td>{!! $player->formatScoreHtml($metric.'_deaths') !!}</td>
             </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td colspan="6">No players found.</td>
+                </tr>
+            @endforelse
             </tbody>
         </table>
         <div class="centered">

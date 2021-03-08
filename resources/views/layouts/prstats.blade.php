@@ -20,6 +20,8 @@
     <!-- Custom styles for this template -->
     <link href="/css/style.css" rel="stylesheet">
     <link href="/css/style-responsive.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/lib/gritter/css/jquery.gritter.css" />
+
     @yield('header')
 </head>
 
@@ -71,11 +73,29 @@
 <script src="/lib/jquery.scrollTo.min.js"></script>
 <script src="/lib/jquery.nicescroll.js" type="text/javascript"></script>
 <script src="/lib/jquery.sparkline.js"></script>
+<script type="text/javascript" src="/lib/gritter/js/jquery.gritter.js"></script>
+<script type="text/javascript" src="/lib/gritter-conf.js"></script>
 <!--common script for all pages-->
 <script src="/lib/common-scripts.js"></script>
 <!--script for this page-->
 @yield('scripts')
 <script>
+
+    $(document).ready(function() {
+
+        let seen = getCookie('message_seen');
+        if (seen !== 'yes') {
+            var unique_id = $.gritter.add({
+                title: 'Welcome to PRstats!',
+                text: 'Welcome to the new PRstats web site. I hope this new design will make it easier for you to consume the data this web site provides.',
+                image: 'https://robohash.org/75c53d450505ec0e9f0e2e251c5b2c54.png?set=set5&size=140x140',
+                sticky: true,
+                class_name: 'my-sticky-class'
+            });
+            setCookie('message_seen', 'yes', 1);
+        }
+    });
+
     var retries = {};
     function reloadImage(img) {
         retries[img.src] = retries[img.src] || 0;

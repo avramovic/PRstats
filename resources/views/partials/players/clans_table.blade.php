@@ -13,7 +13,7 @@
             </tr>
             </thead>
             <tbody>
-            @foreach($clans as $clan)
+            @forelse($clans as $clan)
             <tr>
                 <td>{{ $clans->perPage()*($clans->currentPage()-1)+$loop->iteration }}</td>
                 <td>
@@ -24,7 +24,11 @@
                 <td>{!! $clan->formatScoreHtml('total_kills') !!}</td>
                 <td>{!! $clan->formatScoreHtml('total_deaths') !!}</td>
             </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td colspan="6">No clans found.</td>
+                </tr>
+            @endforelse
             </tbody>
         </table>
         <div class="centered">

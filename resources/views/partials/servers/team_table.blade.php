@@ -14,7 +14,7 @@
             </tr>
             </thead>
             <tbody>
-            @foreach($team as $player)
+            @forelse($team as $player)
             <tr>
                 <td>{{ $loop->iteration }}</td>
                 <td>
@@ -32,7 +32,11 @@
                 <td>{{ $player->formatValueHtml($player->pivot->deaths)  }}</td>
                 <td>{{ $player->inGameTime()  }}</td>
             </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td colspan="7">No players found.</td>
+                </tr>
+            @endforelse
             <tr class="strong">
                 <td colspan="3">Total</td>
                 <td>{{ $team->sum('pivot.score') }}</td>

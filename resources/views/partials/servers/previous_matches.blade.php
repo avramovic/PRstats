@@ -16,8 +16,7 @@
                     </tr>
                     </thead>
                     <tbody>
-{{--                    @php dd($matches) @endphp--}}
-                    @foreach($matches as $match)
+                    @forelse($matches as $match)
                         <tr>
                             <td>{{ $matches->perPage()*($matches->currentPage()-1)+$loop->iteration }}</td>
                             <td class="nowrap"><a href="{{ $match->getLink() }}">{{ $match->map }}</a></td>
@@ -27,7 +26,11 @@
                             <td class="nowrap">{{ $match->updated_at->toDateTimeString() }}</td>
                             <td class="nowrap">{{ $match->lengthForHumans() }}</td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="7">No matches found.</td>
+                        </tr>
+                    @endforelse
                     </tbody>
                 </table>
                 <div class="centered">

@@ -13,7 +13,7 @@
             </tr>
             </thead>
             <tbody>
-            @foreach($players as $player)
+            @forelse($players as $player)
             <tr>
                 <td>{{ $loop->iteration }}</td>
 
@@ -25,7 +25,11 @@
                 <td class="numeric">{!! $player->formatScoreHtml('total_deaths') !!}</td>
                 <td class="numeric">{!! $player->matches_count !!}</td>
             </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td colspan="6">No players found.</td>
+                </tr>
+            @endforelse
             <tr class="strong">
                 <td colspan="2">Total</td>
                 <td>{!! $clan->formatValueHtml($clan->players->sum('total_score')) !!}</td>
