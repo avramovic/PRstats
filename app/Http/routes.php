@@ -1,6 +1,7 @@
 <?php
 
 Route::get('/', 'HomeController@index');
+Route::post('ajax', ['as' => 'search', 'uses' => 'HomeController@search']);
 
 Route::get('clans', ['as' => 'clans', 'uses' => 'ClanController@index']);
 Route::post('clans', ['as' => 'clans.search', 'uses' => 'ClanController@search']);

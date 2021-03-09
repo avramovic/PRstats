@@ -70,15 +70,15 @@
 
     @if($player->wasSeenRecently())
         <div class="row mt">
+            @include('partials.players.activity')
             @include('partials.players.current_map')
-{{--            @include('partials.players.activity')--}}
-{{--            @include('partials.players.capacity')--}}
+            @include('partials.players.activity_weeks')
         </div>
     @else
         <div class="row mt">
+            @include('partials.players.activity')
             @include('partials.players.last_seen')
-{{--            @include('partials.players.activity')--}}
-{{--            @include('partials.players.activity_months')--}}
+            @include('partials.players.activity_weeks')
         </div>
     @endif
 

@@ -96,6 +96,36 @@
             });
             setCookie('message_seen', 'yes', 1);
         }
+
+        $( "#search" ).autocomplete({
+            minLength: 3,
+            source: function( request, response ) {
+                // Fetch data
+                $.ajax({
+                    url: "/ajax",
+                    type: 'post',
+                    dataType: "json",
+                    data: {
+                        search: request.term,
+                        _token: {!! json_encode(csrf_token()) !!},
+                    },
+                    success: function( data ) {
+                        response( data );
+                    }
+                });
+            },
+            select: function (event, ui) {
+                // Set selection
+                $('#search').val(ui.item.label); // display the selected text
+                // $('#selectuser_id').val(ui.item.value); // save selected id to input
+                window.location = ui.item.value;
+                return false;
+            },
+            focus: function(event, ui){
+                $('#search').val(ui.item.label); // display the selected text
+                return false;
+            },
+        });
     });
 
     var retries = {};

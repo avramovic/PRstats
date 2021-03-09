@@ -3,6 +3,7 @@
 namespace PRStats\Http\Controllers;
 
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use PRStats\Models\Player;
 
 class HomeController extends Controller
@@ -33,5 +34,28 @@ class HomeController extends Controller
             'mostKills'  => $mostKills,
             'mostDeaths' => $mostDeaths,
         ]);
+    }
+
+    public function search(Request $request)
+    {
+        $players = Player::where('name', 'like', '%'.$request->search.'%')->get();
+//        $clans = Clan::where('name', 'like', '%'.$request->search.'%')->get();
+//        $servers = Server::where('name', 'like', '%'.$request->search.'%')->get();
+
+        $results = [];
+
+        foreach ($players as $player) {
+            $results[] = ['value' => $player->getLink(), 'label' => $player->name];
+        }
+
+//        foreach ($clans as $clan) {
+//            $results[] = ['value' => $clan->getLink(), 'label' => $clan->name . ' [c]'];
+//        }
+//
+//        foreach ($servers as $server) {
+//            $results[] = ['value' => $server->getLink(), 'label' => $server->name . ' [s]'];
+//        }
+
+        return response()->json($results);
     }
 }
