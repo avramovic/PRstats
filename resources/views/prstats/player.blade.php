@@ -22,7 +22,7 @@
                 <h6>K/D RATIO</h6>
                 <h4>{!! $matches->total() !!}</h4>
                 <h6>MATCHES PLAYED</h6>
-                <h4><abbr title="{{ round($player->minutesPlayed() / 60, 1) }} hour(s)">~{{ Carbon\Carbon::now()->addMinutes($player->minutesPlayed())->diffForHumans(null, true) }}</h4>
+                <h4><abbr title="{{ round($player->minutesPlayed() / 60, 1) }} hour(s)">~{{ Carbon\Carbon::now()->addMinutes($player->minutesPlayed())->diffForHumans(null, true) }}</abbr></h4>
                 <h6>IN-GAME TIME</h6>
             </div>
         </div>
