@@ -39,7 +39,7 @@
             @endif
 
             @if($player->country)
-            <p>{{ $player->getCountryFlagHtml() }}</p>
+            <p>{!! $player->getCountryFlagHtml() !!}</p>
             @endif
             <br>
 {{--            <p>--}}
