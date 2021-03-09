@@ -8,11 +8,11 @@
                     <tr>
                         <th>#</th>
                         <th>Map</th>
-                        <th>Team 1</th>
-                        <th>Team 2</th>
+                        <th class="hidden-sm hidden-xs">Team 1</th>
+                        <th class="hidden-sm hidden-xs">Team 2</th>
                         <th>Server</th>
                         <th>Started at</th>
-                        <th>Ended at</th>
+                        <th class="hidden-sm hidden-xs">Ended at</th>
                         <th>Duration</th>
                     </tr>
                     </thead>
@@ -21,12 +21,12 @@
                         <tr style="@if($match->wasSeenRecently()) strong @endif">
                             <td>{{ $matches->perPage()*($matches->currentPage()-1)+$loop->iteration }}</td>
                             <td class="nowrap"><a href="{{ $match->getLink() }}">{{ $match->map }}</a></td>
-                            <td>{{ $match->team1_name }}</td>
-                            <td>{{ $match->team2_name }}</td>
+                            <td class="hidden-sm hidden-xs">{{ $match->team1_name }}</td>
+                            <td class="hidden-sm hidden-xs">{{ $match->team2_name }}</td>
                             <td><a href="{{ $match->server->getLink() }}">{{ $match->server->name }}</a></td>
-                            <td class="nowrap">{{ $match->pivot->created_at->toDateTimeString() }}</td>
-                            <td class="nowrap">{{ $match->pivot->updated_at->toDateTimeString() }}</td>
-                            <td class="nowrap">{{ $match->pivotLengthForHumans() }}</td>
+                            <td>{{ $match->pivot->created_at->toDateTimeString() }}</td>
+                            <td class="hidden-sm hidden-xs">{{ $match->pivot->updated_at->toDateTimeString() }}</td>
+                            <td>{{ $match->pivotLengthForHumans() }}</td>
                         </tr>
                     @empty
                         <tr>

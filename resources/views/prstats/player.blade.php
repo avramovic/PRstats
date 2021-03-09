@@ -6,16 +6,15 @@
 
 @section('content')
     <div class="row content-panel">
-        <div class="col-md-2 profile-text mt mb centered">
+        <div class="col-md-2 col-sm-6 col-xs-6 profile-text mt mb centered">
                 <h4>{!! $player->formatScoreHtml('total_score') !!}</h4>
                 <h6>TOTAL SCORE</h6>
                 <h4>{!! $player->formatScoreHtml('total_kills') !!}</h4>
                 <h6>TOTAL KILLS</h6>
                 <h4>{!! $player->formatScoreHtml('total_deaths') !!}</h4>
                 <h6>TOTAL DEATHS</h6>
-
         </div>
-        <div class="col-md-2 profile-text mt mb centered">
+        <div class="col-md-2 col-sm-6 col-xs-6 profile-text mt mb centered">
             <div class="right-divider">
 
                 <h4>{{ $player->total_deaths == 0 ? $player->total_kills : round($player->total_kills/$player->total_deaths, 2) }}</h4>
@@ -27,7 +26,7 @@
             </div>
         </div>
         <!-- /col-md-4 -->
-        <div class="col-md-4 profile-text">
+        <div class="col-md-4 col-sm-12 col-xs-12 profile-text">
             <h3>{{ $player->name }}</h3>
 
             @if($player->clan_id)
@@ -55,7 +54,7 @@
 {{--            </p>--}}
         </div>
         <!-- /col-md-4 -->
-        <div class="col-md-4 centered">
+        <div class="col-md-4 col-sm-12 col-xs-12 centered">
             <div class="profile-pic">
                 <p><img onerror="reloadImage(this)" src="{!! $player->getAvatarUrl() !!}" alt="We believe that {!! htmlentities($player->name) !!} looks like this :)" title="We believe that {!! htmlentities($player->name) !!} looks like this :)" /></p>
 {{--                <p>--}}

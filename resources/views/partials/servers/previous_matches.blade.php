@@ -8,10 +8,11 @@
                     <tr>
                         <th>#</th>
                         <th>Map</th>
-                        <th>Team 1</th>
-                        <th>Team 2</th>
+                        <th class="hidden-sm hidden-xs">Team 1</th>
+                        <th class="hidden-sm hidden-xs">Team 2</th>
+                        <th>Players</th>
                         <th>Started at</th>
-                        <th>Ended at</th>
+                        <th class="hidden-sm hidden-xs">Ended at</th>
                         <th>Duration</th>
                     </tr>
                     </thead>
@@ -19,16 +20,17 @@
                     @forelse($matches as $match)
                         <tr>
                             <td>{{ $matches->perPage()*($matches->currentPage()-1)+$loop->iteration }}</td>
-                            <td class="nowrap"><a href="{{ $match->getLink() }}">{{ $match->map }}</a></td>
-                            <td>{{ $match->team1_name }}</td>
-                            <td>{{ $match->team2_name }}</td>
-                            <td class="nowrap">{{ $match->created_at->toDateTimeString() }}</td>
-                            <td class="nowrap">{{ $match->updated_at->toDateTimeString() }}</td>
-                            <td class="nowrap">{{ $match->lengthForHumans() }}</td>
+                            <td><a href="{{ $match->getLink() }}">{{ $match->map }}</a></td>
+                            <td class="hidden-sm hidden-xs">{{ $match->team1_name }}</td>
+                            <td class="hidden-sm hidden-xs">{{ $match->team2_name }}</td>
+                            <td class="numeric">{{ $match->players_count }}</td>
+                            <td>{{ $match->created_at->toDateTimeString() }}</td>
+                            <td class="hidden-sm hidden-xs">{{ $match->updated_at->toDateTimeString() }}</td>
+                            <td>{{ $match->lengthForHumans() }}</td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7">No matches found.</td>
+                            <td colspan="8">No matches found.</td>
                         </tr>
                     @endforelse
                     </tbody>

@@ -6,43 +6,38 @@
 
 @section('content')
     <div class="row centered">
+        <div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12">
         @if(filter_var($server->community_website, FILTER_VALIDATE_URL))
             <p><a href="{{ $server->community_website }}" target="_blank"><img src="{{ $server->server_logo }}"
                                                                                alt="{{ $server->name }} logo"
                                                                                onerror="$(this).hide()"
-                                                                               class="server-logo img-fluid"/></a></p>
+                                                                               class="server-logo img-responsive"/></a></p>
         @else
             <p><img src="{{ $server->server_logo }}" alt="{{ $server->name }} logo" onerror="$(this).hide()"
-                    class="server-logo img-fluid"/></p>
+                    class="server-logo img-responsive"/></p>
         @endif
+        </div>
     </div>
 
     <div class="row mt content-panel">
-        <!-- /col-md-4 -->
-{{--        <div class="col-md-3 centered">--}}
-{{--            <div class="profile-pic">--}}
-{{--                <p>{!! $server->getCountryFlagHtml(64) !!}</p>--}}
-{{--                <p>--}}
-{{--                    <button class="btn btn-theme"><i class="fa fa-check"></i> Follow</button>--}}
-{{--                    <button class="btn btn-theme02">Add</button>--}}
-{{--                </p>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-        <!-- /col-md-4 -->
-        <div class="col-md-4 profile-text mt mb centered">
+        <div class="col-md-2 col-sm-6 col-xs-6 profile-text mt mb centered">
+            <h4>{!! $server->formatScoreHtml('total_score') !!}</h4>
+            <h6>TOTAL SCORE</h6>
+            <h4>{{ \Cache::remember($server->playerCount()) }}</h4>
+            <h6>UNIQUE PLAYERS</h6>
+        </div>
+        <div class="col-md-2 col-sm-6 col-xs-6 profile-text mt mb centered">
             <div class="right-divider">
-                <h4>{!! $server->formatScoreHtml('total_score') !!}</h4>
-                <h6>TOTAL SCORE</h6>
-                <h4>{{ $server->players->count() }}</h4>
-                <h6>TOTAL PLAYERS</h6>
                 <h4>{!! $server->formatScoreHtml('total_kills') !!}</h4>
                 <h6>TOTAL KILLS</h6>
                 <h4>{!! $server->formatScoreHtml('total_deaths') !!}</h4>
                 <h6>TOTAL DEATHS</h6>
+                <h4>{{ $server->matches_count }}</h4>
+                <h6>MATCHES PLAYED</h6>
             </div>
         </div>
         <!-- /col-md-4 -->
-        <div class="col-md-4 profile-text">
+        <div class="col-md-8 col-sm-12 col-xs-12 profile-text">
             <h3>{{ $server->name }}</h3>
             @if(!empty($server->server_logo))
                 <p>{!! str_replace('|', '<br />', $server->server_text) !!}</p>

@@ -10,7 +10,7 @@
                 <th class="numeric">Score</th>
                 <th class="numeric">Kills</th>
                 <th class="numeric">Deaths</th>
-                <th class="numeric">Duration</th>
+                <th class="numeric hidden-sm hidden-xs">Duration</th>
             </tr>
             </thead>
             <tbody>
@@ -27,18 +27,20 @@
 {{--                    <td>{!! $player->getCountryFlagHtml() !!}</td>--}}
                 <td><a href="{{ $player->getLink() }}">{{ $player->name }}</a></td>
 {{--                    <td>{{ $player->pivot->team }}</td>--}}
-                <td>{{ $player->formatValueHtml($player->pivot->score)  }}</td>
-                <td>{{ $player->formatValueHtml($player->pivot->kills)  }}</td>
-                <td>{{ $player->formatValueHtml($player->pivot->deaths)  }}</td>
-                <td>{{ $player->inGameTime()  }}</td>
+                <td class="numeric">{{ $player->formatValueHtml($player->pivot->score)  }}</td>
+                <td class="numeric">{{ $player->formatValueHtml($player->pivot->kills)  }}</td>
+                <td class="numeric">{{ $player->formatValueHtml($player->pivot->deaths)  }}</td>
+                <td class="numeric hidden-sm hidden-xs">{{ $player->inGameTime()  }}</td>
             </tr>
             @empty
                 <tr>
-                    <td colspan="7">No players found.</td>
+                    <td colspan="7" class="hidden-sm hidden-xs">No players found.</td>
+                    <td colspan="6" class="hidden-md hidden-lg hidden-xl">No players found.</td>
                 </tr>
             @endforelse
             <tr class="strong">
-                <td colspan="3">Total</td>
+                <td colspan="3" class="hidden-sm hidden-xs">Total</td>
+                <td colspan="2" class="hidden-md hidden-lg hidden-xl">Total</td>
                 <td>{{ $team->sum('pivot.score') }}</td>
                 <td>{{ $team->sum('pivot.kills') }}</td>
                 <td>{{ $team->sum('pivot.deaths') }}</td>
