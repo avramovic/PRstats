@@ -11,6 +11,6 @@ trait HasCountryFlag
 
     public function getCountryFlagHtml($size = 24, $style = 'shiny')
     {
-        return $this->country ? '<img src="'.$this->getCountryFlagUrl($size, $style).'" alt="'.$this->country.'" title="'.$this->country.'" />' : '';
+        return $this->country ? '<img class="cf cf-'.$style.' cf-'.$size.'" src="'.$this->getCountryFlagUrl($size, $style).'" alt="'.$this->country.'" title="'.$this->country.'" />' : '';
     }
 }

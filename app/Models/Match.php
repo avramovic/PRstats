@@ -21,7 +21,10 @@ class Match extends Model
 
     public function players()
     {
-        return $this->belongsToMany(Player::class)->withTimestamps()->withPivot(['score', 'kills', 'deaths', 'team']);
+        return $this->belongsToMany(Player::class)
+            ->withTimestamps()
+            ->withPivot(['score', 'kills', 'deaths', 'team'])
+            ->orderBy('match_player.score', 'desc');
     }
 
     public function lengthInMinutes()
@@ -32,6 +35,12 @@ class Match extends Model
     public function lengthForHumans()
     {
         $diff = $this->updated_at->diffForHumans($this->created_at, CarbonInterface::DIFF_ABSOLUTE);
+        return str_replace(['seconds', 'second', 'minutes', 'minute', 'hours', 'hour'], ['sec', 'sec', 'min', 'min', 'hr', 'hr'], $diff);
+    }
+
+    public function pivotLengthForHumans()
+    {
+        $diff = $this->pivot->updated_at->diffForHumans($this->pivot->created_at, CarbonInterface::DIFF_ABSOLUTE);
         return str_replace(['seconds', 'second', 'minutes', 'minute', 'hours', 'hour'], ['sec', 'sec', 'min', 'min', 'hr', 'hr'], $diff);
     }
 
@@ -59,5 +68,24 @@ class Match extends Model
         $slug = Str::slug($this->map);
         return route('match', [$this->id, $slug]);
     }
+
+    public function teamPlayers($team)
+    {
+        return $this->players
+            ->filter(function ($player) use ($team) {
+                return $player->pivot->team == $team;
+            });
+    }
+
+    public function team1Players()
+    {
+        return $this->teamPlayers($this->team1_name);
+    }
+
+    public function team2Players()
+    {
+        return $this->teamPlayers($this->team2_name);
+    }
+
 
 }

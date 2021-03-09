@@ -114,12 +114,12 @@ class PRSpyParse extends Command
 
             if ($serverData->properties->bf2_d_dl) {
 //                $server->br_index    = $serverData->properties->bf2_d_idx;
-                $server->br_download = $serverData->properties->bf2_d_dl;
+                $server->br_download = filter_var($serverData->properties->bf2_d_dl, FILTER_VALIDATE_URL);
             }
 
             $server->server_text       = $serverData->properties->bf2_sponsortext;
-            $server->server_logo       = $serverData->properties->bf2_sponsorlogo_url;
-            $server->community_website = $serverData->properties->bf2_communitylogo_url;
+            $server->server_logo       = filter_var($serverData->properties->bf2_sponsorlogo_url, FILTER_VALIDATE_URL);
+            $server->community_website = filter_var($serverData->properties->bf2_communitylogo_url, FILTER_VALIDATE_URL);
 
             //process numbers
             $server->team1_name = $serverData->properties->bf2_team1;
