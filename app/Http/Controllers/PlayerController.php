@@ -81,7 +81,9 @@ class PlayerController extends Controller
 
         $matches = $player->matches()
             ->with(['server'])
-            ->where('matches.updated_at', '<', $threeMinAgo)
+            ->when($player->wasSeenRecently(), function($q) use ($threeMinAgo) {
+                $q->where('matches.updated_at', '<', $threeMinAgo);
+            })
             ->orderBy('id', 'desc')
             ->paginate(25);
 
