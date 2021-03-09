@@ -106,8 +106,7 @@
                     type: 'post',
                     dataType: "json",
                     data: {
-                        search: request.term,
-                        _token: {!! json_encode(csrf_token()) !!},
+                        search: request.term
                     },
                     success: function( data ) {
                         response( data );
@@ -115,17 +114,19 @@
                 });
             },
             select: function (event, ui) {
-                // Set selection
-                $('#search').val(ui.item.label); // display the selected text
-                // $('#selectuser_id').val(ui.item.value); // save selected id to input
                 window.location = ui.item.value;
                 return false;
             },
             focus: function(event, ui){
                 $('#search').val(ui.item.label); // display the selected text
                 return false;
-            },
-        });
+            }
+        }).data("ui-autocomplete")._renderItem = function( ul, item ) {
+            console.log(item);
+            return $( "<li style='cursor: pointer'></li>" )
+                .append( "<a><i class='fa fa-"+item.icon+"' /> "+ item.label + "</a>" )
+                .appendTo( ul );
+        };
     });
 
     var retries = {};

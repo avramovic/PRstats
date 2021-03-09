@@ -105,7 +105,7 @@ class Server extends Model
         $end    = Carbon::now()->subWeeks($weeks-1);
 
         for ($date = $end->copy(); $date->lte($start); $date=$date->copy()->addWeek()) {
-            $week = (int)$date->format('W')-1;
+            $week = (int)$date->format('W');
             $result[$week] = isset($data[$week]) ? (int)$data[$week] : 0;
         }
 

@@ -2,7 +2,7 @@
     <!-- REVENUE PANEL -->
     <div class="green-panel pn">
         <div class="green-header">
-            <h5>WEEKLY SERVER ACTIVITY</h5>
+            <h5>WEEKLY SERVER POPULARITY</h5>
         </div>
         <div class="chart mt">
             <div class="sparkline" data-type="line" data-resize="true" data-height="75" data-width="90%"

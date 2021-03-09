@@ -4,7 +4,9 @@ namespace PRStats\Http\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use PRStats\Models\Clan;
 use PRStats\Models\Player;
+use PRStats\Models\Server;
 
 class HomeController extends Controller
 {
@@ -39,22 +41,34 @@ class HomeController extends Controller
     public function search(Request $request)
     {
         $players = Player::where('name', 'like', '%'.$request->search.'%')->get();
-//        $clans = Clan::where('name', 'like', '%'.$request->search.'%')->get();
-//        $servers = Server::where('name', 'like', '%'.$request->search.'%')->get();
+        $clans   = Clan::where('name', 'like', '%'.$request->search.'%')->get();
+        $servers = Server::where('name', 'like', '%'.$request->search.'%')->get();
 
         $results = [];
 
         foreach ($players as $player) {
-            $results[] = ['value' => $player->getLink(), 'label' => $player->name];
+            $results[] = [
+                'value' => $player->getLink(),
+                'label' => $player->name,
+                'icon'  => 'user',
+            ];
         }
 
-//        foreach ($clans as $clan) {
-//            $results[] = ['value' => $clan->getLink(), 'label' => $clan->name . ' [c]'];
-//        }
-//
-//        foreach ($servers as $server) {
-//            $results[] = ['value' => $server->getLink(), 'label' => $server->name . ' [s]'];
-//        }
+        foreach ($clans as $clan) {
+            $results[] = [
+                'value' => $clan->getLink(),
+                'label' => $clan->name,
+                'icon'  => 'users',
+            ];
+        }
+
+        foreach ($servers as $server) {
+            $results[] = [
+                'value' => $server->getLink(),
+                'label' => $server->name,
+                'icon'  => 'server',
+            ];
+        }
 
         return response()->json($results);
     }

@@ -40,6 +40,8 @@ Website: http://Alvarez.is/
     *border-bottom-width: 2px;
     max-height: 50vh;
     overflow-y: auto;
+    overflow-x: hidden;
+    max-width: 180px;
 }
 
 .ui-menu-item > a.ui-corner-all {

@@ -29,6 +29,8 @@ class ServerController extends Controller
          */
         $server = Server::findOrFail($id);
 
+        $server->weeklyActivity();
+
         $previousMatches = $server->matches()
             ->where('updated_at', '<', $threeMinAgo)
             ->orderBy('id', 'desc')
