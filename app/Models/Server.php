@@ -126,7 +126,7 @@ class Server extends Model
                         ->from('matches')
                         ->where('server_id', $this->id);
                 })
-                ->count();
+                ->first()->plr_cnt;
         });
 
     }
