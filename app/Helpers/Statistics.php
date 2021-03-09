@@ -38,7 +38,7 @@ class Statistics
             ->select(\DB::raw('count(*) as cnt, WEEKOFYEAR('.$field.') as woy'))
             ->groupBy(\DB::raw('YEAR('.$field.'), WEEKOFYEAR('.$field.')'))
             ->orderBy($field, 'desc')
-            ->limit($weeks)
+            ->limit($weeks+1)
             ->get();
 
         $data = [];
@@ -49,7 +49,7 @@ class Statistics
 
         $result = [];
         $start  = Carbon::now()->endOfDay();
-        $end    = Carbon::now()->subWeeks($weeks-2);
+        $end    = Carbon::now()->subWeeks($weeks-1);
 
         for ($date = $end->copy(); $date->lte($start); $date=$date->copy()->addWeek()) {
             $week = (int)$date->format('W');
