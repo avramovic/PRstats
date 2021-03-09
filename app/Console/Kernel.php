@@ -26,11 +26,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
         $schedule->command('prspy:parse')->everyMinute();
         $schedule->command('prspy:clans')->everyMinute();
         $schedule->command('prspy:clearmonthly')->monthly();
+        $schedule->command('sync:playtime')->monthlyOn(1, '9:00');
     }
 
     public function commands()
