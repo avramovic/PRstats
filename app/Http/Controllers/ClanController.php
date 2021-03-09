@@ -19,17 +19,6 @@ class ClanController extends Controller
         return view('prstats.clans', ['clans' => $clans]);
     }
 
-    public function search(Request $request)
-    {
-        //top players
-        $clans = Clan::withCount('players')
-            ->where('name', 'LIKE', '%'.$request->q.'%')
-            ->orderBy('name', 'asc')
-            ->paginate(50);
-
-        return view('prstats.clans', ['clans' => $clans, 'query' => $request->q]);
-    }
-
     public function show($id, $slug, Request $request)
     {
         $clan = Clan::where('id', $id)->firstOrFail();

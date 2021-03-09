@@ -102,7 +102,7 @@
             source: function( request, response ) {
                 // Fetch data
                 $.ajax({
-                    url: "/ajax",
+                    url: "/search",
                     type: 'post',
                     dataType: "json",
                     data: {
@@ -122,7 +122,6 @@
                 return false;
             }
         }).data("ui-autocomplete")._renderItem = function( ul, item ) {
-            console.log(item);
             return $( "<li style='cursor: pointer'></li>" )
                 .append( "<a><i class='fa fa-"+item.icon+"' /> "+ item.label + "</a>" )
                 .appendTo( ul );
