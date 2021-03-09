@@ -49,7 +49,7 @@ class Player extends Model
         return $this->belongsToMany(Match::class)->withTimestamps()->withPivot(['score', 'kills', 'deaths', 'team']);
     }
 
-    public function getAvatarUrl($size=140)
+    public function getAvatarUrl($size = 140)
     {
         return vsprintf('https://robohash.org/%s.png?set=set5&size=%dx%d', [
             md5($this->name),
@@ -67,61 +67,62 @@ class Player extends Model
 
     public function dailyActivity($days = 7)
     {
-//        \DB::enableQueryLog();
-        $stats = \DB::table('match_player')
-            ->select(\DB::raw('count(*) as cnt, date(updated_at) as date'))
-            ->where('player_id', $this->id)
-            ->groupBy(\DB::raw('YEAR(updated_at), MONTH(updated_at), DAYOFMONTH(updated_at)'))
-            ->orderBy('updated_at', 'desc')
-            ->limit($days)
-            ->get();
+        return \Cache::remember('player_daily_'.$this->id, 3600, function () use ($days) {
+            $stats = \DB::table('match_player')
+                ->select(\DB::raw('count(*) as cnt, date(updated_at) as date'))
+                ->where('player_id', $this->id)
+                ->groupBy(\DB::raw('YEAR(updated_at), MONTH(updated_at), DAYOFMONTH(updated_at)'))
+                ->orderBy('updated_at', 'desc')
+                ->limit($days)
+                ->get();
 
-//        print_r(\DB::getQueryLog());
+            $data = [];
 
-        $data = [];
+            foreach ($stats as $stat) {
+                $data[$stat->date] = $stat->cnt;
+            }
 
-        foreach ($stats as $stat) {
-            $data[$stat->date] = $stat->cnt;
-        }
+            $result = [];
+            $start  = Carbon::now()->endOfDay();
+            $end    = Carbon::now()->subDays($days - 1);
 
-        $result = [];
-        $start  = Carbon::now()->endOfDay();
-        $end    = Carbon::now()->subDays($days-1);
+            for ($date = $end->copy(); $date->lte($start); $date = $date->copy()->addDay()) {
+                $day          = (string)$date->toDateString();
+                $result[$day] = isset($data[$day]) ? (int)$data[$day] : 0;
+            }
 
-        for ($date = $end->copy(); $date->lte($start); $date=$date->copy()->addDay()) {
-            $day = (string)$date->toDateString();
-            $result[$day] = isset($data[$day]) ? (int)$data[$day] : 0;
-        }
-
-        return $result;
+            return $result;
+        });
     }
 
     public function weeklyActivity($weeks = 12)
     {
-        $stats = \DB::table('match_player')
-            ->select(\DB::raw('count(*) as cnt, WEEKOFYEAR(updated_at) as woy'))
-            ->where('player_id', $this->id)
-            ->groupBy(\DB::raw('YEAR(updated_at), WEEKOFYEAR(updated_at)'))
-            ->orderBy('updated_at', 'desc')
-            ->limit($weeks+1)
-            ->get();
+        return \Cache::remember('player_weekly_'.$this->id, 3600 * 4, function () use ($weeks) {
+            $stats = \DB::table('match_player')
+                ->select(\DB::raw('count(*) as cnt, WEEKOFYEAR(updated_at) as woy'))
+                ->where('player_id', $this->id)
+                ->groupBy(\DB::raw('YEAR(updated_at), WEEKOFYEAR(updated_at)'))
+                ->orderBy('updated_at', 'desc')
+                ->limit($weeks + 1)
+                ->get();
 
-        $data = [];
+            $data = [];
 
-        foreach ($stats as $stat) {
-            $data[$stat->woy] = $stat->cnt;
-        }
+            foreach ($stats as $stat) {
+                $data[$stat->woy] = $stat->cnt;
+            }
 
-        $result = [];
-        $start  = Carbon::now()->endOfDay();
-        $end    = Carbon::now()->subWeeks($weeks-1);
+            $result = [];
+            $start  = Carbon::now()->endOfDay();
+            $end    = Carbon::now()->subWeeks($weeks - 1);
 
-        for ($date = $end->copy(); $date->lte($start); $date=$date->copy()->addWeek()) {
-            $week = (int)$date->format('W');
-            $result[$week] = isset($data[$week]) ? (int)$data[$week] : 0;
-        }
+            for ($date = $end->copy(); $date->lte($start); $date = $date->copy()->addWeek()) {
+                $week          = (int)$date->format('W');
+                $result[$week] = isset($data[$week]) ? (int)$data[$week] : 0;
+            }
 
-        return $result;
+            return $result;
+        });
     }
 
 }

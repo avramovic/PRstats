@@ -27,11 +27,15 @@ class ServerController extends Controller
         /**
          * @var Server
          */
-        $server = Server::findOrFail($id);
+        $server = Server::where('id', $id)
+            ->withCount('matches')
+            ->firstOrFail();
 
         $server->weeklyActivity();
 
+
         $previousMatches = $server->matches()
+            ->withCount('players')
             ->where('updated_at', '<', $threeMinAgo)
             ->orderBy('id', 'desc')
             ->paginate(25);
