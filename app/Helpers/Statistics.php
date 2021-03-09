@@ -49,7 +49,7 @@ class Statistics
 
         $result = [];
         $start  = Carbon::now()->endOfDay();
-        $end    = Carbon::now()->subWeeks($weeks-1);
+        $end    = Carbon::now()->subWeeks($weeks);
 
         for ($date = $end->copy(); $date->lte($start); $date=$date->copy()->addWeek()) {
             $week = (int)$date->format('W');

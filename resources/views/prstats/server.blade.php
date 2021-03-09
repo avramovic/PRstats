@@ -28,7 +28,7 @@
 {{--                </p>--}}
 {{--            </div>--}}
 {{--        </div>--}}
-        <!-- /col-md-4 -->s
+        <!-- /col-md-4 -->
         <div class="col-md-4 profile-text mt mb centered">
             <div class="right-divider">
                 <h4>{!! $server->formatScoreHtml('total_score') !!}</h4>
