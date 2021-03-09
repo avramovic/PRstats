@@ -19,11 +19,11 @@
         <p>
             <?php $verb = $match->wasSeenRecently() ? 'is' : 'was'; ?>
         @if($match->team1Players()->sum('pivot.score') > $match->team2Players()->sum('pivot.score'))
-            Team {{ $match->team1_name }} {{ $verb }} better overall.
+            Team {{ $match->team1_name }} {{ $verb }} better
         @elseif($match->team1Players()->sum('pivot.score') < $match->team2Players()->sum('pivot.score'))
-            Team {{ $match->team2_name }} {{ $verb }} better overall.
+            Team {{ $match->team2_name }} {{ $verb }} better
         @else
-            Game {{ $verb }} indecisive.
+            Game {{ $verb }} indecisive
         @endif
         </p>
         <footer>

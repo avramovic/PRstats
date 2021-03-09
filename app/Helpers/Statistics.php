@@ -5,12 +5,12 @@ use Carbon\Carbon;
 class Statistics
 {
 
-    public static function dailyNew($table, $days = 7)
+    public static function dailyNew($table, $field = 'created_at', $days = 7)
     {
         $stats = \DB::table($table)
-            ->select(\DB::raw('count(*) as cnt, date(created_at) as date'))
-            ->groupBy(\DB::raw('YEAR(created_at), MONTH(created_at), DAYOFMONTH(created_at)'))
-            ->orderBy('created_at', 'desc')
+            ->select(\DB::raw('count(*) as cnt, date('.$field.') as date'))
+            ->groupBy(\DB::raw('YEAR('.$field.'), MONTH('.$field.'), DAYOFMONTH('.$field.')'))
+            ->orderBy($field, 'desc')
             ->limit($days)
             ->get();
 
@@ -32,12 +32,12 @@ class Statistics
         return $result;
     }
 
-    public static function weeklyNew($table, $weeks = 12)
+    public static function weeklyNew($table, $field = 'created_at', $weeks = 12)
     {
         $stats = \DB::table($table)
-            ->select(\DB::raw('count(*) as cnt, WEEKOFYEAR(created_at) as woy'))
-            ->groupBy(\DB::raw('YEAR(created_at), WEEKOFYEAR(created_at)'))
-            ->orderBy('created_at', 'desc')
+            ->select(\DB::raw('count(*) as cnt, WEEKOFYEAR('.$field.') as woy'))
+            ->groupBy(\DB::raw('YEAR('.$field.'), WEEKOFYEAR('.$field.')'))
+            ->orderBy($field, 'desc')
             ->limit($weeks)
             ->get();
 

@@ -9,20 +9,31 @@
         <i class="fa fa-angle-right"></i> Top players in {{ date('F') }}
     @endcomponent
 
-    @component('partials.players.player_list', ['players' => $newest, 'metric' => 'created_at'])
-        Newest players
+    @include('partials.stats_daily', ['table' => 'players', 'field' => 'updated_at'])
+    @include('partials.stats_weekly', ['table' => 'players', 'field' => 'updated_at'])
+
+    @component('partials.players.player_list', ['players' => $mostKills, 'metric' => 'monthly_kills'])
+        Most kills in {{ date('F') }}
     @endcomponent
 
-    @component('partials.players.player_list', ['players' => $longest, 'metric' => 'minutes_played'])
-        Longest in game
+    @component('partials.players.player_list', ['players' => $mostDeaths, 'metric' => 'monthly_deaths'])
+        Most deaths in {{ date('F') }}
     @endcomponent
 
-    @component('partials.players.player_list', ['players' => $mostKills, 'metric' => 'total_kills'])
-        Most kills
+    @component('partials.stats_daily', ['table' => 'matches'])
+        DAILY MATCHES PLAYED
+
+        @slot('subtitle')
+            matches played per day<br />(last 7 days)
+        @endslot
     @endcomponent
 
-    @component('partials.players.player_list', ['players' => $mostDeaths, 'metric' => 'total_deaths'])
-        Most deaths
+    @component('partials.stats_weekly', ['table' => 'matches'])
+        WEEKLY MATCHES PLAYED
+
+        @slot('subtitle')
+            matches played per week<br />(last 12 weeks)
+        @endslot
     @endcomponent
 
 @endsection

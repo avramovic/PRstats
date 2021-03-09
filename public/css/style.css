@@ -1442,8 +1442,8 @@ PANELS CONFIGURATIONS
 }
 .steps label{
   background: #393D40;
-  height: 65px;
-  line-height: 65px;
+  height: 50px;
+  line-height: 50px;
   width: 100%;
   display: block;
   border-bottom: 1px solid #44494e;
@@ -1452,24 +1452,26 @@ PANELS CONFIGURATIONS
   font-weight: 900;
   font-size: 11px;
   letter-spacing: 1px;
-  text-indent: 52px;
+  text-indent: 10px;
   cursor: pointer;
   transition: all 0.7s ease;
   margin: 0px;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
-.steps label:before{
-  content:"";
-  width: 12px;
-  height: 12px;
-  display: block;
-  position: absolute;
-  margin: 26px 0px 0px 18px;
-  border-radius: 100%;
-  transition: border 0.7s ease
-}
+/*.steps label:before{*/
+/*  content:"";*/
+/*  width: 12px;*/
+/*  height: 12px;*/
+/*  display: block;*/
+/*  position: absolute;*/
+/*  margin: 26px 0px 0px 18px;*/
+/*  border-radius: 100%;*/
+/*  transition: border 0.7s ease*/
+/*}*/
 .steps label:hover{
   background: #2B2E30;
-  color: #46b7e5
+  color: #ccc
 }
 .steps label:hover:before{
   border: 1px solid #46b7e5;

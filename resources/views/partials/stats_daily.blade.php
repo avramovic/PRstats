@@ -1,8 +1,10 @@
-<div class="col-md-4 col-sm-4 mb">
-    <!-- REVENUE PANEL -->
+<div class="col-md-3 col-sm-3 mb">
+    @php
+        $word = !isset($field) || ($field == 'created_at') ? 'new' : 'active';
+    @endphp
     <div class="green-panel pn">
         <div class="green-header">
-            <h5>DAILY NEW {{ strtoupper($table) }}</h5>
+            <h5>{!! $slot ?? ('DAILY '.strtoupper($word) . ' ' . strtoupper($table)) !!}</h5>
         </div>
         <div class="chart mt">
             <div class="sparkline" data-type="line" data-resize="true" data-height="75" data-width="90%"
@@ -10,7 +12,7 @@
                  data-highlight-line-color="#fff" data-spot-radius="4"
                  data-data="[{{ implode(',', \PRStats\Helpers\Statistics::dailyNew($table)) }}]"></div>
         </div>
-        <p class="mt">new {{ $table }} per day <br />
-        (last 7 days)</p>
+        <p class="mt">{!! $subtitle ?? ($word . ' ' . $table . ' per day<br />(last 7 days)') !!}</p>
+
     </div>
 </div>

@@ -17,7 +17,7 @@
                     @elseif($metric==='minutes_played')
                         <abbr title="{{ round($player->minutesPlayed() / 60, 1) }} hour(s)">~{{ Carbon\Carbon::now()->addMinutes($player->minutesPlayed())->diffForHumans(null, true) }}</abbr>
                     @else
-                        {{ $player->formatScoreHtml($metric) }} {{ str_replace('total_', '', $metric) }}
+                        {!! $player->formatScoreHtml($metric) !!} {{ str_replace(['total_', 'monthly_'], '', $metric) }}
                     @endif
                 </em>
             </p>

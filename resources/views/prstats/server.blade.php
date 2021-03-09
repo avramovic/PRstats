@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <div class="row content-panel centered">
+    <div class="row centered">
         @if(filter_var($server->community_website, FILTER_VALIDATE_URL))
             <p><a href="{{ $server->community_website }}" target="_blank"><img src="{{ $server->server_logo }}"
                                                                                alt="{{ $server->name }} logo"
@@ -16,7 +16,19 @@
                     class="server-logo img-fluid"/></p>
         @endif
     </div>
-    <div class="row content-panel">
+
+    <div class="row mt content-panel">
+        <!-- /col-md-4 -->
+{{--        <div class="col-md-3 centered">--}}
+{{--            <div class="profile-pic">--}}
+{{--                <p>{!! $server->getCountryFlagHtml(64) !!}</p>--}}
+{{--                <p>--}}
+{{--                    <button class="btn btn-theme"><i class="fa fa-check"></i> Follow</button>--}}
+{{--                    <button class="btn btn-theme02">Add</button>--}}
+{{--                </p>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+        <!-- /col-md-4 -->s
         <div class="col-md-4 profile-text mt mb centered">
             <div class="right-divider">
                 <h4>{!! $server->formatScoreHtml('total_score') !!}</h4>
@@ -32,14 +44,10 @@
         <!-- /col-md-4 -->
         <div class="col-md-4 profile-text">
             <h3>{{ $server->name }}</h3>
-{{--            <p>COUNTRY: {{ $server->country }} <br/> OS: <i title="{{ $server->os }}"--}}
-{{--                                                            class="fa {{ stripos($server->os, 'win') !== false ? 'fa-windows' : 'fa-linux'  }}"></i>--}}
-{{--            </p>--}}
             @if(!empty($server->server_logo))
                 <p>{!! str_replace('|', '<br />', $server->server_text) !!}</p>
             @endif
             <p>{!! $server->getCountryFlagHtml() !!}</p>
-            {{--            <p>Contrary to popu?lar belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC.</p>--}}
             <br>
             <p>
                 @if($server->community_website)
@@ -53,17 +61,7 @@
 
             </p>
         </div>
-        <!-- /col-md-4 -->
-        <div class="col-md-4 centered">
-            <div class="profile-pic">
-                <p>{!! $server->getCountryFlagHtml(64) !!}</p>
-                <p>
-                    <button class="btn btn-theme"><i class="fa fa-check"></i> Follow</button>
-                    <button class="btn btn-theme02">Add</button>
-                </p>
-            </div>
-        </div>
-        <!-- /col-md-4 -->
+
     </div>
 
 

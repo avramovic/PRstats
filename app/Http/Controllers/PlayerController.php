@@ -16,7 +16,36 @@ class PlayerController extends Controller
             ->orderBy('total_score', 'desc')
             ->paginate(50);
 
-        return view('prstats.players', ['players' => $players]);
+        $newest = Player::with('clan')
+            ->orderBy('created_at', 'desc')
+            ->limit(10)
+            ->get();
+
+        $longest = Player::with(['clan', 'matches'])
+            ->orderBy('minutes_played', 'desc')
+            ->limit(10)
+            ->get()
+            ->sortByDesc(function ($player) {
+                return $player->minutesPlayed();
+            });
+
+        $mostKills = Player::with('clan')
+            ->orderBy('total_kills', 'desc')
+            ->limit(10)
+            ->get();
+
+        $mostDeaths = Player::with('clan')
+            ->orderBy('total_deaths', 'desc')
+            ->limit(10)
+            ->get();
+
+        return view('prstats.players', [
+            'players'    => $players,
+            'newest'     => $newest,
+            'mostKills'  => $mostKills,
+            'mostDeaths' => $mostDeaths,
+            'longest'    => $longest,
+        ]);
     }
 
     public function search(Request $request)
