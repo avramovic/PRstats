@@ -103,7 +103,7 @@ class Player extends Model
             ->where('player_id', $this->id)
             ->groupBy(\DB::raw('YEAR(updated_at), WEEKOFYEAR(updated_at)'))
             ->orderBy('updated_at', 'desc')
-            ->limit($weeks)
+            ->limit($weeks+1)
             ->get();
 
         $data = [];
