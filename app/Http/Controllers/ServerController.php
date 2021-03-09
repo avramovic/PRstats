@@ -34,7 +34,7 @@ class ServerController extends Controller
         $previousMatches = $server->matches()
             ->where('updated_at', '<', $threeMinAgo)
             ->orderBy('id', 'desc')
-            ->paginate();
+            ->paginate(50);
 
         $lastMatch = $server->matches()
             ->with(['players' => function ($q) use ($threeMinAgo) {

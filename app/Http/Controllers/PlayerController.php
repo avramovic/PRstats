@@ -83,7 +83,7 @@ class PlayerController extends Controller
             ->with(['server'])
             ->where('matches.updated_at', '<', $threeMinAgo)
             ->orderBy('id', 'desc')
-            ->paginate();
+            ->paginate(25);
 
         $lastMatch = $player->matches()
             ->orderBy('id', 'desc')
