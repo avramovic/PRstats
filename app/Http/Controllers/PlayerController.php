@@ -21,13 +21,10 @@ class PlayerController extends Controller
             ->limit(10)
             ->get();
 
-        $longest = Player::with(['clan', 'matches'])
+        $longest = Player::with(['clan'])
             ->orderBy('minutes_played', 'desc')
             ->limit(10)
-            ->get()
-            ->sortByDesc(function ($player) {
-                return $player->minutesPlayed();
-            });
+            ->get();
 
         $mostKills = Player::with('clan')
             ->orderBy('total_kills', 'desc')
