@@ -39,12 +39,11 @@
                 </tr>
             @endforelse
             <tr class="strong">
-                <td colspan="3" class="hidden-sm hidden-xs">Total</td>
-                <td colspan="2" class="hidden-md hidden-lg hidden-xl">Total</td>
+                <td colspan="3">Total</td>
                 <td>{{ $team->sum('pivot.score') }}</td>
                 <td>{{ $team->sum('pivot.kills') }}</td>
                 <td>{{ $team->sum('pivot.deaths') }}</td>
-                <td></td>
+                <td class="hidden-sm hidden-xs"></td>
             </tr>
             </tbody>
         </table>
