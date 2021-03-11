@@ -35,7 +35,7 @@ class ClanController extends Controller
             'clan'          => $clan,
             'players'       => $players,
             'playerDetails' => $playerDetails,
-            'server'        => $clan->last_player_seen->server,
+//            'server'        => $clan->last_player_seen->server,
         ]);
     }
 
