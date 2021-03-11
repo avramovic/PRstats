@@ -26,6 +26,7 @@ class ClanController extends Controller
         /** @var Collection $players */
         $players = $clan->players()->withCount(['matches'])->orderBy('total_score', 'desc')->get();
 
+        $playerDetails = null;
         if ($players->count() > 0) {
             $playerDetails = $players->find($request->query('p', $players->first()->id)) ?? $players->first();
         }
