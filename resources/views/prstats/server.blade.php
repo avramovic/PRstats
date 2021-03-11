@@ -23,7 +23,7 @@
         <div class="col-md-2 col-sm-6 col-xs-6 profile-text mt mb centered">
             <h4>{!! $server->formatScoreHtml('total_score') !!}</h4>
             <h6>TOTAL SCORE</h6>
-            <h4>{{ $server->formatValueHtml($server->playerCount()) }}</h4>
+            <h4>{!! $server->formatValueHtml($server->playerCount()) !!}</h4>
             <h6>UNIQUE PLAYERS</h6>
         </div>
         <div class="col-md-2 col-sm-6 col-xs-6 profile-text mt mb centered">
