@@ -10,7 +10,8 @@
         "laravelcollective/html": "5.8",
         "laravel/tinker": "v1.0.10",
         "fideloper/proxy": "^4.0",
-        "filp/whoops": "^2.9"
+        "filp/whoops": "^2.9",
+        "avram/robohash": "^1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
