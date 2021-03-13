@@ -36,32 +36,32 @@ return [
 
         'database' => [
             'driver' => 'database',
-            'table' => 'jobs',
-            'queue' => 'default',
+            'table'  => 'jobs',
+            'queue'  => 'default',
             'expire' => 60,
         ],
 
         'beanstalkd' => [
             'driver' => 'beanstalkd',
-            'host' => 'localhost',
-            'queue' => 'default',
-            'ttr' => 60,
+            'host'   => 'localhost',
+            'queue'  => 'default',
+            'ttr'    => 60,
         ],
 
         'sqs' => [
             'driver' => 'sqs',
-            'key' => 'your-public-key',
-            'secret' => 'your-secret-key',
-            'prefix' => 'https://sqs.us-east-1.amazonaws.com/your-account-id',
-            'queue' => 'your-queue-name',
-            'region' => 'us-east-1',
+            'key'    => env('AWS_ACCESS_KEY_ID'),
+            'secret' => env('AWS_SECRET_ACCESS_KEY'),
+            'prefix' => 'https://sqs.'.env('AWS_REGION', 'eu-central-1').'.amazonaws.com/'.env('AWS_ACCOUNT_ID', 'eu-central-1'),
+            'queue'  => env('QUEUE_NAME', 'prstats'),
+            'region' => env('AWS_REGION', 'eu-central-1'),
         ],
 
         'redis' => [
-            'driver' => 'redis',
+            'driver'     => 'redis',
             'connection' => 'default',
-            'queue' => 'default',
-            'expire' => 60,
+            'queue'      => 'default',
+            'expire'     => 60,
         ],
 
     ],
@@ -79,7 +79,7 @@ return [
 
     'failed' => [
         'database' => env('DB_CONNECTION', 'mysql'),
-        'table' => 'failed_jobs',
+        'table'    => 'failed_jobs',
     ],
 
 ];

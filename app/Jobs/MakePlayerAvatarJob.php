@@ -38,7 +38,6 @@ class MakePlayerAvatarJob implements ShouldQueue
     public function handle()
     {
         $avatar = Robohash::make($this->player->pid, 140, 'set5');
-
         Storage::put($this->player->getAvatarPath(), $avatar->encode('png'));
     }
 }

@@ -37,16 +37,23 @@ class InitAvatarsCommand extends Command
             $before = Carbon::now()->startOfDay();
         }
 
+        $total     = Player::count();
+        $processed = 0;
+
         Player::where('created_at', '<=', $before)
             ->orderBy('id')
-            ->chunk(10, function ($players) {
+            ->chunk(10, function ($players) use ($total, $processed) {
                 /** @var Player $player */
                 foreach ($players as $player) {
                     if (!Storage::exists($player->getAvatarPath())) {
                         dispatch(new MakePlayerAvatarJob($player));
                     }
+                    $processed++;
                 }
+                $this->line(sprintf('Processed %d out of %d', $processed, $total));
                 sleep(1);
             });
+
+        $this->info('Done');
     }
 }
