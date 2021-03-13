@@ -125,4 +125,20 @@ class Player extends Model
         });
     }
 
+    public function getAvatarPath()
+    {
+        return 'avatars' . DIRECTORY_SEPARATOR
+            . substr($this->pid, 0, 2) . DIRECTORY_SEPARATOR
+            . substr($this->pid, 2, 2) . DIRECTORY_SEPARATOR
+            . $this->pid . '.png';
+    }
+
+    public function getSignaturePath()
+    {
+        return 'signatures' . DIRECTORY_SEPARATOR
+            . substr($this->pid, 0, 2) . DIRECTORY_SEPARATOR
+            . substr($this->pid, 2, 2) . DIRECTORY_SEPARATOR
+            . $this->pid . '.png';
+    }
+
 }
