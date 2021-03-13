@@ -19,6 +19,11 @@ class Match extends Model
         return $this->belongsTo(Server::class);
     }
 
+    public function map()
+    {
+        return $this->belongsTo(Map::class);
+    }
+
     public function players()
     {
         return $this->belongsToMany(Player::class)

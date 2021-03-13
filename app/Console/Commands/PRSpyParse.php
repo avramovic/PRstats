@@ -5,7 +5,10 @@ namespace PRStats\Console\Commands;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
+use PRStats\Jobs\DownloadMapImagesJob;
+use PRStats\Jobs\MakePlayerAvatarJob;
 use PRStats\Models\Clan;
+use PRStats\Models\Map;
 use PRStats\Models\Match;
 use PRStats\Models\Player;
 use PRStats\Models\Server;
@@ -69,6 +72,16 @@ class PRSpyParse extends Command
                 $server->save();
             }
 
+            $map = Map::where('name', $serverData->properties->mapname)->first();
+
+            if (!$map) {
+                $map = Map::create([
+                    'name' => $serverData->properties->mapname,
+                    'slug' => Str::slug($serverData->properties->mapname),
+                ]);
+                dispatch(new DownloadMapImagesJob($map));
+            }
+
             if ($server->last_map != $serverData->properties->mapname) {
                 $newgame          = true;
                 $server->last_map = $serverData->properties->mapname;
@@ -77,6 +90,7 @@ class PRSpyParse extends Command
                 $match = Match::create([
                     'server_id'  => $server->id,
                     'map'        => $serverData->properties->mapname,
+                    'map_id'     => $map->id,
                     'team1_name' => $serverData->properties->bf2_team1,
                     'team2_name' => $serverData->properties->bf2_team2,
                 ]);
@@ -240,7 +254,16 @@ class PRSpyParse extends Command
                 $player->minutes_played = $minutes;
 
                 $player->server_id = $server->id;
-                $player->save();
+
+                if (!$player->exists) {
+                    $player->save();
+                    dispatch(new MakePlayerAvatarJob($player));
+                } else {
+                    $player->save();
+//                    if ($player->total_score >= 10000 && $player->updated_at->diffInMinutes() > 60) {
+//                        dispatch(new MakePlayerSignatureJob($player));
+//                    }
+                }
 
                 $playerTeam = ($playerData->team == 1) ? $serverData->properties->bf2_team1 : $serverData->properties->bf2_team2;
 

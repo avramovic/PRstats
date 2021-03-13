@@ -13,7 +13,7 @@ class Server extends Model
 {
     use WasSeenRecentlyTrait, FormatScoreTrait, HasCountryFlag;
 
-    protected $guarded = ['id'];
+    protected $guarded = [];
 
     public function getLink()
     {
