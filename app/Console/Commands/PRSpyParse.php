@@ -76,13 +76,10 @@ class PRSpyParse extends Command
 
             if (!$map) {
                 $map = Map::create([
-                    'name'      => $serverData->properties->mapname,
-                    'slug'      => Str::slug($serverData->properties->mapname),
-                    'server_id' => $server->id,
+                    'name' => $serverData->properties->mapname,
+                    'slug' => Str::slug($serverData->properties->mapname),
                 ]);
                 dispatch(new DownloadMapImagesJob($map));
-            } else {
-                $map->touch();
             }
 
             if ($server->last_map != $serverData->properties->mapname) {

@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "avram/robohash",
-            "version": "1.0.2",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/avramovic/php-robohash.git",
-                "reference": "b7a8a318df0f2a3d118e727c8161cbb76ea5a3a0"
+                "reference": "9b9ec196269f09c55efd7acc9bf6675ea1d02b9c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/avramovic/php-robohash/zipball/b7a8a318df0f2a3d118e727c8161cbb76ea5a3a0",
-                "reference": "b7a8a318df0f2a3d118e727c8161cbb76ea5a3a0",
+                "url": "https://api.github.com/repos/avramovic/php-robohash/zipball/9b9ec196269f09c55efd7acc9bf6675ea1d02b9c",
+                "reference": "9b9ec196269f09c55efd7acc9bf6675ea1d02b9c",
                 "shasum": ""
             },
             "require": {
@@ -45,9 +45,9 @@
             ],
             "description": "PHP implementation of Robohash.org image generator",
             "support": {
-                "source": "https://github.com/avramovic/php-robohash/tree/1.0.2"
+                "source": "https://github.com/avramovic/php-robohash/tree/1.0.3"
             },
-            "time": "2021-03-12T11:06:31+00:00"
+            "time": "2021-03-13T22:18:22+00:00"
         },
         {
             "name": "aws/aws-sdk-php",
