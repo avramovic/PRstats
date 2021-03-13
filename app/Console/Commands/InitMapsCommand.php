@@ -54,6 +54,16 @@ class InitMapsCommand extends Command
                 ->update(['map_id' => $map->id]);
         }
 
+        foreach (Map::all() as $map) {
+            $first           = $map->matches()->orderBy('id')->first();
+            $last            = $map->matches()->orderBy('id', 'desc')->first();
+            $map->timestamps = false;
+            $map->update([
+                'created_at' => $first->created_at,
+                'updated_at' => $last->updated_at,
+            ], ['timestamps' => 'false']);
+        }
+
         $this->info('Done');
     }
 }
