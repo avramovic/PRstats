@@ -11,14 +11,16 @@
         "laravel/tinker": "v1.0.10",
         "fideloper/proxy": "^4.0",
         "filp/whoops": "^2.9",
-        "avram/robohash": "^1.0"
+        "avram/robohash": "^1.0",
+        "league/flysystem-aws-s3-v3": "~1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
         "phpunit/phpunit": "~6.0",
         "symfony/css-selector": "3.1.*",
-        "symfony/dom-crawler": "3.1.*"
+        "symfony/dom-crawler": "3.1.*",
+        "barryvdh/laravel-ide-helper": "2.8.0"
     },
     "autoload": {
         "classmap": [
@@ -44,7 +46,9 @@
             "Illuminate\\Foundation\\ComposerScripts::postInstall"
         ],
         "post-update-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postUpdate"
+            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
+            "@php artisan ide-helper:generate",
+            "@php artisan ide-helper:meta"
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
