@@ -1,6 +1,6 @@
 <div class="col-lg-4 col-md-4 col-sm-4 mb">
     <div class="content-panel pn">
-        <div id="blog-bg" style="background: url({{ $server->getLastMapImageUrl() }}); background-size: cover">
+        <div id="blog-bg" style="background: url({{ $server->getLastMapImageUrl('banner') }}); background-size: cover">
             @if($server->wasSeenRecently())
             <div class="badge badge-popular">@if($server->num_players >= $server->max_players-$server->reserved_slots) FULL @else ONLINE @endif</div>
             @endif
