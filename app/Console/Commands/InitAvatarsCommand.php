@@ -15,7 +15,7 @@ class InitAvatarsCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'init:avatars {{date=today}}';
+    protected $signature = 'init:avatars {{before=today}}';
 
     /**
      * The console command description.
@@ -32,7 +32,7 @@ class InitAvatarsCommand extends Command
     public function handle()
     {
         try {
-            $before = Carbon::parse($this->argument('date'))->startOfDay();
+            $before = Carbon::parse($this->argument('before'))->startOfDay();
         } catch (\Exception $e) {
             $before = Carbon::now()->startOfDay();
         }
@@ -42,7 +42,7 @@ class InitAvatarsCommand extends Command
 
         Player::where('created_at', '<=', $before)
             ->orderBy('id')
-            ->chunk(10, function ($players) use ($total, $processed) {
+            ->chunk(100, function ($players) use ($total, $processed) {
                 /** @var Player $player */
                 foreach ($players as $player) {
                     if (!Storage::exists($player->getAvatarPath())) {
