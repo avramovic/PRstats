@@ -30,6 +30,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('prspy:clans')->everyMinute();
         $schedule->command('prspy:clearmonthly')->monthly();
         $schedule->command('sync:playtime')->monthlyOn(1, '9:00');
+        $schedule->command('cache:clear')->monthly();
     }
 
     public function commands()
