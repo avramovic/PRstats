@@ -1,47 +1,59 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Be right back.</title>
+<html lang="en">
 
-        <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Project Reality statistics">
+    <meta name="author" content="Nemanja Avramovic">
+    <meta name="keyword" content="projct reality, project, reality, game, battlefield">
+    <title>Internal server error &bull; PRstats.tk</title>
 
-        <style>
-            html, body {
-                height: 100%;
-            }
+    <!-- Favicons -->
+    <link href="/img/logo.png" rel="icon">
+    <link href="/img/apple-touch-icon.png" rel="apple-touch-icon">
 
-            body {
-                margin: 0;
-                padding: 0;
-                width: 100%;
-                color: #B0BEC5;
-                display: table;
-                font-weight: 100;
-                font-family: 'Lato';
-            }
+    <!-- Bootstrap core CSS -->
+    <link href="/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!--external css-->
+    <link href="/lib/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/style-responsive.css" rel="stylesheet">
 
-            .container {
-                text-align: center;
-                display: table-cell;
-                vertical-align: middle;
-            }
+    <!-- =======================================================
+      Template Name: Dashio
+      Template URL: https://templatemag.com/dashio-bootstrap-admin-template/
+      Author: TemplateMag.com
+      License: https://templatemag.com/license/
+    ======================================================= -->
+</head>
 
-            .content {
-                text-align: center;
-                display: inline-block;
-            }
-
-            .title {
-                font-size: 72px;
-                margin-bottom: 40px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <div class="content">
-                <div class="title">Be right back.</div>
-            </div>
+<body>
+<!-- **********************************************************************************************************************************************************
+    MAIN CONTENT
+    *********************************************************************************************************************************************************** -->
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 col-lg-offset-3 p404 centered">
+            <img src="/img/logo.png" alt="">
+            <h1>ERROR 500</h1>
+            <h3>Ouch!! Something Went Wrong!</h3>
+{{--            <br>--}}
+{{--            <div class="row">--}}
+{{--                <div class="col-md-8 col-md-offset-2">--}}
+{{--                    <input type="text" class="form-control" id="form1Name" name="form1Name">--}}
+{{--                    <button class="btn btn-theme mt">Search</button>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+            <h5 class="mt">Hey, maybe you will be interested in these pages:</h5>
+            <p><a href="/">Home</a> | <a href="/players">Players</a> | <a href="/servers"> Servers</a></p>
         </div>
-    </body>
+    </div>
+</div>
+<!-- js placed at the end of the document so the pages load faster -->
+<script src="lib/jquery/jquery.min.js"></script>
+<script src="lib/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
 </html>

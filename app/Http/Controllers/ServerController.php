@@ -35,13 +35,14 @@ class ServerController extends Controller
 
 
         $previousMatches = $server->matches()
+            ->with(['map'])
             ->withCount('players')
             ->where('updated_at', '<', $threeMinAgo)
             ->orderBy('id', 'desc')
             ->paginate(25);
 
         $lastMatch = $server->matches()
-            ->with(['players' => function ($q) use ($threeMinAgo) {
+            ->with(['map', 'players' => function ($q) use ($threeMinAgo) {
                 return $q->where('match_player.updated_at', '>=', $threeMinAgo)
                     ->orderBy('match_player.score', 'desc');
             }])
@@ -57,7 +58,7 @@ class ServerController extends Controller
 
     public function match($id, $map)
     {
-        $match = Match::with(['server', 'players' => function ($q) {
+        $match = Match::with(['map', 'server', 'players' => function ($q) {
             return $q->orderBy('match_player.score', 'desc');
         }])->findOrFail($id);
 

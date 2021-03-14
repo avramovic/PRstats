@@ -72,7 +72,8 @@ class PRSpyParse extends Command
                 $server->save();
             }
 
-            $map = Map::where('name', $serverData->properties->mapname)->first();
+            $map = Map::where('name', $serverData->properties->mapname)
+                ->first();
 
             if (!$map) {
                 $map = Map::create([
@@ -89,22 +90,22 @@ class PRSpyParse extends Command
                 /** @var Match $match */
                 $match = Match::create([
                     'server_id'  => $server->id,
-                    'map'        => $serverData->properties->mapname,
                     'map_id'     => $map->id,
                     'team1_name' => $serverData->properties->bf2_team1,
                     'team2_name' => $serverData->properties->bf2_team2,
                 ]);
             } else {
                 $match = $server->matches()
-//                    ->where('map', $serverData->properties->mapname)
+                    ->with(['map'])
+                    ->where('map_id', $map->id)
                     ->orderBy('id', 'desc')
                     ->first();
 
                 //just a safe check
-                if (!$match || $match->map != $serverData->properties->mapname) {
+                if (!$match || $match->map->name != $serverData->properties->mapname) {
                     $match = Match::create([
                         'server_id'  => $server->id,
-                        'map'        => $serverData->properties->mapname,
+                        'map_id'     => $map->id,
                         'gamemode'   => $serverData->properties->gametype,
                         'team1_name' => $serverData->properties->bf2_team1,
                         'team2_name' => $serverData->properties->bf2_team2,
@@ -113,7 +114,6 @@ class PRSpyParse extends Command
                     $match->update([
                         'updated_at' => Carbon::now(),
                         'gamemode'   => $serverData->properties->gametype,
-
                     ]);
                 }
             }

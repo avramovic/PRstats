@@ -36,4 +36,9 @@ class Map extends Model
             . $this->slug . DIRECTORY_SEPARATOR
             . 'tile.png';
     }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
 }
