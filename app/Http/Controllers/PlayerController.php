@@ -5,6 +5,7 @@ namespace PRStats\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use PRStats\Models\Player;
+use Storage;
 
 class PlayerController extends Controller
 {
@@ -77,7 +78,7 @@ class PlayerController extends Controller
 
         $matches = $player->matches()
             ->with(['server', 'map'])
-            ->when($player->wasSeenRecently(), function($q) use ($threeMinAgo) {
+            ->when($player->wasSeenRecently(), function ($q) use ($threeMinAgo) {
                 $q->where('matches.updated_at', '<', $threeMinAgo);
             })
             ->orderBy('id', 'desc')
@@ -89,11 +90,12 @@ class PlayerController extends Controller
             ->first();
 
         return view('prstats.player', [
-            'player'      => $player,
-            'clanPlayers' => $player->clan ? $player->clan->players : collect([]),
-            'server'      => $player->server,
-            'matches'     => $matches,
-            'lastMatch'   => $lastMatch,
+            'player'       => $player,
+            'clanPlayers'  => $player->clan ? $player->clan->players : collect([]),
+            'server'       => $player->server,
+            'matches'      => $matches,
+            'lastMatch'    => $lastMatch,
+            'hasSignature' => Storage::exists($player->getSignaturePath()),
         ]);
     }
 

@@ -90,11 +90,11 @@
             var unique_id = $.gritter.add({
                 title: 'Welcome to PRstats!',
                 text: 'Welcome to the new PRstats web site. I hope this new design will make it easier for you to consume the data this web site provides.',
-                image: 'https://robohash.org/75c53d450505ec0e9f0e2e251c5b2c54.png?set=set5&size=140x140',
+                image: 'https://static.prstats.tk/avatars/75/c5/75c53d450505ec0e9f0e2e251c5b2c54.png',
                 sticky: true,
                 class_name: 'my-sticky-class'
             });
-            setCookie('message_seen', 'yes', 1);
+            setCookie('message_seen', 'yes', 7);
         }
 
         $( "#search" ).autocomplete({
@@ -130,11 +130,13 @@
 
     var retries = {};
     function reloadImage(img) {
-        retries[img.src] = retries[img.src] || 0;
+        let pid = $(img).data('pid');
+        let src = 'https://robohash.org/%pid.png?set=set5&size=140x140'.replace('%pid', pid);
+        retries[src] = retries[src] || 0;
 
-        if (retries[img.src] < 250) {
-            img.src = ''+img.src;
-            retries[img.src]++;
+        if (retries[src] < 250) {
+            img.src = ''+src;
+            retries[src]++;
         }
     }
 </script>
