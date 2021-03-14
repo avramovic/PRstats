@@ -51,11 +51,12 @@ class Player extends Model
 
     public function getAvatarUrl($size = 140)
     {
-        return vsprintf('https://robohash.org/%s.png?set=set5&size=%dx%d', [
-            md5($this->name),
-            $size,
-            $size,
-        ]);
+        return 'https://static.prstats.tk/'.$this->getAvatarPath();
+//        return vsprintf('https://robohash.org/%s.png?set=set5&size=%dx%d', [
+//            md5($this->name),
+//            $size,
+//            $size,
+//        ]);
     }
 
     public function minutesPlayed()

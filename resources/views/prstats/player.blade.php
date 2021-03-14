@@ -56,7 +56,7 @@
         <!-- /col-md-4 -->
         <div class="col-md-4 col-sm-12 col-xs-12 centered">
             <div class="profile-pic">
-                <p><img onerror="reloadImage(this)" src="{!! $player->getAvatarUrl() !!}" alt="We believe that {!! htmlentities($player->name) !!} looks like this :)" title="We believe that {!! htmlentities($player->name) !!} looks like this :)" /></p>
+                <p><img data-pid="{{ $player->pid }}" onerror="reloadImage(this)" src="{!! $player->getAvatarUrl() !!}" alt="We believe that {!! htmlentities($player->name) !!} looks like this :)" title="We believe that {!! htmlentities($player->name) !!} looks like this :)" /></p>
 {{--                <p>--}}
 {{--                    <button class="btn btn-theme"><i class="fa fa-check"></i> Follow</button>--}}
 {{--                    <button class="btn btn-theme02">Add</button>--}}
@@ -81,11 +81,14 @@
         </div>
     @endif
 
-{{--    @if($server->wasSeenRecently())--}}
-{{--        @include('partials.players.current_match', ['match' => $lastMatch])--}}
-{{--    @endif--}}
-
     @include('partials.players.previous_matches', ['matches' => $matches])
+
+    @if($hasSignature)
+    <div class="row mt">
+        @include('partials.players.signature')
+    </div>
+    @endif
+
 
 @endsection
 

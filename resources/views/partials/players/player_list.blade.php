@@ -3,7 +3,7 @@
     @foreach($players as $player)
     <div class="desc">
         <div class="thumb">
-            <img onerror="reloadImage(this)" class="img-circle" src="{{ $player->getAvatarUrl() }}" width="35" height="35" align="">
+            <img data-pid="{{ $player->pid }}" onerror="reloadImage(this)" class="img-circle" src="{{ $player->getAvatarUrl() }}" width="35" height="35" align="">
         </div>
         <div class="details">
             <p>

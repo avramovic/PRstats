@@ -7,6 +7,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 use PRStats\Jobs\DownloadMapImagesJob;
 use PRStats\Jobs\MakePlayerAvatarJob;
+use PRStats\Jobs\MakePlayerSignatureJob;
 use PRStats\Models\Clan;
 use PRStats\Models\Map;
 use PRStats\Models\Match;
@@ -259,10 +260,10 @@ class PRSpyParse extends Command
                     $player->save();
                     dispatch(new MakePlayerAvatarJob($player));
                 } else {
+                    if (!$player->wasSeenRecently(10) && $player->total_score >= 1000) {
+                        dispatch(new MakePlayerSignatureJob($player));
+                    }
                     $player->save();
-//                    if ($player->total_score >= 10000 && $player->updated_at->diffInMinutes() > 60) {
-//                        dispatch(new MakePlayerSignatureJob($player));
-//                    }
                 }
 
                 $playerTeam = ($playerData->team == 1) ? $serverData->properties->bf2_team1 : $serverData->properties->bf2_team2;
