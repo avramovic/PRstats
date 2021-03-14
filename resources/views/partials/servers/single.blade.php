@@ -9,10 +9,10 @@
         </div>
         <div class="blog-text">
             @if($server->wasSeenRecently())
-                <p><i class="fa fa-angle-right"></i> Playing <u>{{ $server->lastMatch()->map }}</u> since {{ $server->lastMatch()->created_at->format('Y-m-d') }} at {{ $server->lastMatch()->created_at->format('H:i') }} ({{ $server->lastMatch()->lengthForHumans() }}) </p>
+                <p><i class="fa fa-angle-right"></i> Playing <u>{{ $server->lastMatch()->map->name }}</u> since {{ $server->lastMatch()->created_at->format('Y-m-d') }} at {{ $server->lastMatch()->created_at->format('H:i') }} ({{ $server->lastMatch()->lengthForHumans() }}) </p>
                 <p><i class="fa fa-angle-right"></i> Online players: {{ $server->num_players }} / {{ $server->max_players-$server->reserved_slots }} </p>
             @else
-                <p><i class="fa fa-angle-right"></i> Played <u>{{ $server->lastMatch()->map }}</u> on {{ $server->lastMatch()->created_at->format('Y-m-d') }} from {{ $server->lastMatch()->created_at->format('H:i') }} to {{ $server->lastMatch()->updated_at->format('H:i') }}</p>
+                <p><i class="fa fa-angle-right"></i> Played <u>{{ $server->lastMatch()->map->name }}</u> on {{ $server->lastMatch()->created_at->format('Y-m-d') }} from {{ $server->lastMatch()->created_at->format('H:i') }} to {{ $server->lastMatch()->updated_at->format('H:i') }}</p>
                 <p><i class="fa fa-angle-right"></i> Last seen {{ $server->updated_at->diffForHumans() }}</p>
             @endif
         </div>

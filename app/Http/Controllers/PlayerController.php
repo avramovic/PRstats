@@ -61,11 +61,7 @@ class PlayerController extends Controller
     public function show($pid, $slug)
     {
         if (!is_numeric($pid)) {
-            $player = Player::with(['server',
-                'clan.players' => function ($q) {
-                    return $q->withCount('matches')->orderBy('total_score', 'desc');
-                }])
-                ->where('pid', $pid)
+            $player = Player::where('pid', $pid)
                 ->firstOrFail();
 
             return redirect($player->getLink(), 301);
@@ -80,7 +76,7 @@ class PlayerController extends Controller
             ->findOrFail($pid);
 
         $matches = $player->matches()
-            ->with(['server'])
+            ->with(['server', 'map'])
             ->when($player->wasSeenRecently(), function($q) use ($threeMinAgo) {
                 $q->where('matches.updated_at', '<', $threeMinAgo);
             })
@@ -88,6 +84,7 @@ class PlayerController extends Controller
             ->paginate(25);
 
         $lastMatch = $player->matches()
+            ->with(['server', 'map'])
             ->orderBy('id', 'desc')
             ->first();
 

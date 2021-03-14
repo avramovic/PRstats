@@ -51,7 +51,7 @@ class Match extends Model
 
     public function getMapImageName()
     {
-        return strtolower(str_replace(' ', '', $this->map));
+        return strtolower(str_replace(' ', '', $this->map->name));
     }
 
     public function getMapImageUrl($image = 'tile')
@@ -70,7 +70,7 @@ class Match extends Model
 
     public function getLink()
     {
-        $slug = Str::slug($this->map);
+        $slug = Str::slug($this->map->name);
         return route('match', [$this->id, $slug]);
     }
 

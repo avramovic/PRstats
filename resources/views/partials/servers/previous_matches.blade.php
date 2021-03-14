@@ -20,7 +20,7 @@
                     @forelse($matches as $match)
                         <tr>
                             <td>{{ $matches->perPage()*($matches->currentPage()-1)+$loop->iteration }}</td>
-                            <td><a href="{{ $match->getLink() }}">{{ $match->map }}</a></td>
+                            <td><a href="{{ $match->getLink() }}">{{ $match->map->name }}</a></td>
                             <td class="hidden-sm hidden-xs">{{ $match->team1_name }}</td>
                             <td class="hidden-sm hidden-xs">{{ $match->team2_name }}</td>
                             <td class="numeric">{{ $match->players_count }}</td>

@@ -1,7 +1,7 @@
 @extends('layouts.prstats')
 
 @section('title')
-    {{ $match->map }} on {{ $match->server->name }}
+    {{ $match->map->name }} on {{ $match->server->name }}
 @endsection
 
 {{--@section('subtitle')--}}
