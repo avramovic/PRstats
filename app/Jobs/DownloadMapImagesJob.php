@@ -40,7 +40,7 @@ class DownloadMapImagesJob implements ShouldQueue
             try {
                 Storage::put($this->map->getBannerImagePath(), file_get_contents($this->map->getOriginalMapImageUrl('banner')));
             } catch (\Exception $e) {
-
+                \Log::error($e->getMessage(), ['map' => $this->map->id]);
             }
         }
 
@@ -48,7 +48,7 @@ class DownloadMapImagesJob implements ShouldQueue
             try {
                 Storage::put($this->map->getTileImagePath(), file_get_contents($this->map->getOriginalMapImageUrl()));
             } catch (\Exception $e) {
-
+                \Log::error($e->getMessage(), ['map' => $this->map->id]);
             }
         }
     }
