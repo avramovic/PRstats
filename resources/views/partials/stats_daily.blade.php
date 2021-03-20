@@ -10,7 +10,7 @@
             <div class="sparkline" data-type="line" data-resize="true" data-height="75" data-width="90%"
                  data-line-width="1" data-line-color="#fff" data-spot-color="#fff" data-fill-color=""
                  data-highlight-line-color="#fff" data-spot-radius="4"
-                 data-data="[{{ implode(',', \PRStats\Helpers\Statistics::dailyTrends($table)) }}]"></div>
+                 data-data="[{{ implode(',', \PRStats\Helpers\Statistics::dailyTrends($table, $field ?? 'created_at')) }}]"></div>
         </div>
         <p class="mt">{!! $subtitle ?? ($word . ' ' . $table . ' per day<br />(last 7 days)') !!}</p>
 
