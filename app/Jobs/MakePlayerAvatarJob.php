@@ -39,5 +39,6 @@ class MakePlayerAvatarJob implements ShouldQueue
     {
         $avatar = Robohash::make($this->player->pid, 140, 'set5');
         Storage::disk('s3')->put($this->player->getAvatarPath(), $avatar->encode('png'));
+        \Log::info(sprintf('Created avatar for player %s (%s)', $this->player->name, $this->player->getAvatarPath()));
     }
 }
