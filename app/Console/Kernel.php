@@ -27,10 +27,10 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('prspy:parse')->everyMinute();
-        $schedule->command('prspy:clans')->everyMinute();
+        $schedule->command('prspy:clans')->everyFiveMinutes();
         $schedule->command('prspy:clearmonthly')->monthly();
         $schedule->command('sync:playtime')->monthlyOn(1, '9:00');
-        $schedule->command('cache:clear')->monthly();
+        $schedule->command('cache:clear')->weeklyOn(3);
     }
 
     public function commands()
