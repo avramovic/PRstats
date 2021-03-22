@@ -46,8 +46,8 @@ class MergeServersCommand extends Command
         $srvA = explode('###', $choice1);
         $srvB = explode('###', $choice2);
 
-        $serverA = $servers->find(array_pop($srvA));
-        $serverB = $servers->find(array_pop($srvB));
+        $serverA = Server::findOrFail(array_pop($srvA));
+        $serverB = Server::findOrFail(array_pop($srvB));
 
         if ($serverA->updated_at->gt($serverB->updated_at)) {
             $toKeep  = $serverA;
@@ -97,6 +97,9 @@ class MergeServersCommand extends Command
             $this->line('Setting server ID...');
             $toKeep->server_id = $toMerge->server_id;
         }
+
+        //update server to keep
+        $toKeep->save();
 
         //delete server to merge
         $toMerge->delete();
