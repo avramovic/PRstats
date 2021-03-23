@@ -66,6 +66,7 @@ class PRSpyParse extends Command
 
             if (!$server) {
                 $server = Server::where('name', $serverName)
+                    ->whereNull('server_id')
                     ->first();
             }
 
