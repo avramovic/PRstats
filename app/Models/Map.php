@@ -3,6 +3,7 @@
 namespace PRStats\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Map extends Model
 {
@@ -35,6 +36,12 @@ class Map extends Model
         return 'maps' . DIRECTORY_SEPARATOR
             . $this->slug . DIRECTORY_SEPARATOR
             . 'tile.png';
+    }
+
+    public function getLink()
+    {
+        $slug = Str::slug($this->name);
+        return route('map', [$this->id, $slug]);
     }
 
     public function __toString()

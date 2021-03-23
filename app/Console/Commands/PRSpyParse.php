@@ -264,7 +264,7 @@ class PRSpyParse extends Command
                     $player->save();
                     dispatch(new MakePlayerAvatarJob($player));
                 } else {
-                    if (!$player->wasSeenRecently(10) && $player->total_score >= 10000) {
+                    if (!$player->wasSeenRecently(10) && $player->total_score >= 10000 && config('app.env') == 'production') {
                         dispatch(new MakePlayerSignatureJob($player));
                     }
                     $player->save();

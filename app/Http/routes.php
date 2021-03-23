@@ -10,6 +10,9 @@ Route::get('servers', ['as' => 'servers', 'uses' => 'ServerController@index']);
 Route::get('server/{id}/{slug}', ['as' => 'server', 'uses' => 'ServerController@show']);
 Route::get('match/{id}/{map}', ['as' => 'match', 'uses' => 'ServerController@match']);
 
+Route::get('maps', ['as' => 'maps', 'uses' => 'MapController@index']);
+Route::get('map/{id}/{slug}', ['as' => 'map', 'uses' => 'MapController@show']);
+
 Route::get('players', ['as' => 'players', 'uses' => 'PlayerController@index']);
 Route::get('player/{pid}/{slug}', ['as' => 'player', 'uses' => 'PlayerController@show']);
 Route::get('search', ['as' => 'players.search', 'uses' => 'PlayerController@search']);
