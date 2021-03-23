@@ -13,6 +13,7 @@
 {{--                <p><i class="fa fa-angle-right"></i> Last seen {{ $server->updated_at->diffForHumans() }}</p>--}}
 {{--                @else--}}
                 <p><i class="fa fa-angle-right"></i> Last seen {{ $map->lastMatch->updated_at->diffForHumans() }} on <a href="{{ $map->lastMatch->server->getLink() }}">{{ $map->lastMatch->server->name }}</a></p>
+                <p><i class="fa fa-angle-right"></i> Played {{ $map->matches_count }} times so far.</p>
 {{--            @endif--}}
         </div>
     </div>

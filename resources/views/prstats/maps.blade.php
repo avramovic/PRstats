@@ -5,7 +5,7 @@
 @endsection
 
 @section('subtitle')
-    All maps
+    All maps ({{ $maps->count() }})
 @endsection
 
 @section('content')

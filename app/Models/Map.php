@@ -16,7 +16,7 @@ class Map extends Model
 
     protected function getMapImageName()
     {
-        return strtolower(str_replace(' ', '', $this->name));
+        return strtolower(str_replace([' ', "'"], '', $this->name));
     }
 
     public function getOriginalMapImageUrl($image = 'tile')

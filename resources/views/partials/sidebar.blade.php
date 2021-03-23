@@ -28,6 +28,12 @@
                     <span>Servers</span>
                 </a>
             </li>
+            <li class="">
+                <a href="/maps" class="{{ (request()->is('map*')) ? 'active' : '' }}">
+                    <i class="fa fa-map"></i>
+                    <span>Maps</span>
+                </a>
+            </li>
 
         </ul>
         <!-- sidebar menu end-->

@@ -5,6 +5,7 @@ namespace PRStats\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use PRStats\Models\Clan;
+use PRStats\Models\Map;
 use PRStats\Models\Player;
 use PRStats\Models\Server;
 
@@ -43,6 +44,7 @@ class HomeController extends Controller
         $players = Player::where('name', 'like', '%'.$request->search.'%')->get();
         $clans   = Clan::where('name', 'like', '%'.$request->search.'%')->get();
         $servers = Server::where('name', 'like', '%'.$request->search.'%')->get();
+        $maps    = Map::where('name', 'like', '%'.$request->search.'%')->get();
 
         $results = [];
 
@@ -67,6 +69,14 @@ class HomeController extends Controller
                 'value' => $server->getLink(),
                 'label' => $server->name,
                 'icon'  => 'server',
+            ];
+        }
+
+        foreach ($maps as $map) {
+            $results[] = [
+                'value' => $map->getLink(),
+                'label' => $map->name,
+                'icon'  => 'map',
             ];
         }
 
