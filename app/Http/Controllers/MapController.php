@@ -22,7 +22,7 @@ class MapController extends Controller
             $map->lastMatch = $map->matches->first();
         });
 
-        return view('prstats.maps', ['maps' => $maps->sortBy('name')]);
+        return view('prstats.maps', ['maps' => $maps->sortByDesc('matches_count')]);
     }
 
     public function show($id, $slug, Request $request)
