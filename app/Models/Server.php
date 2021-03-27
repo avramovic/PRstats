@@ -120,7 +120,7 @@ class Server extends Model
     {
         return \Cache::remember('server_hourly_'.$this->id.'_'.(int)$this->wasSeenRecently(), 3600 * 24 * 7, function () use ($hours) {
             $stats = \DB::table('match_player')
-                ->select(\DB::raw('(count(distinct player_id)) as plr_cnt, HOUR(updated_at) as woy'))
+                ->select(\DB::raw('(count(distinct player_id)/count(distinct match_id)) as plr_cnt, HOUR(updated_at) as woy'))
                 ->whereIn('match_id', function ($q) use ($hours) {
                     $q->select('id')
                         ->from('matches')

@@ -63,7 +63,7 @@
         <div class="row mt">
             @include('partials.servers.capacity')
             @include('partials.servers.current_map')
-            @include('partials.servers.activity_hours')
+            @include('partials.servers.activity')
         </div>
     @else
         <div class="row mt">
