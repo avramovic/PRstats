@@ -48,8 +48,8 @@ class MakePlayerSignatureJob implements ShouldQueue
         if ($this->player->wasSeenRecently()) {
             $lastSeenText = 'currently playing '.$lastMatch->map->name;
         } else {
-            $lastSeenText = 'last seen on '.$this->player->updated_at->toDateString().
-                ' at '.$this->player->updated_at->format('H:i') . ' playing '.$lastMatch->map->name;
+            $lastSeenText = 'last seen playing '.$lastMatch->map->name.' on '.$this->player->updated_at->toDateString().
+                ' at '.$this->player->updated_at->format('H:i'). ' (UTC)';
         }
 
         //make signature
@@ -96,7 +96,7 @@ class MakePlayerSignatureJob implements ShouldQueue
             $font->color('#fff');
         });
         $signature->text(vsprintf('K/D ratio: %s | Total playtime: ~%s', [
-            $this->player->total_deaths == 0 ? $this->player->total_kills : round($this->player->total_kills/$this->player->total_deaths, 2),
+            $this->player->total_deaths == 0 ? $this->player->total_kills : round($this->player->total_kills / $this->player->total_deaths, 2),
             \Carbon\Carbon::now()->addMinutes($this->player->minutes_played)->diffForHumans(null, true)
         ]), 110, 110, function ($font) {
             $font->file(public_path('fonts/roboto/Roboto-Bold.ttf'));
