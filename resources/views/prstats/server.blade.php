@@ -59,12 +59,11 @@
 
     </div>
 
-
     @if($server->wasSeenRecently())
         <div class="row mt">
-            @include('partials.servers.activity')
-            @include('partials.servers.current_map')
             @include('partials.servers.capacity')
+            @include('partials.servers.current_map')
+            @include('partials.servers.activity_hours')
         </div>
     @else
         <div class="row mt">
@@ -89,7 +88,35 @@
 @endsection
 
 @section('header')
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.4.3/morris.css">
 @endsection
 
 @section('scripts')
+    <script src="/lib/raphael/raphael.min.js"></script>
+    <script src="/lib/morris/morris.min.js"></script>
+    <script>
+
+        $(function () {
+            Morris.Line({
+                element: 'hero-graph',
+                data: [
+                    @foreach($server->hourlyActivity() as $hour=>$players)
+                    {"period": "{{ date('Y-m-d') }} {{$hour}}:00", "players": {{$players}} },
+                    @endforeach
+
+                ],
+                xkey: 'period',
+                ykeys: ['players'],
+                labels: ['avg players'],
+                xLabels: ['hour'],
+                hoverCallback: function (index, options, content, row) {
+                    let date = new Date(row.period);
+                    return "avg <b>"+row.players+"</b> players<br/> around <b>"+date.toTimeString().substr(0, 2)+'h</b> (UTC)';
+                },
+                lineColors: ['#ccc'],
+                hideHover: true
+            });
+        })();
+
+    </script>
 @endsection

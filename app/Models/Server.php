@@ -116,6 +116,40 @@ class Server extends Model
         });
     }
 
+    public function hourlyActivity($hours = 24)
+    {
+        return \Cache::remember('server_hourly_'.$this->id.'_'.(int)$this->wasSeenRecently(), 3600 * 24 * 7, function () use ($hours) {
+            $stats = \DB::table('match_player')
+                ->select(\DB::raw('(count(distinct player_id)/count(distinct match_id)) as plr_cnt, HOUR(updated_at) as woy'))
+                ->whereIn('match_id', function ($q) use ($hours) {
+                    $q->select('id')
+                        ->from('matches')
+                        ->where('server_id', $this->id)
+                        ->when($this->wasSeenRecently(), function ($q) {
+                            $q->where('created_at', '>=', Carbon::now()->subMonth());
+                        });
+                })
+                ->groupBy(\DB::raw('HOUR(updated_at)'))
+                ->orderBy('updated_at', 'desc')
+                ->limit($hours + 1)
+                ->get();
+
+            $data = [];
+
+            foreach ($stats as $stat) {
+                $data[(int)$stat->woy] = $stat->plr_cnt;
+            }
+
+            $result = [];
+
+            for ($hour = 0; $hour < $hours; $hour++) {
+                $result[$hour] = isset($data[$hour]) ? (int)$data[$hour] : 0;
+            }
+
+            return $result;
+        });
+    }
+
     public function playerCount()
     {
         return \Cache::remember('player_count_'.$this->id, 3600, function () {
