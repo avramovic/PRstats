@@ -96,27 +96,29 @@
     <script src="/lib/morris/morris.min.js"></script>
     <script>
 
-        $(function () {
-            Morris.Line({
-                element: 'hero-graph',
-                data: [
-                    @foreach($server->hourlyActivity() as $hour=>$players)
-                    {"period": "{{ date('Y-m-d') }} {{$hour}}:00", "players": {{$players}} },
-                    @endforeach
+        $(document).ready(function () {
+            if ($('#hero-graph').length > 0) {
+                Morris.Line({
+                    element: 'hero-graph',
+                    data: [
+                            @foreach($server->hourlyActivity() as $hour=>$players)
+                        {"period": "{{ date('Y-m-d') }} {{$hour}}:00", "players": {{$players}} },
+                        @endforeach
 
-                ],
-                xkey: 'period',
-                ykeys: ['players'],
-                labels: ['avg players'],
-                xLabels: ['hour'],
-                hoverCallback: function (index, options, content, row) {
-                    let date = new Date(row.period);
-                    return "avg <b>"+row.players+"</b> players<br/> around <b>"+date.toTimeString().substr(0, 2)+'h</b> (UTC)';
-                },
-                lineColors: ['#ccc'],
-                hideHover: true
-            });
-        })();
+                    ],
+                    xkey: 'period',
+                    ykeys: ['players'],
+                    labels: ['avg players'],
+                    xLabels: ['hour'],
+                    hoverCallback: function (index, options, content, row) {
+                        let date = new Date(row.period);
+                        return "avg <b>"+row.players+"</b> players<br/> around <b>"+date.toTimeString().substr(0, 2)+'h</b> (UTC)';
+                    },
+                    lineColors: ['#ccc'],
+                    hideHover: true
+                });
+            }
+        });
 
     </script>
 @endsection
