@@ -6,8 +6,8 @@
     "type": "project",
     "require": {
         "php": ">=5.5.9",
-        "laravel/framework": "5.8.*",
-        "laravelcollective/html": "5.8",
+        "laravel/framework": "^6.0",
+        "laravelcollective/html": "^6.2",
         "laravel/tinker": "v1.0.10",
         "fideloper/proxy": "^4.0",
         "filp/whoops": "^2.9",
