@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "308ea0800acfbc0b9fa5027dd696c2d4",
+    "content-hash": "626b01f360b7ba74ba19dacc96512dbc",
     "packages": [
         {
             "name": "avram/robohash",
@@ -7946,7 +7946,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.5.9"
+        "php": ">=7.2"
     },
     "platform-dev": [],
     "plugin-api-version": "2.1.0"
