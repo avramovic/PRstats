@@ -1,6 +1,6 @@
 <?php
 
-namespace PRStats;
+namespace PRStats\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
