@@ -16,7 +16,21 @@ class ClanController extends Controller
             ->orderBy('total_score', 'desc')
             ->paginate(50);
 
-        return view('prstats.clans', ['clans' => $clans]);
+        //new clans
+        $newest = Clan::orderBy('created_at', 'desc')
+            ->limit(10)
+            ->get();
+
+        $populous = Clan::withCount('players')
+            ->orderBy('players_count', 'desc')
+            ->limit(10)
+            ->get();
+
+        return view('prstats.clans', [
+            'clans'    => $clans,
+            'newest'   => $newest,
+            'populous' => $populous,
+        ]);
     }
 
     public function show($id, $slug, Request $request)
