@@ -12,4 +12,12 @@
     @include('partials.stats_daily', ['table' => 'clans'])
     @include('partials.stats_weekly', ['table' => 'clans'])
 
+    @component('partials.clans.clan_list', ['clans' => $newest, 'metric' => 'created_at'])
+        Newest clans
+    @endcomponent
+
+    @component('partials.clans.clan_list', ['clans' => $populous, 'metric' => 'players_count'])
+        Most populous clans
+    @endcomponent
+
 @endsection
