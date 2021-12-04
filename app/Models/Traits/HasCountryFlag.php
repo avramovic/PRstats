@@ -6,7 +6,7 @@ trait HasCountryFlag
 {
     public function getCountryFlagUrl($size = 24, $style = 'shiny')
     {
-        return 'https://www.countryflags.io/'.strtolower($this->country).'/'.$style.'/'.$size.'.png';
+        return 'https://flagcdn.com/24x18/'.strtolower($this->country).'.png';
     }
 
     public function getCountryFlagHtml($size = 24, $style = 'shiny')
