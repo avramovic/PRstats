@@ -12,7 +12,7 @@
                     @if($metric==='created_at')
                         {{ $clan->created_at->diffForHumans() }}
                     @elseif($metric==='players_count')
-                        {{ $clan->players_count }} player(s)
+                        {{ $clan->players_count }} players
 {{--                    @else--}}
 {{--                        {!! $clan->formatScoreHtml($metric) !!} {{ str_replace(['total_', 'monthly_'], '', $metric) }}--}}
                     @endif
