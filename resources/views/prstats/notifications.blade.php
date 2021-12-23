@@ -24,11 +24,11 @@
     </div>
 
     @component('partials.players.player_subs', ['players' => $latest, 'metric' => 'created_at'])
-        Latest subscriptions
+        Latest followed
     @endcomponent
 
     @component('partials.players.player_subs', ['players' => $most, 'metric' => 'subscriptions_count'])
-        Most subscriptions
+        Most followers
     @endcomponent
 
 
