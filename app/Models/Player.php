@@ -155,14 +155,12 @@ class Player extends Model
 
     public function routeNotificationForOneSignal()
     {
-        $subscriptions = $this->subscriptions()->with(['device'])->get();
-        $ids = $subscriptions->pluck('device.uuid');
+        $subscriptions = $this->subscriptions()
+            ->whereNotNull('approved_at')
+            ->with(['device'])
+            ->get();
 
-//        /** @var Subscription $subscription */
-//        foreach ($subscriptions as $subscription) {
-//            $ids[] = $subscription->device->uuid;
-//        }
-        return $ids;
+        return $subscriptions->pluck('device.uuid');
     }
 
 }
