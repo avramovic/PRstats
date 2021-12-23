@@ -11,7 +11,7 @@
             <p>Allow push notifications by clicking the button below in order to be able to subscribe to player activity. Once you allow site-wide push notifications, you'll be able to subscribe to individual players.</p>
             <div class='onesignal-customlink-container'></div>
             <p class="hidden strong" id="blokked">Disable your ad-blocker in order to see the subscription button. We don't have ads anyway.</p>
-            <p>Once you allow subscriptions, you'll be able to subscribe to individual players. When you subscribe to a player, you will be notified each time they start playing in a public server.</p>
+            <p>When you subscribe to an individual player, you will be notified each time they start playing in a public server.</p>
         </section>
         <!-- /content-panel -->
 
