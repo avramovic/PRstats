@@ -12,6 +12,7 @@
             <div class='onesignal-customlink-container'></div>
             <p class="hidden strong" id="blokked">Disable your ad-blocker in order to see the subscription button. We don't have ads anyway.</p>
             <p>When you subscribe to an individual player, you will be notified each time they start playing in a public server.</p>
+            <p>Note that web push notifications do NOT work on iOS devices (they do work on Macs, tho).</p>
         </section>
         <!-- /content-panel -->
 
