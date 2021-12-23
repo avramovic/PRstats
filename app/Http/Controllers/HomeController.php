@@ -5,9 +5,11 @@ namespace PRStats\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use PRStats\Models\Clan;
+use PRStats\Models\Device;
 use PRStats\Models\Map;
 use PRStats\Models\Player;
 use PRStats\Models\Server;
+use PRStats\Models\Subscription;
 
 class HomeController extends Controller
 {
@@ -81,5 +83,45 @@ class HomeController extends Controller
         }
 
         return response()->json($results);
+    }
+
+    public function notifications()
+    {
+        $latest = Subscription::with('player')
+            ->orderBy('created_at', 'desc')
+            ->limit(10)
+            ->get();
+
+        $most = Player::withCount('subscriptions')
+            ->orderBy('subscriptions_count', 'desc')
+            ->limit(10)
+            ->get()
+            ->reject(function (Player $player) {
+                return $player->subscriptions_count == 0;
+            });
+
+        return view('prstats.notifications', [
+            'latest' => $latest,
+            'most'   => $most,
+        ]);
+    }
+
+    public function getNotifications(Request $request)
+    {
+        /** @var Device $device */
+        $device = Device::with('subscriptions')->where('uuid', $request->device_uuid)->first();
+
+        if (!$device) {
+            abort(404);
+        }
+
+        $players = Player::whereIn('id', $device->subscriptions->pluck('player_id'))->paginate();
+
+        return view('partials.players.players_table', [
+            'width'   => '12',
+            'slot'    => '',
+            'metric'  => 'total',
+            'players' => $players,
+        ]);
     }
 }

@@ -12,7 +12,8 @@
         "fideloper/proxy": "^4.0",
         "filp/whoops": "^2.9",
         "avram/robohash": "^1.0",
-        "league/flysystem-aws-s3-v3": "~1.0"
+        "league/flysystem-aws-s3-v3": "~1.0",
+        "laravel-notification-channels/onesignal": "^2.3"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

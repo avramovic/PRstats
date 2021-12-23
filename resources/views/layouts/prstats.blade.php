@@ -113,10 +113,14 @@
                     type: 'post',
                     dataType: "json",
                     data: {
-                        search: request.term
+                        search: request.term,
+                        "_token": {!! json_encode(csrf_token()) !!},
                     },
                     success: function( data ) {
                         response( data );
+                    },
+                    error: function( data ) {
+                        window.location.reload();
                     }
                 });
             },
@@ -146,6 +150,19 @@
             retries[src]++;
         }
     }
+    function showInfo() {
+        $('#blokked').removeClass('hidden');
+    }
+</script>
+
+<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async="" onerror="showInfo()"></script>
+<script>
+    window.OneSignal = window.OneSignal || [];
+    OneSignal.push(function() {
+        OneSignal.init({
+            appId: "{!! config('services.onesignal.app_id') !!}",
+        });
+    });
 </script>
 </body>
 

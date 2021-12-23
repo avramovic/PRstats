@@ -1,4 +1,4 @@
-<div class="col-lg-6">
+<div class="col-lg-{{ $width ?? 6 }}">
     <h4>{{ $slot }}</h4>
     <section id="unseen">
         <table class="table table-bordered table-striped table-condensed">

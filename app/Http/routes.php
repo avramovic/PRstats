@@ -1,7 +1,6 @@
 <?php
 
 Route::get('/', 'HomeController@index');
-Route::post('search', ['as' => 'search', 'uses' => 'HomeController@search']);
 
 Route::get('clans', ['as' => 'clans', 'uses' => 'ClanController@index']);
 Route::get('clan/{id}/{slug}', ['as' => 'clan', 'uses' => 'ClanController@show']);
@@ -15,5 +14,15 @@ Route::get('map/{id}/{slug}', ['as' => 'map', 'uses' => 'MapController@show']);
 
 Route::get('players', ['as' => 'players', 'uses' => 'PlayerController@index']);
 Route::get('player/{pid}/{slug}', ['as' => 'player', 'uses' => 'PlayerController@show']);
-Route::get('search', ['as' => 'players.search', 'uses' => 'PlayerController@search']);
+Route::get('notifications', ['as' => 'notifications', 'uses' => 'HomeController@notifications']);
+
+
+Route::group(['prefix' => 'json'], function() {
+    Route::post('search', ['as' => 'search', 'uses' => 'HomeController@search']);
+    Route::post('subscribe', ['as' => 'players.subscribe', 'uses' => 'PlayerController@toggleSubscribe']);
+    Route::post('subscribe/check', ['as' => 'players.subscribe.check', 'uses' => 'PlayerController@checkSubscription']);
+    Route::post('notifications/get', ['as' => 'notifications.get', 'uses' => 'HomeController@getNotifications']);
+
+});
+
 Route::get('{slug}', ['as' => 'player.short', 'uses' => 'PlayerController@shortUrl']);

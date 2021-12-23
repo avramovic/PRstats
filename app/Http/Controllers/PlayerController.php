@@ -4,6 +4,7 @@ namespace PRStats\Http\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use PRStats\Models\Device;
 use PRStats\Models\Player;
 use Storage;
 
@@ -74,6 +75,7 @@ class PlayerController extends Controller
             'clan.players' => function ($q) {
                 return $q->withCount('matches')->orderBy('total_score', 'desc');
             }])
+            ->withCount(['subscriptions'])
             ->findOrFail($pid);
 
         $matches = $player->matches()
@@ -111,6 +113,46 @@ class PlayerController extends Controller
         } else {
             return redirect()->route('players.search', ['q' => $slug]);
         }
+    }
+
+    public function toggleSubscribe(Request $request)
+    {
+        /** @var Player $player */
+        $player = Player::findOrFail($request->player_id);
+        $device = Device::firstOrCreate(['uuid' => $request->device_uuid]);
+
+        $preApproved = $player->user ? $player->user->auto_approve_subscriptions : true;
+
+        $sub = $player->subscriptions()
+            ->where('device_id', $device->id)
+            ->first();
+
+        if ($sub) {
+            $sub->delete();
+        } else {
+            $sub = $player->subscriptions()
+                ->firstOrCreate(['device_id' => $device->id], ['approved_at' => $preApproved ? Carbon::now() : null]);
+        }
+
+        return response()->json([
+            'count' => $player->subscriptions()->count(),
+            'subscription'  => $sub->exists ? $sub->toArray() : null,
+        ]);
+    }
+
+    public function checkSubscription(Request $request)
+    {
+        /** @var Player $player */
+        $player = Player::findOrFail($request->player_id);
+        $device = Device::firstOrCreate(['uuid' => $request->device_uuid]);
+
+        $sub = $player->subscriptions()
+            ->where('device_id', $device->id)
+            ->first();
+
+        return response()->json([
+            'subscription' => $sub->toArray(),
+        ]);
     }
 
 }

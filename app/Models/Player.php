@@ -4,13 +4,14 @@ namespace PRStats\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 use PRStats\Models\Traits\FormatScoreTrait;
 use PRStats\Models\Traits\HasCountryFlag;
 use PRStats\Models\Traits\WasSeenRecentlyTrait;
 
 class Player extends Model
 {
-    use WasSeenRecentlyTrait, FormatScoreTrait, HasCountryFlag;
+    use WasSeenRecentlyTrait, FormatScoreTrait, HasCountryFlag, Notifiable;
 
     protected $guarded = ['id'];
 
@@ -28,6 +29,16 @@ class Player extends Model
     public function server()
     {
         return $this->belongsTo(Server::class);
+    }
+
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function getClanNameAttribute()
@@ -140,6 +151,18 @@ class Player extends Model
             . substr($this->pid, 0, 2) . DIRECTORY_SEPARATOR
             . substr($this->pid, 2, 2) . DIRECTORY_SEPARATOR
             . $this->pid . '.png';
+    }
+
+    public function routeNotificationForOneSignal()
+    {
+        $subscriptions = $this->subscriptions()->with(['device'])->get();
+        $ids = $subscriptions->pluck('device.uuid');
+
+//        /** @var Subscription $subscription */
+//        foreach ($subscriptions as $subscription) {
+//            $ids[] = $subscription->device->uuid;
+//        }
+        return $ids;
     }
 
 }

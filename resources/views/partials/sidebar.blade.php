@@ -34,6 +34,12 @@
                     <span>Maps</span>
                 </a>
             </li>
+            <li class="">
+                <a href="/notifications" class="{{ (request()->is('notifications*')) ? 'active' : '' }}">
+                    <i class="fa fa-bell"></i>
+                    <span>Notifications</span>
+                </a>
+            </li>
 
         </ul>
         <!-- sidebar menu end-->

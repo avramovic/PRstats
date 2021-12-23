@@ -5,6 +5,7 @@ namespace PRStats\Console\Commands;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
+use PRStats\Jobs\AsyncPlayerNotificationJob;
 use PRStats\Jobs\DownloadMapImagesJob;
 use PRStats\Jobs\MakePlayerAvatarJob;
 use PRStats\Jobs\MakePlayerSignatureJob;
@@ -154,11 +155,14 @@ class PRSpyParse extends Command
                 $pid  = collect(explode(' ', $name))->last();
                 $pid  = md5($pid);
 
-                $player = Player::where('pid', $pid)->first();
+                $player = Player::withCount(['subscriptions'])->where('pid', $pid)->first();
                 if ($player == null) {
                     $player               = new Player;
                     $player->pid          = $pid;
                     $player->games_played = 1;
+                    $subCount = 0;
+                } else {
+                    $subCount = $player->subscriptions_count;
                 }
 
                 $hasClan   = (strpos($name, ' ') !== false);
@@ -258,6 +262,10 @@ class PRSpyParse extends Command
                 $minutes             = (int)$player->minutes_played;
                 $minutes++;
                 $player->minutes_played = $minutes;
+
+                if ($subCount > 0 && (!$player->wasSeenRecently(5) || $player->server_id != $server->id)) {
+                    dispatch(new AsyncPlayerNotificationJob($player, $match));
+                }
 
                 $player->server_id = $server->id;
 
