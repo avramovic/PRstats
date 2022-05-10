@@ -1,5 +1,7 @@
 <?php
 
+Auth::routes();
+
 Route::get('/', 'HomeController@index');
 
 Route::get('clans', ['as' => 'clans', 'uses' => 'ClanController@index']);
@@ -22,6 +24,13 @@ Route::group(['prefix' => 'json'], function() {
     Route::post('subscribe', ['as' => 'players.subscribe', 'uses' => 'PlayerController@toggleSubscribe']);
     Route::post('subscribe/check', ['as' => 'players.subscribe.check', 'uses' => 'PlayerController@checkSubscription']);
     Route::post('notifications/get', ['as' => 'notifications.get', 'uses' => 'HomeController@getNotifications']);
+
+});
+
+Route::group(['prefix' => 'claim'], function() {
+    Route::get('{pid}/{slug}', ['as' => 'claim', 'uses' => 'ClaimController@claim']);
+    Route::post('{pid}/{slug}', ['as' => 'claim.store', 'uses' => 'ClaimController@store']);
+    Route::get('howto/{uuid?}', ['as' => 'claim.howto', 'uses' => 'ClaimController@howTo']);
 
 });
 

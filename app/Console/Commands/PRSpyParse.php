@@ -6,9 +6,11 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 use PRStats\Jobs\AsyncPlayerNotificationJob;
+use PRStats\Jobs\AsyncProcessClaimJob;
 use PRStats\Jobs\DownloadMapImagesJob;
 use PRStats\Jobs\MakePlayerAvatarJob;
 use PRStats\Jobs\MakePlayerSignatureJob;
+use PRStats\Models\Claim;
 use PRStats\Models\Clan;
 use PRStats\Models\Map;
 use PRStats\Models\Match;
@@ -155,12 +157,17 @@ class PRSpyParse extends Command
                 $pid  = collect(explode(' ', $name))->last();
                 $pid  = md5($pid);
 
-                $player = Player::withCount(['subscriptions'])->where('pid', $pid)->first();
+                $player = Player::with(['claims' => function ($query) {
+                    $query->withTrashed();
+                }])
+                    ->withCount(['subscriptions'])
+                    ->where('pid', $pid)->first();
+
                 if ($player == null) {
                     $player               = new Player;
                     $player->pid          = $pid;
                     $player->games_played = 1;
-                    $subCount = 0;
+                    $subCount             = 0;
                 } else {
                     $subCount = $player->subscriptions_count;
                 }
@@ -174,13 +181,15 @@ class PRSpyParse extends Command
                     $name    = $parts[1];
 
                     if (!empty($clanTag)) {
+                        $decodedClanName = $this->decodeName($clanTag);
+                        //check if there's a claim with the clan tag
+                        /** @var Claim $claim */
+                        $claim = $player->claims->where('code', $clanTag)->first();
 
-                        //check if setting flag or setting/changing clan
-                        if (stripos($clanTag, 'prs:') === 0 && strlen($clanTag) == 6) {
-                            $flagToSet = strtoupper(str_ireplace('prs:', '', $clanTag));
-                            $flagToSet = ($flagToSet == 'XK') ? 'RS' : $flagToSet;
+                        if ($claim && !$claim->trashed()) {
+                            dispatch(new AsyncProcessClaimJob($claim));
                         } else {
-                            $clan = Clan::where('name', $this->decodeName($clanTag))->first();
+                            $clan = Clan::where('name', $decodedClanName)->first();
                             if ($clan == null) {
                                 $clan       = new Clan;
                                 $clan->name = $this->decodeName($clanTag);

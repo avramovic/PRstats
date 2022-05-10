@@ -33,4 +33,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Player::class);
     }
+
+    public function claims()
+    {
+        return $this->hasMany(Claim::class);
+    }
 }

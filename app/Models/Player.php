@@ -36,6 +36,11 @@ class Player extends Model
         return $this->hasMany(Subscription::class);
     }
 
+    public function claims()
+    {
+        return $this->hasMany(Claim::class);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
