@@ -4,6 +4,7 @@ namespace PRStats\Http\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use PRStats\Models\Device;
 use PRStats\Models\Player;
 use Storage;
@@ -113,6 +114,18 @@ class PlayerController extends Controller
         } else {
             return redirect()->route('players.search', ['q' => $slug]);
         }
+    }
+
+    public function findByName(Request $request)
+    {
+        $validator = Validator::make($request->all(), ['name' => 'required|string']);
+        if ($validator->fails()) {
+            abort(422, 'Name parameter is required!');
+        }
+
+        $player = Player::where('name', $request->name)->firstOrFail();
+
+        return redirect()->route('player', [$player->id, $player->slug]);
     }
 
     public function toggleSubscribe(Request $request)
