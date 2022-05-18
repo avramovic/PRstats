@@ -1,6 +1,6 @@
 <div class="col-lg-4 col-md-4 col-sm-4 mb">
     <div class="content-panel pn">
-        <div id="blog-bg" style="background: url({{ $map->getOriginalMapImageUrl('banner') }}); background-size: cover">
+        <div id="blog-bg" style="background: url({{ $map->getOriginalMapImageUrl('banner') }}), url(/img/logo.png); background-size: cover">
             @if($map->lastMatch->wasSeenRecently())
             <div class="badge badge-popular">PLAYING</div>
             @endif
