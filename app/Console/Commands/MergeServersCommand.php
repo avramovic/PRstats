@@ -105,6 +105,8 @@ class MergeServersCommand extends Command
         $toMerge->delete();
 
         $this->info('Done!');
+
+        return 0;
     }
 
     protected function mergeTableData($table, $toKeep, $toMerge, $column = 'server_id')

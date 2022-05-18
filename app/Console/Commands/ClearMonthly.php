@@ -4,7 +4,6 @@ namespace PRStats\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use PRStats\Models\Player;
 
 
 class ClearMonthly extends Command
@@ -50,5 +49,7 @@ class ClearMonthly extends Command
 
         $diff = microtime(true) - $start;
         $this->line("[".date('H:i:s')."] Updated {$affected} players in {$diff} seconds");
+
+        return 0;
     }
 }

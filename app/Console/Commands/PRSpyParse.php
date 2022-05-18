@@ -329,6 +329,8 @@ class PRSpyParse extends Command
 
         $diff = microtime(true) - $start;
         $this->line("[".date('H:i:s')."] Finished all in {$diff} seconds");
+
+        return 0;
     }
 
     private function decodeName($name)
