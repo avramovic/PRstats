@@ -61,5 +61,7 @@ class UpdateClans extends Command
 
             $this->line('Done with '.$clan->name);
         }
+
+        return 0;
     }
 }
