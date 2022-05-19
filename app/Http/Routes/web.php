@@ -15,6 +15,7 @@ Route::get('maps', ['as' => 'maps', 'uses' => 'MapController@index']);
 Route::get('map/{id}/{slug}', ['as' => 'map', 'uses' => 'MapController@show']);
 
 Route::get('players', ['as' => 'players', 'uses' => 'PlayerController@index']);
+Route::get('player/find', ['as' => 'player.findByName', 'uses' => 'PlayerController@findByName']);
 Route::get('player/{pid}/{slug}', ['as' => 'player', 'uses' => 'PlayerController@show']);
 Route::get('notifications', ['as' => 'notifications', 'uses' => 'HomeController@notifications']);
 

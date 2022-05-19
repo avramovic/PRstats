@@ -33,5 +33,7 @@ class MakeSignatureCommand extends Command
         with(new MakePlayerSignatureJob($player))->handle();
         $this->info('Created:');
         $this->line('https://static.prstats.tk/'.$player->getSignaturePath());
+
+        return 0;
     }
 }

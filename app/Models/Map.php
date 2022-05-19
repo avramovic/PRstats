@@ -15,14 +15,20 @@ class Map extends Model
         return $this->hasMany(Match::class);
     }
 
-    protected function getMapImageName()
+    protected function getMapImageName($stripBeta = false)
     {
-        return strtolower(str_replace([' ', "'"], '', $this->name));
+        $niceName = strtolower(str_replace([' ', "'"], '', $this->name));
+
+        if ($stripBeta) {
+            return str_replace('-beta', '', $niceName);
+        }
+
+        return $niceName;
     }
 
-    public function getOriginalMapImageUrl($image = 'tile')
+    public function getOriginalMapImageUrl($image = 'tile', $stripBeta = false)
     {
-        return 'https://www.realitymod.com/mapgallery/images/maps/'.$this->getMapImageName().'/'.$image.'.jpg';
+        return 'https://www.realitymod.com/mapgallery/images/maps/'.$this->getMapImageName($stripBeta).'/'.$image.'.jpg';
     }
 
     public function getMapLayoutImageUrl()

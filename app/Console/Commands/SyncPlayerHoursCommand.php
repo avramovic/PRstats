@@ -42,5 +42,7 @@ class SyncPlayerHoursCommand extends Command
                 sleep(1);
             });
         $this->info('Done.');
+
+        return 0;
     }
 }
