@@ -1,0 +1,38 @@
+name: PRStats
+
+on:
+  push:
+    branches:
+      [ "master" ]
+  pull_request:
+    branches:
+      [ "master" ]
+
+jobs:
+  deploy-production:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Deployment
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          username: ${{ secrets.SSH_USERNAME }}
+
+          script: |
+            cd /home/admin/web/prstats.tk/prstats
+            php artisan down
+            git fetch origin master
+            git reset --hard origin/master
+            composer install --no-interaction --prefer-dist --optimize-autoloader
+            php artisan migrate --force
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+            php artisan event:cache
+            composer dump-autoload -o
+            php artisan up
