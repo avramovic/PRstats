@@ -85,7 +85,7 @@ class Server extends Model
     {
         return \Cache::remember('server_weekly_'.$this->id, 3600 * 4, function () use ($weeks) {
             $stats = \DB::table('match_player')
-                ->select(\DB::raw('count(distinct player_id) as plr_cnt, WEEKOFYEAR(updated_at) as woy'))
+                ->select(\DB::raw('count(distinct player_id) as plr_cnt, YEAR(updated_at) as year, WEEKOFYEAR(updated_at) as woy'))
                 ->whereIn('match_id', function ($q) use ($weeks) {
                     $q->select('id')
                         ->from('matches')
@@ -100,6 +100,9 @@ class Server extends Model
             $data = [];
 
             foreach ($stats as $stat) {
+                if ($stat->year != date('Y')) {
+                    continue;
+                }
                 $data[$stat->woy] = $stat->plr_cnt;
             }
 
