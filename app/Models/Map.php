@@ -90,9 +90,9 @@ class Map extends Model
     {
         return \Cache::remember('map_weekly_'.$this->id, 3600 * 4, function () use ($weeks) {
             $stats = \DB::table('matches')
-                ->select(\DB::raw('count(*) as match_cnt, CONCAT(YEAR(updated_at), WEEKOFYEAR(updated_at)) as woy'))
+                ->select(\DB::raw('count(*) as match_cnt, WEEKOFYEAR(updated_at) as woy'))
                 ->where('map_id', $this->id)
-                ->groupBy(\DB::raw('CONCAT(YEAR(updated_at), WEEKOFYEAR(updated_at))'))
+                ->groupBy(\DB::raw('YEAR(updated_at), WEEKOFYEAR(updated_at)'))
                 ->orderBy('updated_at', 'desc')
                 ->limit($weeks + 1)
                 ->get();
