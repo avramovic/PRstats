@@ -90,7 +90,7 @@ class Map extends Model
     {
         return \Cache::remember('map_weekly_'.$this->id, 3600 * 4, function () use ($weeks) {
             $stats = \DB::table('matches')
-                ->select(\DB::raw('count(*) as match_cnt, YEAR(updated_at) as year, WEEKOFYEAR(updated_at) as woy'))
+                ->select(\DB::raw('count(*) as match_cnt, updated_at, WEEKOFYEAR(updated_at) as woy'))
                 ->where('map_id', $this->id)
                 ->groupBy(\DB::raw('YEAR(updated_at), WEEKOFYEAR(updated_at)'))
                 ->orderBy('updated_at', 'desc')
@@ -100,7 +100,7 @@ class Map extends Model
             $data = [];
 
             foreach ($stats as $stat) {
-                if ($stat->year != date('Y')) {
+                if (Carbon::parse($stat->updated_at)->lt(Carbon::now()->subWeeks($weeks))) {
                     continue;
                 }
                 $data[$stat->woy] = $stat->match_cnt;
