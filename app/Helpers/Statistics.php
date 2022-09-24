@@ -38,7 +38,7 @@ class Statistics
     {
         return \Cache::remember('weekly_'.$table.'_'.$field.'_'.$weeks, 3600, function () use ($table, $field, $weeks) {
             $stats = \DB::table($table)
-                ->select(\DB::raw('count(*) as cnt, WEEKOFYEAR('.$field.') as woy'))
+                ->select(\DB::raw('count(*) as cnt, '.$field.', WEEKOFYEAR('.$field.') as woy'))
                 ->groupBy(\DB::raw('YEAR('.$field.'), WEEKOFYEAR('.$field.')'))
                 ->orderBy($field, 'desc')
                 ->limit($weeks+1)
@@ -47,6 +47,9 @@ class Statistics
             $data = [];
 
             foreach ($stats as $stat) {
+                if (Carbon::parse($stat->{$field})->lt(Carbon::now()->subWeeks($weeks))) {
+                    continue;
+                }
                 $data[$stat->woy] = $stat->cnt;
             }
 

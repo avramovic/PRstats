@@ -116,7 +116,7 @@ class Player extends Model
     {
         return \Cache::remember('player_weekly_'.$this->id, 3600 * 4, function () use ($weeks) {
             $stats = \DB::table('match_player')
-                ->select(\DB::raw('count(*) as cnt, WEEKOFYEAR(updated_at) as woy'))
+                ->select(\DB::raw('count(*) as cnt, updated_at, WEEKOFYEAR(updated_at) as woy'))
                 ->where('player_id', $this->id)
                 ->groupBy(\DB::raw('YEAR(updated_at), WEEKOFYEAR(updated_at)'))
                 ->orderBy('updated_at', 'desc')
@@ -126,6 +126,9 @@ class Player extends Model
             $data = [];
 
             foreach ($stats as $stat) {
+                if (Carbon::parse($stat->updated_at)->lt(Carbon::now()->subWeeks($weeks))) {
+                    continue;
+                }
                 $data[$stat->woy] = $stat->cnt;
             }
 
