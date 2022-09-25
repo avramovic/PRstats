@@ -1,5 +1,5 @@
 <div class="col-lg-{{ $width ?? 6 }}">
-    <h4>{{ $slot }}</h4>
+    <h3>{{ $slot }}</h3>
     <section id="unseen">
         <table class="table table-bordered table-striped table-condensed">
             <thead>

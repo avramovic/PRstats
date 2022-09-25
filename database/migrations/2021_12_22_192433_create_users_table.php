@@ -19,7 +19,10 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password')->nullable();
             $table->string('remember_token')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->boolean('auto_approve_subscriptions')->default(true);
+            $table->text('bio')->nullable();
+            $table->string('location')->nullable();
             $table->timestamps();
         });
     }

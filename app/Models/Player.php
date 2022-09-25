@@ -4,6 +4,7 @@ namespace PRStats\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use PRStats\Models\Traits\FormatScoreTrait;
 use PRStats\Models\Traits\HasCountryFlag;
@@ -11,7 +12,7 @@ use PRStats\Models\Traits\WasSeenRecentlyTrait;
 
 class Player extends Model
 {
-    use WasSeenRecentlyTrait, FormatScoreTrait, HasCountryFlag, Notifiable;
+    use WasSeenRecentlyTrait, FormatScoreTrait, HasCountryFlag, Notifiable, SoftDeletes;
 
     protected $guarded = ['id'];
 
@@ -67,12 +68,13 @@ class Player extends Model
 
     public function getAvatarUrl($size = 140)
     {
-        return 'https://static.prstats.tk/'.$this->getAvatarPath();
-//        return vsprintf('https://robohash.org/%s.png?set=set5&size=%dx%d', [
-//            md5($this->name),
-//            $size,
-//            $size,
-//        ]);
+        $default = 'https://static.prstats.tk/'.$this->getAvatarPath();
+
+        if (empty($this->user_id)) {
+            return $default;
+        }
+
+        return "https://www.gravatar.com/avatar/" . md5( strtolower( trim( $this->user->email ) ) ) . "?d=" . urlencode( $default ) . "&s=" . $size;
     }
 
     public function minutesPlayed()

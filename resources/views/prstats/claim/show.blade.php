@@ -1,29 +1,33 @@
 @extends('layouts.prstats')
 
 @section('title')
-    Claim profiles
+    Claiming {{ $player->name }}
 @endsection
 
 @section('subtitle')
-    Claiming player profiles
+    Claiming player {{ $player->name }}
 @endsection
 
 @section('content')
     <div class="col-lg-6">
-        @if(Auth::guest())
-            <p>To claim player profiles as your own, first you need to log in to the website. Please use a valid e-mail address as your login link will be sent to your e-mail.</p>
-            <button class="btn-lg btn btn-theme" id="btn-login">LOG IN</button>
-            <p>&nbsp;</p>
-            <p>Once you log in, find the player profile using the search option in the top-right corner of this page, and click on the "Claim" button. </p>
-            @include('prstats.claim.details')
-        @else
-            <p>To claim player profiles as your own, find the player profile using the search option in the top-right corner of this page, and click on the "Claim" button. </p>
-            @include('prstats.claim.details')
-            <h4>Player profiles you claimed</h4>
-            <div id="subscriptions">
-                <p>Allow notifications to list your subscriptions.</p>
-            </div>
-        @endif
+        <!-- /content-panel -->
+
+        <p>To claim player <a href="{!! $player->getLink() !!}">{{ $player->name }}</a> as your own, you need to temporarily change your clan tag and put the following code as your clan tag: </p>
+
+        <h4>{{ $claim->code }}</h4>
+        
+        <p>Step 1: Click on the arrow next to "PLAY" and choose "Select Profile"</p>
+        <img src="/img/claim/1.png" alt="">
+        <p>&nbsp;</p>
+        <p>Step 2: Choose your player profile, enter the code (<strong>{{ $claim->code }}</strong>) as your clan tag, and press "Play"</p>
+        <img src="/img/claim/2.png" alt="">
+        <p>&nbsp;</p>
+        <p>Remember not to use the code from the image but the one assigned to your claim request, which is: <strong>{{ $claim->code }}</strong></p>
+
+        <p>Once you join the game and the server notices you, your claim will be fullfiled and you will receive a confirmation email. After that, you can revert to your original clan tag.</p>
+
+        @include('prstats.claim.details')
+
 
 
     </div>

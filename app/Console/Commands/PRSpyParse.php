@@ -157,9 +157,10 @@ class PRSpyParse extends Command
                 $pid  = collect(explode(' ', $name))->last();
                 $pid  = md5($pid);
 
-                $player = Player::with(['claims' => function ($query) {
-                    $query->withTrashed();
-                }])
+                $player = Player::withTrashed()
+                    ->with(['claims' => function ($query) {
+                        $query->withTrashed();
+                    }])
                     ->withCount(['subscriptions'])
                     ->where('pid', $pid)->first();
 
@@ -186,8 +187,9 @@ class PRSpyParse extends Command
                         /** @var Claim $claim */
                         $claim = $player->claims->where('code', $clanTag)->first();
 
-                        if ($claim && !$claim->trashed()) {
-                            dispatch(new AsyncProcessClaimJob($claim));
+                        if ($claim) {
+                            if (empty($player->user_id) && !$claim->trashed())
+                                dispatch(new AsyncProcessClaimJob($claim));
                         } else {
                             $clan = Clan::where('name', $decodedClanName)->first();
                             if ($clan == null) {
@@ -282,8 +284,10 @@ class PRSpyParse extends Command
                     $player->save();
                     dispatch(new MakePlayerAvatarJob($player));
                 } else {
-                    if (!$player->wasSeenRecently(10) && $player->total_score >= 10000 && config('app.env') == 'production') {
-                        dispatch(new MakePlayerSignatureJob($player));
+                    if (!$player->wasSeenRecently(10) && config('app.env') == 'production') {
+                        if ($player->total_score >= 250000 || !empty($player->user_id)) {
+                            dispatch(new MakePlayerSignatureJob($player));
+                        }
                     }
                     $player->save();
                 }

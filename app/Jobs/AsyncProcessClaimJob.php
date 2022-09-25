@@ -8,7 +8,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use PRStats\Models\Claim;
-use PRStats\Models\User;
 use PRStats\Notifications\ClaimApprovedNotification;
 use PRStats\Notifications\ProfileCreatedNotification;
 
@@ -38,42 +37,14 @@ class AsyncProcessClaimJob implements ShouldQueue
      */
     public function handle()
     {
-        $user = $this->claim->user ?: User::where('email', $this->claim->email)->first();
-
-        if (!$user) {
-
-            try {
-                $profile = $this->getGuzzleRequest('https://www.gravatar.com/'.md5($this->claim->email).'.json');
-            } catch (\Exception $exception) {
-                \Log::error($exception->getMessage(), $exception->getTrace());
-                $profile = null;
-            }
-
-            $user = User::create([
-                'email' => $this->claim->email,
-                'name'  => $profile ? $profile['entry'][0]['displayName'] : $this->claim->player->name,
-            ]);
-
-            $user->notify(new ProfileCreatedNotification());
-        }
+        $user = $this->claim->user;
 
         $this->claim->player()->update([
             'user_id' => $user->id,
         ]);
 
-        $user->notify(new ClaimApprovedNotification($this->claim->id));
+        $user->notify(new ClaimApprovedNotification($this->claim));
 
         $this->claim->delete();
-
-    }
-
-    protected function getGuzzleRequest($url)
-    {
-        $client   = new \GuzzleHttp\Client();
-        $request  = $client->get($url);
-        $response = $request->getBody()->getContents();
-
-        return json_decode($response);
-
     }
 }

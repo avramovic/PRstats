@@ -4,9 +4,12 @@
     Notifications
 @endsection
 
+@section('subtitle')
+    Notifications
+@endsection
+
 @section('content')
     <div class="col-lg-6">
-        <h4>Notifications</h4>
         <section id="unseen">
             <p>Allow push notifications by clicking the button below in order to be able to subscribe to player activity. Once you allow site-wide push notifications, you'll be able to subscribe to individual players.</p>
             <div class='onesignal-customlink-container'></div>

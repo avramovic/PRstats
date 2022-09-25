@@ -47,6 +47,7 @@
     <section id="main-content">
         <section class="wrapper site-min-height">
             @hasSection('subtitle')
+                <p>&nbsp;</p>
             <h3><i class="fa fa-angle-right"></i>
                 @yield('subtitle')
             </h3>
@@ -86,6 +87,8 @@
     snowStorm.flakesMaxActive = 96;    // show more snow on screen at once
 </script>
 @endif
+<link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!--script for this page-->
 @yield('scripts')
 <script>
@@ -95,8 +98,8 @@
         let seen = getCookie('message_seen');
         if (seen !== 'yes') {
             var unique_id = $.gritter.add({
-                title: 'Check out notifications!',
-                text: 'We\'ve added web push notifications! Check out the new "Notifications" menu item in the sidebar.',
+                title: 'Claim player profiles!',
+                text: 'You can now claim player profiles! Check out the new "Claim profiles" menu item in the sidebar.',
                 image: 'https://static.prstats.tk/avatars/75/c5/75c53d450505ec0e9f0e2e251c5b2c54.png',
                 sticky: true,
                 class_name: 'my-sticky-class'

@@ -47,9 +47,9 @@ class ClaimRequestedNotification extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->line('Hello '.$notifiable->name)
-            ->line('To claim your player profile '.$this->claim->player->name.' you need to temporarily chage your clan tag to: '.$this->claim->code)
-            ->action($this->claim->code, route('claim', $this->claim->uuid))
+            ->subject('Player Claim Request')
+            ->line('To claim your player profile "'.$this->claim->player->name.'", you need to temporarily change your clan tag to: '.$this->claim->code)
+            ->action('View instructions', route('claim.show', $this->claim->uuid))
             ->line('See you at the battlefield!');
     }
 

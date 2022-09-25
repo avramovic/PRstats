@@ -3,6 +3,7 @@
 namespace PRStats\Http\Controllers;
 
 use Illuminate\Http\Request;
+use PRStats\Jobs\AsyncFetchProfileJob;
 use PRStats\Models\User;
 use PRStats\Notifications\UserLoginRequestNotification;
 
@@ -29,6 +30,7 @@ class UserController extends Controller
 
         if (!$user->exists) {
             $user->save();
+            $this->dispatch(new AsyncFetchProfileJob($user));
         }
 
         $user->notify(new UserLoginRequestNotification($newUser));
@@ -46,9 +48,19 @@ class UserController extends Controller
 
         $user = User::findOrFail($id);
 
+        if (!$user->is_active) {
+            abort(403);
+        }
+
         \Auth::login($user, true);
 
         return redirect()->route('claim.index');
+    }
+
+    public function logout()
+    {
+        \Auth::logout();
+        return redirect('/');
     }
 
 }

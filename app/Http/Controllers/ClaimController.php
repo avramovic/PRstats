@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use PRStats\Models\Claim;
 use PRStats\Models\Player;
+use PRStats\Notifications\ClaimRequestedNotification;
 use Ramsey\Uuid\Uuid;
 
 class ClaimController extends Controller
@@ -16,7 +17,7 @@ class ClaimController extends Controller
     {
         return view('prstats.claim.index', [
             'latest' => collect([]),
-            'most' => collect([]),
+            'most'   => collect([]),
         ]);
     }
 
@@ -49,36 +50,45 @@ class ClaimController extends Controller
 
     public function store($pid, Request $request)
     {
+        if (\Auth::guest()) {
+            return redirect()->route('claim.index');
+        }
+
         /** @var Player $player */
         $player = Player::with(['clan'])
             ->findOrFail($pid);
 
-        $claim = $player->claims()->updateOrCreate(['email' => \Auth::guest() ? $request->email : \Auth::user()->email], [
+        /** @var Claim $claim */
+        $claim = $player->claims()->where('email', \Auth::user()->email)->first();
+
+        if ($claim) {
+            return redirect()->route('claim.show', $claim->uuid);
+        }
+
+        /** @var Claim $claim */
+        $claim = $player->claims()->create([
+            'email'        => \Auth::user()->email,
             'uuid'         => Uuid::uuid4(),
             'code'         => strtoupper(Str::random(6)),
             'old_clan_tag' => $player->clan ? $player->clan->name : null,
-            'user_id'      => \Auth::guest() ? null : \Auth::user()->id,
+            'user_id'      => \Auth::user()->id,
         ]);
+
+        \Auth::user()->notify(new ClaimRequestedNotification($claim));
+
+        return redirect()->route('claim.show', $claim->uuid);
+    }
+
+    public function show($uuid)
+    {
+        $claim  = Claim::with(['player'])->withTrashed()->where('uuid', $uuid)->firstOrFail();
+        $player = $claim->player;
 
         return view('prstats.claim.show', [
             'claim'  => $claim,
             'player' => $player,
-        ]);
-    }
-
-    public function howTo($uuid = null)
-    {
-        if ($uuid) {
-            $claim  = Claim::with(['player'])->withTrashed()->where('uuid', $uuid)->firstOrFail();
-            $player = $claim->player;
-        } else {
-            $claim  = null;
-            $player = null;
-        }
-
-        return view('prstats.claim.howto', [
-            'claim'  => $claim,
-            'player' => $player,
+            'latest' => collect([]),
+            'most'   => collect([]),
         ]);
     }
 

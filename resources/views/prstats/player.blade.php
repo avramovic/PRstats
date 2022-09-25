@@ -70,15 +70,27 @@
                         <i class="fa fa-bell" id="sub-icon"></i> <span id="sub-label">Subscribe</span> (<span
                                 id="sub-cnt">{{ $player->subscriptions_count }}</span>)
                     </button>
-                    <a href="{{ route('claim.player', [$player->id, $player->slug]) }}" id="claim-btn" data-pid="{{ $player->id }}" class="btn btn-danger">
-                        <i class="fa fa-legal" id="claim-icon"></i> <span id="claim-label">Claim</span>
-                    </a>
+                    @if(!$player->user_id)
+                        @if(Auth::guest())
+                            <a href="{{ route('claim.index') }}" id="claim-btn" data-pid="{{ $player->id }}" class="btn btn-danger">
+                                <i class="fa fa-legal" id="claim-icon"></i> <span id="claim-label">Claim</span>
+                            </a>
+                        @else
+                            <button id="claim-btn" type="button" data-pid="{{ $player->id }}" class="btn btn-danger">
+                                <i class="fa fa-legal" id="claim-icon"></i> <span id="claim-label">Claim</span>
+                            </button>
+                        @endif
+                    @endif
                 </p>
                 <p id="blokked" class="hidden">Disable adblock!</p>
             </div>
         </div>
         <!-- /col-md-4 -->
     </div>
+
+    <form id="claim-form" method="post" action="{{ route('claim.store', $player->id) }}">
+        @csrf
+    </form>
 
 
     @if($player->wasSeenRecently())
@@ -204,6 +216,40 @@
         function updateSubCount(val) {
             $('#sub-cnt').text(val);
         }
+
+
+        $('#claim-btn').on('click', async function (el) {
+
+            const { value: result } = await Swal.fire({
+                title: 'Are you sure you want to claim player "'+{!! json_encode($player->name) !!}+'" as your own?',
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: 'Claim',
+                denyButtonText: `Don't claim`,
+            });
+
+            if (result) {
+                $('#claim-form').submit();
+            }
+
+        });
+
+        // function confirmClaim(btn) {
+        //     let form = $(btn).parents('form:first');
+        //     console.log(form);
+        //     Swal.fire({
+        //         title: 'Are you sure you want to claim this player profile as your own?',
+        //         showDenyButton: true,
+        //         showCancelButton: false,
+        //         confirmButtonText: 'Claim',
+        //         denyButtonText: `Don't claim`,
+        //     }).then((result) => {
+        //         /* Read more about isConfirmed, isDenied below */
+        //         if (result.isConfirmed) {
+        //             form.submit();
+        //         }
+        //     })
+        // }
 
 
     </script>

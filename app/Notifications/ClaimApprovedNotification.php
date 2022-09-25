@@ -48,8 +48,7 @@ class ClaimApprovedNotification extends Notification
     public function toMail($notifiable)
     {
         $msg = (new MailMessage)
-            ->line('Hello '.$notifiable->name)
-            ->line('Your player profile '.$this->claim->player->name.' was successfully claimed on PRstats.tk.');
+            ->line('Your player profile "'.$this->claim->player->name.'" was successfully claimed on PRstats.tk.');
 
         if (!empty($this->claim->old_clan_tag)) {
             $msg->line('You can now revert your clan tag in game to: '.$this->claim->old_clan_tag);

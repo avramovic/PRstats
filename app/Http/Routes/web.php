@@ -29,12 +29,12 @@ Route::group(['prefix' => 'json'], function() {
 
 Route::group(['prefix' => 'claim', 'as' => 'claim.'], function() {
     Route::get('/', ['as' => 'index', 'uses' => 'ClaimController@index']);
-    Route::get('{pid}/{slug}', ['as' => 'player', 'uses' => 'ClaimController@player']);
     Route::post('{pid}', ['as' => 'store', 'uses' => 'ClaimController@store']);
-    Route::get('howto/{uuid?}', ['as' => 'howto', 'uses' => 'ClaimController@howTo']);
+    Route::get('{uuid}', ['as' => 'show', 'uses' => 'ClaimController@show']);
 
 });
 
 Route::get('login/{id}', ['as' => 'login', 'uses' => 'UserController@login']);
+Route::get('logout', ['as' => 'logout', 'uses' => 'UserController@logout']);
 
 Route::get('{slug}', ['as' => 'player.short', 'uses' => 'PlayerController@shortUrl']);
