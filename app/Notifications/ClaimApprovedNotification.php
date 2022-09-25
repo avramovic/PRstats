@@ -54,7 +54,7 @@ class ClaimApprovedNotification extends Notification
         if (!empty($this->claim->old_clan_tag)) {
             $msg->line('You can now revert your clan tag in game to: '.$this->claim->old_clan_tag);
         } else {
-            $msg->line('You can now remove your clan tag in game.');
+            $msg->line('You can now remove your clan tag in game, or set a real clan tag.');
         }
 
         $msg->action('See player profile', $this->claim->player->getLink())

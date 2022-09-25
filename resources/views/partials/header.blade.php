@@ -5,6 +5,10 @@
     <!--logo start-->
     <a href="/" class="logo"><b><span>PR</span>stats</b></a>
     <!--logo end-->
+    @if($user = Auth::user())
+    <p>Howdy {{ $user->name }}</p>
+    @else
+    @endif
 {{--    <div class="nav notify-row" id="top_menu">--}}
 {{--        <!--  notification start -->--}}
 {{--        <ul class="nav top-menu" style="display: none">--}}

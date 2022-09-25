@@ -70,6 +70,9 @@
                         <i class="fa fa-bell" id="sub-icon"></i> <span id="sub-label">Subscribe</span> (<span
                                 id="sub-cnt">{{ $player->subscriptions_count }}</span>)
                     </button>
+                    <a href="{{ route('claim.player', [$player->id, $player->slug]) }}" id="claim-btn" data-pid="{{ $player->id }}" class="btn btn-danger">
+                        <i class="fa fa-legal" id="claim-icon"></i> <span id="claim-label">Claim</span>
+                    </a>
                 </p>
                 <p id="blokked" class="hidden">Disable adblock!</p>
             </div>

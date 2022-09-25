@@ -2,7 +2,7 @@
     <h4>{{ $slot }}</h4>
     @foreach($players as $player)
         @php
-        if ($player instanceof \PRStats\Models\Subscription) {
+        if (!$player instanceof \PRStats\Models\Player) {
             $subTime = $player->created_at;
             $player = $player->player;
             $player->created_at = $subTime;

@@ -6,31 +6,27 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use PRStats\Models\Claim;
+use PRStats\Models\User;
 
-class ClaimRequestedNotification extends Notification implements ShouldQueue
+class UserLoginRequestNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
     /**
-     * @var Claim
+     * @var bool
      */
-    private $claim;
+    private $newUser = false;
 
-    /**
-     * Create a new notification instance.
-     *
-     * @return void
-     */
-    public function __construct(Claim $claim)
+    public function __construct(bool $newUser)
     {
-        $this->claim = $claim;
+        $this->newUser = $newUser;
     }
 
     /**
      * Get the notification's delivery channels.
      *
-     * @param  mixed  $notifiable
+     * @param mixed $notifiable
+     *
      * @return array
      */
     public function via($notifiable)
@@ -41,22 +37,27 @@ class ClaimRequestedNotification extends Notification implements ShouldQueue
     /**
      * Get the mail representation of the notification.
      *
-     * @param  mixed  $notifiable
+     * @param User $notifiable
+     *
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
-            ->line('Hello '.$notifiable->name)
-            ->line('To claim your player profile '.$this->claim->player->name.' you need to temporarily chage your clan tag to: '.$this->claim->code)
-            ->action($this->claim->code, route('claim', $this->claim->uuid))
+        $msg = (new MailMessage)
+            ->subject($this->newUser ? 'New User Created' : 'User Login Request')
+            ->line('You can click the button below to log in to PRstats.tk. The link will be valid for 30 minutes.');
+
+        $msg->action('Log In', $notifiable->getLoginLink())
             ->line('See you at the battlefield!');
+
+        return $msg;
     }
 
     /**
      * Get the array representation of the notification.
      *
-     * @param  mixed  $notifiable
+     * @param mixed $notifiable
+     *
      * @return array
      */
     public function toArray($notifiable)

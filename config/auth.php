@@ -67,7 +67,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => PRStats\User::class,
+            'model' => PRStats\Models\User::class,
         ],
 
         // 'users' => [

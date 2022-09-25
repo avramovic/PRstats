@@ -3,9 +3,13 @@
 namespace PRStats\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use URL;
 
 class User extends Authenticatable
 {
+    use Notifiable;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -37,5 +41,10 @@ class User extends Authenticatable
     public function claims()
     {
         return $this->hasMany(Claim::class);
+    }
+
+    public function getLoginLink()
+    {
+        return url(URL::signedRoute('login', ['id' => $this->id], now()->addMinutes(30), false));
     }
 }

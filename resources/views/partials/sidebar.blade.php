@@ -40,6 +40,12 @@
                     <span>Notifications</span>
                 </a>
             </li>
+            <li class="">
+                <a href="/claim" class="{{ (request()->is('claim*')) ? 'active' : '' }}">
+                    <i class="fa fa-legal"></i>
+                    <span>Claim profile</span>
+                </a>
+            </li>
 
         </ul>
         <!-- sidebar menu end-->
