@@ -5,11 +5,16 @@
 @endsection
 
 @section('content')
+
+    @if(!Auth::guest() && (Auth::user()->canEdit($player)))
+        @include('partials.players.admin')
+    @endif
+
     <div class="row content-panel">
         <div class="col-md-2 col-sm-6 col-xs-6 profile-text mt mb centered">
             <h4>{!! $player->formatScoreHtml('total_score') !!}</h4>
             <h6>TOTAL SCORE</h6>
-            <h4>{!! $player->formatScoreHtml('total_kills') !!}</h4>
+            <h4>lp{!! $player->formatScoreHtml('total_kills') !!}</h4>
             <h6>TOTAL KILLS</h6>
             <h4>{!! $player->formatScoreHtml('total_deaths') !!}</h4>
             <h6>TOTAL DEATHS</h6>
@@ -29,7 +34,11 @@
         </div>
         <!-- /col-md-4 -->
         <div class="col-md-4 col-sm-12 col-xs-12 profile-text">
-            <h3>{{ $player->name }}</h3>
+            <h3>{{ $player->name }}
+            @if(!empty($player->user_id))
+                <i class="fa fa-check-circle-o" title="This player has been claimed by someone!"></i>
+            @endif
+            </h3>
 
             @if($player->clan_id)
                 <h5>Member of the <a href="{{ $player->clan->getLink() }}">{{ $player->clan->name }}</a> clan</h5>
@@ -46,18 +55,12 @@
             @if($player->country)
                 <p>{!! $player->getCountryFlagHtml() !!}</p>
             @endif
-            <br>
-            {{--            <p>--}}
-            {{--                @if($server->community_website)--}}
-            {{--                    <a class="btn btn-theme" href="{{ $server->community_website }}" target="_blank"><i--}}
-            {{--                                class="fa fa-globe"></i> Website</a>--}}
-            {{--                @endif--}}
-            {{--                @if($server->br_download)--}}
-            {{--                    <a class="btn btn-theme" href="{{ $server->br_download }}" target="_blank"><i--}}
-            {{--                                class="fa fa-camera"></i> Battle records</a>--}}
-            {{--                @endif--}}
 
-            {{--            </p>--}}
+            @if(!empty($player->user_id))
+                <h5>Claimed by: <a href="{{ $player->user->getLink() }}">{{ $player->user->name }}</a></h5>
+{{--                @if($player->user->location)<h5>Location: {{ $player->user->location }}</h5>@endif--}}
+{{--                @if($player->user->bio)<p>{{ $player->user->bio }}</p>@endif--}}
+            @endif
         </div>
         <!-- /col-md-4 -->
         <div class="col-md-4 col-sm-12 col-xs-12 centered">
@@ -70,13 +73,13 @@
                         <i class="fa fa-bell" id="sub-icon"></i> <span id="sub-label">Subscribe</span> (<span
                                 id="sub-cnt">{{ $player->subscriptions_count }}</span>)
                     </button>
-                    @if(!$player->user_id)
+                    @if(empty($player->user_id))
                         @if(Auth::guest())
-                            <a href="{{ route('claim.index') }}" id="claim-btn" data-pid="{{ $player->id }}" class="btn btn-danger">
+                            <a href="{{ route('claim.index') }}" class="btn btn-danger">
                                 <i class="fa fa-legal" id="claim-icon"></i> <span id="claim-label">Claim</span>
                             </a>
                         @else
-                            <button id="claim-btn" type="button" data-pid="{{ $player->id }}" class="btn btn-danger">
+                            <button type="button" class="btn btn-danger claim-btn">
                                 <i class="fa fa-legal" id="claim-icon"></i> <span id="claim-label">Claim</span>
                             </button>
                         @endif
@@ -112,6 +115,10 @@
     @if($hasSignature)
         <div class="row mt">
             @include('partials.players.signature')
+        </div>
+    @else
+        <div class="row mt">
+            @include('partials.players.no-signature')
         </div>
     @endif
 
@@ -218,7 +225,7 @@
         }
 
 
-        $('#claim-btn').on('click', async function (el) {
+        $('.claim-btn').on('click', async function (el) {
 
             const { value: result } = await Swal.fire({
                 title: 'Are you sure you want to claim player "'+{!! json_encode($player->name) !!}+'" as your own?',

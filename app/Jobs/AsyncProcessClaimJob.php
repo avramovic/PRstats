@@ -37,13 +37,13 @@ class AsyncProcessClaimJob implements ShouldQueue
      */
     public function handle()
     {
-        $user = $this->claim->user;
-
-        $this->claim->player()->update([
-            'user_id' => $user->id,
+        $this->claim->player->update([
+            'user_id' => $this->claim->user->id,
         ]);
 
-        $user->notify(new ClaimApprovedNotification($this->claim));
+        $this->claim->user->notify(new ClaimApprovedNotification($this->claim));
+
+        dispatch(new MakePlayerSignatureJob($this->claim->player));
 
         $this->claim->delete();
     }

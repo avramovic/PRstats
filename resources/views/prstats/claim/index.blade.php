@@ -19,21 +19,26 @@
         @else
             <p>To claim player profiles as your own, find the player profile using the search option in the top-right corner of this page, and click on the "Claim" button. </p>
             @include('prstats.claim.details')
-            <h4>Player profiles you claimed</h4>
             <div id="subscriptions">
-                <p>Allow notifications to list your subscriptions.</p>
+                @include('partials.players.players_table', [
+                    'width'   => '12',
+                    'slot'    => 'Player profiles you claimed',
+                    'metric'  => 'created_at',
+                    'players' => Auth::user()->players()->withTrashed()->paginate(),
+                ])
             </div>
+            <p><a href="{{ route('logout') }}">Log out</a></p>
         @endif
 
 
     </div>
 
-    @component('partials.players.player_subs', ['players' => $latest, 'metric' => 'created_at'])
-        Latest followed
+    @component('partials.players.player_subs', ['players' => $claims, 'metric' => 'deleted_at'])
+        Latest players claimed
     @endcomponent
 
-    @component('partials.players.player_subs', ['players' => $most, 'metric' => 'subscriptions_count'])
-        Most followers
+    @component('partials.users.list', ['users' => $users, 'metric' => 'created_at'])
+        Latest users registered
     @endcomponent
 
 

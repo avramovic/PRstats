@@ -15,7 +15,11 @@
             <tbody>
             @forelse($players as $player)
             <tr>
-                <td>{{ $players->perPage()*($players->currentPage()-1)+$loop->iteration }}</td>
+                @if($players instanceof \Illuminate\Contracts\Pagination\LengthAwarePaginator)
+                    <td>{{ $players->perPage()*($players->currentPage()-1)+$loop->iteration }}</td>
+                @else
+                    <td>{{ $loop->iteration }}</td>
+                @endif
                 <td>
                     @if($player->clan)
                         <a href="{{ $player->clan->getLink() }}">{{ $player->clan->name }}</a>
@@ -35,9 +39,11 @@
             @endforelse
             </tbody>
         </table>
+        @if($players instanceof \Illuminate\Contracts\Pagination\LengthAwarePaginator)
         <div class="centered">
             {!! $players->links() !!}
         </div>
+        @endif
     </section>
 <!-- /content-panel -->
 </div>

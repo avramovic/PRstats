@@ -2,11 +2,11 @@
 
 namespace PRStats\Http\Controllers;
 
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use PRStats\Models\Claim;
 use PRStats\Models\Player;
+use PRStats\Models\User;
 use PRStats\Notifications\ClaimRequestedNotification;
 use Ramsey\Uuid\Uuid;
 
@@ -15,36 +15,24 @@ class ClaimController extends Controller
 
     public function index()
     {
+
+        $claims = Claim::onlyTrashed()
+            ->with(['player'])
+            ->orderBy('deleted_at', 'desc')
+            ->limit(10)
+            ->get();
+
+        $users = User::orderBy('created_at', 'desc')
+            ->limit(10)
+            ->get();
+
+        $claims = $claims->reject(function (Claim $claim) {
+            return empty($claim->player);
+        });
+
         return view('prstats.claim.index', [
-            'latest' => collect([]),
-            'most'   => collect([]),
-        ]);
-    }
-
-    public function player($pid)
-    {
-        $player = Player::with(['clan'])
-            ->findOrFail($pid);
-
-        $threeMinAgo = Carbon::now()->subMinutes(3);
-
-        $matches = $player->matches()
-            ->with(['server', 'map'])
-            ->when($player->wasSeenRecently(), function ($q) use ($threeMinAgo) {
-                $q->where('matches.updated_at', '<', $threeMinAgo);
-            })
-            ->orderBy('id', 'desc')
-            ->paginate(25);
-
-        $lastMatch = $player->matches()
-            ->with(['server', 'map'])
-            ->orderBy('id', 'desc')
-            ->first();
-
-        return view('prstats.claim.player', [
-            'player'    => $player,
-            'matches'   => $matches,
-            'lastMatch' => $lastMatch,
+            'claims' => $claims,
+            'users'  => $users,
         ]);
     }
 
@@ -57,6 +45,10 @@ class ClaimController extends Controller
         /** @var Player $player */
         $player = Player::with(['clan'])
             ->findOrFail($pid);
+
+        if (!empty($player->user_id)) {
+            abort(403);
+        }
 
         /** @var Claim $claim */
         $claim = $player->claims()->where('email', \Auth::user()->email)->first();
@@ -84,11 +76,24 @@ class ClaimController extends Controller
         $claim  = Claim::with(['player'])->withTrashed()->where('uuid', $uuid)->firstOrFail();
         $player = $claim->player;
 
+        $claims = Claim::onlyTrashed()
+            ->orderBy('deleted_at', 'desc')
+            ->limit(10)
+            ->get();
+
+        $users = User::orderBy('created_at', 'desc')
+            ->limit(10)
+            ->get();
+
+        $claims = $claims->reject(function (Claim $claim) {
+            return empty($claim->player);
+        });
+
         return view('prstats.claim.show', [
             'claim'  => $claim,
             'player' => $player,
-            'latest' => collect([]),
-            'most'   => collect([]),
+            'claims' => $claims,
+            'users'  => $users,
         ]);
     }
 

@@ -24,7 +24,7 @@
         <p>&nbsp;</p>
         <p>Remember not to use the code from the image but the one assigned to your claim request, which is: <strong>{{ $claim->code }}</strong></p>
 
-        <p>Once you join the game and the server notices you, your claim will be fullfiled and you will receive a confirmation email. After that, you can revert to your original clan tag.</p>
+        <p>Once you join the game and the server notices you, your claim request will be fulfilled and you will receive a confirmation email. After that, you can revert to your original clan tag.</p>
 
         @include('prstats.claim.details')
 
@@ -32,12 +32,12 @@
 
     </div>
 
-    @component('partials.players.player_subs', ['players' => $latest, 'metric' => 'created_at'])
-        Latest followed
+    @component('partials.players.player_subs', ['players' => $claims, 'metric' => 'deleted_at'])
+        Latest players claimed
     @endcomponent
 
-    @component('partials.players.player_subs', ['players' => $most, 'metric' => 'subscriptions_count'])
-        Most followers
+    @component('partials.users.list', ['users' => $users, 'metric' => 'created_at'])
+        Latest users registered
     @endcomponent
 
 

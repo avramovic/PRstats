@@ -43,7 +43,7 @@
             <li class="">
                 <a href="/claim" class="{{ (request()->is('claim*')) ? 'active' : '' }}">
                     <i class="fa fa-legal"></i>
-                    <span>Claim profile</span>
+                    <span>Claim profiles</span>
                 </a>
             </li>
 

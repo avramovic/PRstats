@@ -69,6 +69,7 @@ class Player extends Model
     public function getAvatarUrl($size = 140)
     {
         $default = 'https://static.prstats.tk/'.$this->getAvatarPath();
+        return $default;
 
         if (empty($this->user_id)) {
             return $default;

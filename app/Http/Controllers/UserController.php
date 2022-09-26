@@ -30,9 +30,9 @@ class UserController extends Controller
 
         if (!$user->exists) {
             $user->save();
-            $this->dispatch(new AsyncFetchProfileJob($user));
         }
 
+        $this->dispatch(new AsyncFetchProfileJob($user));
         $user->notify(new UserLoginRequestNotification($newUser));
 
         return response()->json([
@@ -61,6 +61,21 @@ class UserController extends Controller
     {
         \Auth::logout();
         return redirect('/');
+    }
+
+    public function show($id, $slug = '')
+    {
+        $user = User::findOrFail($id);
+
+        if (\Auth::user() && \Auth::user()->canEditUser($user)) {
+            $user = User::with(['players' => function ($query) {
+                $query->withTrashed();
+            }])->findOrFail($id);
+        }
+
+        return view('prstats.user', [
+            'user' => $user,
+        ]);
     }
 
 }

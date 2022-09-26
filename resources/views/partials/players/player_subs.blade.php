@@ -3,9 +3,9 @@
     @foreach($players as $player)
         @php
         if (!$player instanceof \PRStats\Models\Player) {
-            $subTime = $player->created_at;
+            $subTime = $player->{$metric};
             $player = $player->player;
-            $player->created_at = $subTime;
+            $player->{$metric} = $subTime;
         }
         @endphp
     <div class="desc">
@@ -19,8 +19,8 @@
                 @endif
                 <a href="{{ $player->getLink() }}">{{ $player->name }}</a><br/>
                 <em>
-                    @if($metric==='created_at')
-                        {{ $player->created_at->diffForHumans() }}
+                    @if(\Illuminate\Support\Str::endsWith($metric, '_at'))
+                        {{ $player->{$metric}->diffForHumans() }}
                     @else
                         {!! $player->formatValueHtml($player->$metric) !!} {{ $player->$metric == 1 ? \Illuminate\Support\Str::singular(str_replace(['_count'], '', $metric)) : str_replace(['_count'], '', $metric) }}
                     @endif

@@ -16,6 +16,7 @@ Route::get('players', ['as' => 'players', 'uses' => 'PlayerController@index']);
 Route::get('player/find', ['as' => 'player.findByName', 'uses' => 'PlayerController@findByName']);
 Route::get('player/{pid}/{slug}', ['as' => 'player', 'uses' => 'PlayerController@show']);
 Route::get('notifications', ['as' => 'notifications', 'uses' => 'HomeController@notifications']);
+Route::post('player/{player}/toggle', ['as' => 'player.toggle', 'uses' => 'PlayerController@toggleVisibility']);
 
 
 Route::group(['prefix' => 'json'], function() {
@@ -36,5 +37,6 @@ Route::group(['prefix' => 'claim', 'as' => 'claim.'], function() {
 
 Route::get('login/{id}', ['as' => 'login', 'uses' => 'UserController@login']);
 Route::get('logout', ['as' => 'logout', 'uses' => 'UserController@logout']);
+Route::get('user/{id}/{slug}', ['as' => 'user', 'uses' => 'UserController@show']);
 
 Route::get('{slug}', ['as' => 'player.short', 'uses' => 'PlayerController@shortUrl']);

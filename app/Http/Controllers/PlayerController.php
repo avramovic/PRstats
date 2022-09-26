@@ -72,12 +72,20 @@ class PlayerController extends Controller
 
         $threeMinAgo = Carbon::now()->subMinutes(3);
 
+        /** @var Player $player */
         $player = Player::with(['server',
             'clan.players' => function ($q) {
                 return $q->withCount('matches')->orderBy('total_score', 'desc');
             }])
             ->withCount(['subscriptions'])
+            ->withTrashed()
             ->findOrFail($pid);
+
+        if ($player->trashed()) {
+            if (\Auth::guest() || !\Auth::user()->canEdit($player)) {
+                abort(404);
+            }
+        }
 
         $matches = $player->matches()
             ->with(['server', 'map'])
@@ -166,6 +174,19 @@ class PlayerController extends Controller
         return response()->json([
             'subscription' => $sub->toArray(),
         ]);
+    }
+
+    public function toggleVisibility($pid)
+    {
+        $player = Player::withTrashed()->findOrFail($pid);
+
+        if ($player->trashed()) {
+            $player->restore();
+        } else {
+            $player->delete();
+        }
+
+        return redirect($player->getLink());
     }
 
 }
