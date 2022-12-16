@@ -79,7 +79,7 @@
 <!--common script for all pages-->
 <script src="/lib/common-scripts.js"></script>
 <script src="/lib/sparkline-chart.js"></script>
-@if(\Carbon\Carbon::now()->isBetween(\Carbon\Carbon::parse(date('Y').'-12-20'), \Carbon\Carbon::parse((date('Y')+1).'-01-20')))
+@if(\Carbon\Carbon::now()->isBetween(\Carbon\Carbon::parse(date('Y').'-12-15'), \Carbon\Carbon::parse((date('Y')+1).'-01-20')))
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Snowstorm/20131208/snowstorm-min.js" integrity="sha512-rMkLONrw50boYG/6Ku0E8VstfWMRn5D0dX3QZS26Mg0rspYq4EHxYOULuPbv9Be2HBbrrmN8dpPgYUeJ4bINCA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     snowStorm.snowColor = '#99ccff';   // blue-ish snow!?
