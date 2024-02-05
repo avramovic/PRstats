@@ -1,6 +1,7 @@
 <?php
 
 Route::get('/', 'HomeController@index');
+Route::get('/eol', 'HomeController@eol');
 
 Route::get('clans', ['as' => 'clans', 'uses' => 'ClanController@index']);
 Route::get('clan/{id}/{slug}', ['as' => 'clan', 'uses' => 'ClanController@show']);

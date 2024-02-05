@@ -95,11 +95,14 @@
         let seen = getCookie('message_seen');
         if (seen !== 'yes') {
             var unique_id = $.gritter.add({
-                title: 'Check out notifications!',
-                text: 'We\'ve added web push notifications! Check out the new "Notifications" menu item in the sidebar.',
+                title: 'PRstats is shutting down!',
+                text: 'On 2024-05-03 the domain name will expire and I won\'t be renewing it. Close this message for more details.',
                 image: 'https://static.prstats.tk/avatars/75/c5/75c53d450505ec0e9f0e2e251c5b2c54.png',
                 sticky: true,
-                class_name: 'my-sticky-class'
+                class_name: 'my-sticky-class',
+                after_close: function(e, manual_close){
+                    window.location = '/eol';
+                }
             });
             setCookie('message_seen', 'yes', 7);
         }

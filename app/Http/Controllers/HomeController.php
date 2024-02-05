@@ -124,4 +124,9 @@ class HomeController extends Controller
             'players' => $players,
         ]);
     }
+
+    public function eol()
+    {
+        return view('prstats.eol');
+    }
 }
