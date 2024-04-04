@@ -95,8 +95,8 @@
         let seen = getCookie('message_seen');
         if (seen !== 'yes') {
             var unique_id = $.gritter.add({
-                title: 'PRstats is shutting down!',
-                text: 'On 2024-05-03 the domain name will expire and I won\'t be renewing it. Close this message for more details.',
+                title: 'PRstats will LIVE!',
+                text: 'PRStats will become part of the official RealityMod site!',
                 image: 'https://static.prstats.tk/avatars/75/c5/75c53d450505ec0e9f0e2e251c5b2c54.png',
                 sticky: true,
                 class_name: 'my-sticky-class',
