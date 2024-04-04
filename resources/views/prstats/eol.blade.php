@@ -1,7 +1,7 @@
 @extends('layouts.prstats')
 
 @section('title')
-    PRstats is shutting down!
+    PRstats is shutting down! Or is it?
 @endsection
 
 @section('content')
