@@ -6,15 +6,15 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\OneSignal\OneSignalChannel;
 use NotificationChannels\OneSignal\OneSignalMessage;
-use PRStats\Models\Match;
 use PRStats\Models\Player;
+use PRStats\Models\Round;
 
 class PlayerActivityWebNotification extends Notification
 {
     use Queueable;
 
     /**
-     * @var Match
+     * @var Round
      */
     private $match;
 
@@ -23,7 +23,7 @@ class PlayerActivityWebNotification extends Notification
      *
      * @return void
      */
-    public function __construct(Match $match)
+    public function __construct(Round $match)
     {
         $this->match = $match;
     }

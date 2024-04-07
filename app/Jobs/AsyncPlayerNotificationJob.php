@@ -7,8 +7,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use PRStats\Models\Match;
 use PRStats\Models\Player;
+use PRStats\Models\Round;
 use PRStats\Notifications\PlayerActivityWebNotification;
 
 class AsyncPlayerNotificationJob implements ShouldQueue
@@ -20,7 +20,7 @@ class AsyncPlayerNotificationJob implements ShouldQueue
      */
     private $player;
     /**
-     * @var Match
+     * @var Round
      */
     private $match;
 
@@ -29,7 +29,7 @@ class AsyncPlayerNotificationJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(Player $player, Match $match)
+    public function __construct(Player $player, Round $match)
     {
         $this->player = $player;
         $this->match = $match;

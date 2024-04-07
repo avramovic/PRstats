@@ -11,8 +11,8 @@ use PRStats\Jobs\MakePlayerAvatarJob;
 use PRStats\Jobs\MakePlayerSignatureJob;
 use PRStats\Models\Clan;
 use PRStats\Models\Map;
-use PRStats\Models\Match;
 use PRStats\Models\Player;
+use PRStats\Models\Round;
 use PRStats\Models\Server;
 
 class PRSpyParse extends Command
@@ -94,8 +94,8 @@ class PRSpyParse extends Command
                 $newgame          = true;
                 $server->last_map = $serverData->properties->mapname;
 
-                /** @var Match $match */
-                $match = Match::create([
+                /** @var Round $match */
+                $match = Round::create([
                     'server_id'  => $server->id,
                     'map_id'     => $map->id,
                     'team1_name' => $serverData->properties->bf2_team1,
@@ -110,7 +110,7 @@ class PRSpyParse extends Command
 
                 //just a safe check
                 if (!$match || $match->map->name != $serverData->properties->mapname) {
-                    $match = Match::create([
+                    $match = Round::create([
                         'server_id'  => $server->id,
                         'map_id'     => $map->id,
                         'gamemode'   => $serverData->properties->gametype,

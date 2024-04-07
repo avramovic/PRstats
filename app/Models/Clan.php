@@ -25,7 +25,7 @@ class Clan extends Model
 
     public function matches()
     {
-        return $this->hasManyThrough(Match::class, Player::class);
+        return $this->hasManyThrough(Round::class, Player::class);
     }
 
     public function getLeaderAttribute()

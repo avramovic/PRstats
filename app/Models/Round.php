@@ -8,11 +8,13 @@ use Illuminate\Support\Str;
 use PRStats\Models\Traits\FormatScoreTrait;
 use PRStats\Models\Traits\WasSeenRecentlyTrait;
 
-class Match extends Model
+class Round extends Model
 {
     use WasSeenRecentlyTrait, FormatScoreTrait;
 
     protected $guarded = ['id'];
+
+    protected $table = 'matches';
 
     public function server()
     {

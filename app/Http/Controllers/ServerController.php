@@ -3,7 +3,7 @@
 namespace PRStats\Http\Controllers;
 
 use Carbon\Carbon;
-use PRStats\Models\Match;
+use PRStats\Models\Round;
 use PRStats\Models\Server;
 
 class ServerController extends Controller
@@ -58,7 +58,7 @@ class ServerController extends Controller
 
     public function match($id, $map)
     {
-        $match = Match::with(['map', 'server', 'players' => function ($q) {
+        $match = Round::with(['map', 'server', 'players' => function ($q) {
             return $q->orderBy('match_player.score', 'desc');
         }])->findOrFail($id);
 

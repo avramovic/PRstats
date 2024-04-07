@@ -57,7 +57,7 @@ class Player extends Model
 
     public function matches()
     {
-        return $this->belongsToMany(Match::class)->withTimestamps()->withPivot(['score', 'kills', 'deaths', 'team']);
+        return $this->belongsToMany(Round::class)->withTimestamps()->withPivot(['score', 'kills', 'deaths', 'team']);
     }
 
     public function getAvatarUrl($size = 140)

@@ -12,7 +12,7 @@ class Map extends Model
 
     public function matches()
     {
-        return $this->hasMany(Match::class);
+        return $this->hasMany(Round::class);
     }
 
     protected function getMapImageName($stripBeta = false)

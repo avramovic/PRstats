@@ -11,15 +11,11 @@ class MapController extends Controller
 
     public function index()
     {
-        //top clans
         $maps = Map::withCount('matches')
-            ->with(['matches' => function ($q) {
-                $q->orderBy('updated_at', 'desc');//->limit(1);
-            }])
             ->get();
 
         $maps->map(function ($map) {
-            $map->lastMatch = $map->matches->first();
+            $map->lastMatch = $map->matches()->orderBy('updated_at', 'desc')->first();
         });
 
         return view('prstats.maps', ['maps' => $maps->sortByDesc('matches_count')]);
